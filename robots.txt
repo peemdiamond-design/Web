@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://web.peemcn25.dev/sitemap.xml
