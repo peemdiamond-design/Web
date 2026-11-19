@@ -308,6 +308,51 @@
             .about-text-content h2 { font-size: 2rem !important; text-align: center; }
             #about-details { font-size: 1.05rem; }
         }
+
+        /* ================= UX FIXES ================= */
+        /* ลิงก์ #schedule ฯลฯ: เลื่อนหยุดใต้แถบเมนู ไม่ให้หัวข้อโดนบัง (--nav-h ตั้งจาก JS) */
+        .section { scroll-margin-top: calc(var(--nav-h, 80px) + 10px); }
+        /* เว้นที่ท้ายหน้าให้ปุ่ม ROOT LOGIN ไม่ทับ footer/เนื้อหาสุดท้าย */
+        .site-footer { margin-bottom: 90px; }
+        #admin-panel { padding: 6px; gap: 6px; }
+        #admin-panel button { padding: 5px 10px; font-size: 1.05rem; }
+        body:not(.edit-mode) #admin-panel { opacity: 0.75; transition: opacity 0.15s; }
+        body:not(.edit-mode) #admin-panel:hover, body:not(.edit-mode) #admin-panel:focus-within { opacity: 1; }
+
+        /* เมนูจอกลาง (แท็บเล็ต/โน้ตบุ๊กเล็ก): ย่อให้พอดี ไม่ล้นขอบ */
+        @media screen and (min-width: 769px) and (max-width: 1150px) {
+            .navbar { padding: 12px 20px; gap: 12px; }
+            .logo { font-size: 2.2rem; }
+            .logo img { height: 32px; margin-left: 10px; }
+            .nav-links { gap: 8px; flex-wrap: nowrap; }
+            .nav-btn { font-size: 1rem; padding: 6px 12px; }
+        }
+
+        /* มือถือ: เมนูแถวเดียวเลื่อนซ้าย-ขวาได้ แถบบนเตี้ยลง */
+        @media screen and (max-width: 768px) {
+            .navbar { padding: 10px 10px 8px; gap: 8px; }
+            .logo { font-size: 1.9rem; padding: 0; }
+            .logo img { height: 28px; margin-left: 8px; }
+            .nav-links { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; max-width: 100%; padding: 2px 2px 6px; gap: 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+            .nav-links::-webkit-scrollbar { display: none; }
+            .nav-btn { flex: none; font-size: 0.95rem; padding: 6px 10px; }
+            #sound-toggle { top: 8px; }
+
+            /* คลังไฟล์ */
+            .archive-sidebar { padding-bottom: 8px; gap: 8px; scrollbar-width: thin; }
+            .archive-viewer-header { gap: 8px; font-size: 1.05rem; }
+            #archive-path { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            #archive-ext-link { flex: none; white-space: nowrap; }
+            .search-row { flex-wrap: wrap; gap: 6px; padding: 8px; }
+            .search-row input { flex: 1 1 100%; }
+            .search-row .btn-sync { flex: 1; padding: 6px 8px; font-size: 1.05rem; }
+            .file-item { align-items: flex-start; }
+            #file-list .file-link { white-space: normal !important; overflow-wrap: anywhere; line-height: 1.15; }
+            .dos-col-name { white-space: normal !important; }
+            .dos-col-date { width: 70px !important; }
+
+            .site-footer { margin-bottom: 80px; }
+        }
     </style>
 </head>
 <body>
@@ -1140,6 +1185,13 @@
             initMatrix();
 
             // ---- UX ----
+            // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
+            const navEl = document.querySelector('.navbar');
+            const syncNavH = () => document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+            syncNavH(); window.addEventListener('resize', syncNavH);
+            // มือถือ: เลื่อนปุ่มเมนูที่เลือกให้อยู่ในจอ
+            document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => b.scrollIntoView({ block: 'nearest', inline: 'nearest' })));
+
             const soundBtn = document.getElementById('sound-toggle');
             const syncSoundBtn = () => { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.setAttribute('aria-pressed', String(soundMuted)); soundBtn.setAttribute('aria-label', soundMuted ? 'เปิดเสียง' : 'ปิดเสียง'); };
             syncSoundBtn();
