@@ -525,6 +525,15 @@
         .rev .who { font-family: 'VT323'; font-size: 1.25rem; margin-top: auto; }
         .rev .who span { color: #6f6f6f; }
         #rev-src { display: none !important; }
+        .rev-write-btn { margin: 16px auto 0; font-size: 1.3rem; padding: 6px 18px; }
+        .rev-form[hidden], .rev-empty[hidden], .rev-write-btn[hidden] { display: none; }
+        .rev-stars-big button { font-size: 2.4rem; }
+        .rev-pending { display: grid; gap: 8px; margin-top: 12px; }
+        .rev-pending h4 { font-family: 'VT323'; font-size: 1.3rem; color: #da1e28; }
+        .rev-pend { background: #fff8e1; border: 1px dashed #f1a10b; padding: 8px; display: grid; gap: 4px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; color: var(--ibm-text); }
+        .rev-pend .acts { display: flex; gap: 6px; }
+        .rev-pend .acts button { font-family: 'VT323'; font-size: 1.1rem; padding: 0 10px; border: 2px solid var(--ibm-text); }
+        .rev-pend .ok { background: #24a148; color: #fff; } .rev-pend .no { background: #da1e28; color: #fff; }
         .rev-editor { display: grid; gap: 10px; margin-top: 8px; }
         .rev-row { background: #fff; border: 1px solid var(--ibm-key-dark); padding: 8px; display: grid; gap: 6px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; }
         .rev-row .top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -679,8 +688,24 @@
                                 <div class="editable editable-block" id="rev-src" data-field="reviews_list" hidden></div>
                                 <div class="rev-editor" id="rev-editor"></div>
                                 <button type="button" class="action-btn sound-trigger" id="rev-add" style="margin-top:8px; background:#24a148;">[+] เพิ่มรีวิว</button>
+                                <div class="rev-pending" id="rev-pending"></div>
                             </div>
                             <div class="rev-grid" id="rev-grid"></div>
+                            <p class="agenda-empty rev-empty" id="rev-empty" data-i18n="rev_empty" hidden>> ยังไม่มีรีวิว มาเป็นคนแรกกัน!</p>
+                            <button type="button" class="action-btn sound-trigger rev-write-btn" id="rev-write-btn" data-i18n="rev_write">✍ เขียนรีวิว</button>
+                            <form class="book-form rev-form" id="rev-form" hidden novalidate>
+                                <h2 data-i18n="rev_form_title">⭐ รีวิวงานถ่ายภาพ</h2>
+                                <p class="book-note" data-i18n="rev_form_note">รีวิวจะขึ้นบนเว็บหลังจากตรวจสอบแล้ว ขอบคุณที่ช่วยแนะนำครับ</p>
+                                <div class="rev-stars-big star-pick" id="rev-form-stars" role="radiogroup" aria-label="ให้คะแนน"></div>
+                                <div class="book-row">
+                                    <label><span data-i18n="rev_f_name">ชื่อที่จะแสดง *</span><input name="who" maxlength="60" required autocomplete="nickname"></label>
+                                    <label><span data-i18n="rev_f_job">งานที่ถ่าย</span><input name="job" maxlength="60" data-i18n-ph="rev_f_job_ph" placeholder="เช่น รับปริญญา ธ.ค. 2026"></label>
+                                </div>
+                                <label><span data-i18n="rev_f_text">รีวิว *</span><textarea name="text" rows="4" maxlength="400" required data-i18n-ph="rev_f_text_ph" placeholder="ประทับใจตรงไหน อยากบอกอะไรคนที่กำลังจะจอง"></textarea></label>
+                                <input name="hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+                                <button type="submit" class="action-btn sound-trigger" id="rev-submit" data-i18n="rev_send">▶ ส่งรีวิว</button>
+                                <p class="book-status" id="rev-status" role="status"></p>
+                            </form>
                         </div>
 
                         <!-- โซนความทรงจำ: อัลบั้มจาก Google Drive › PORTFOLIO › MEMORIES (1 โฟลเดอร์ย่อย = 1 อัลบั้ม) -->
@@ -869,7 +894,10 @@
                     <div class="client-album" id="client-album" hidden>
                         <div class="client-head">
                             <div><h2 id="client-album-title"></h2><span id="client-album-meta"></span></div>
-                            <button type="button" class="action-btn alt sound-trigger" id="client-logout" data-i18n="client_logout">ออกจากอัลบั้ม</button>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button type="button" class="action-btn sound-trigger" id="client-review" data-i18n="client_review">⭐ รีวิวงานนี้</button>
+                                <button type="button" class="action-btn alt sound-trigger" id="client-logout" data-i18n="client_logout">ออกจากอัลบั้ม</button>
+                            </div>
                         </div>
                         <p class="book-note" data-i18n="client_tip">กดรูปเพื่อดูเต็มจอ · ปุ่ม ⬇ เพื่อดาวน์โหลดไฟล์ต้นฉบับ</p>
                         <div class="album-masonry client-grid" id="client-grid"></div>
@@ -1694,6 +1722,7 @@
             initPhotos();
             loadMemories();
             initBooking();
+            initReviewForm();
             if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
             initClient();
             document.getElementById('lang-toggle').addEventListener('click', () => { lang = lang === 'en' ? 'th' : 'en'; try { localStorage.setItem('peem_lang', lang); } catch (e) {} applyLang(); });
@@ -1963,8 +1992,9 @@
         let revEditList = null; // รายการที่กำลังแก้ (เก็บแถวว่างที่เพิ่งกดเพิ่มไว้ด้วย)
         function renderReviewEditor() {
             const box = document.getElementById('rev-editor'); if (!box) return;
-            if (!document.body.classList.contains('edit-mode')) { box.replaceChildren(); return; }
+            if (!document.body.classList.contains('edit-mode')) { box.replaceChildren(); loadPendingReviews(); return; }
             if (!revEditList) revEditList = revParse();
+            loadPendingReviews();
             const list = revEditList;
             box.replaceChildren();
             list.forEach((r, i) => {
@@ -1993,7 +2023,7 @@
             const grid = document.getElementById('rev-grid'); if (!grid) return;
             grid.replaceChildren();
             const revs = srcLines('rev-src').map(l => l.split('|').map(x => x.trim())).filter(r => r[0] && r[2]).slice(0, 12);
-            document.getElementById('reviews-section').style.display = (revs.length || document.body.classList.contains('edit-mode')) ? '' : 'none';
+            document.getElementById('rev-empty').hidden = revs.length > 0;
             revs.forEach(([who, stars, text, job]) => {
                 const n = Math.max(1, Math.min(5, parseInt(stars, 10) || 5));
                 const card = el('figure', 'rev');
@@ -2027,6 +2057,94 @@
             rb.hidden = !cv || cv === 'https:///'; if (!rb.hidden) rb.href = cv;
         }
         function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); }
+
+        // ================= 12b. รีวิวจากลูกค้า: ฟอร์มส่ง + คิวรออนุมัติของแอดมิน =================
+        let revFormStars = 0;
+        function drawStarPicker(box, value, onPick) {
+            box.replaceChildren();
+            for (let n = 1; n <= 5; n++) {
+                const b = el('button', n <= value ? 'on' : '', '★'); b.type = 'button'; b.title = `${n} ดาว`;
+                b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(n === value)); b.setAttribute('aria-label', `${n} ดาว`);
+                b.addEventListener('click', () => onPick(n));
+                box.appendChild(b);
+            }
+        }
+        function openReviewForm(job) {
+            const f = document.getElementById('rev-form');
+            f.hidden = false; document.getElementById('rev-write-btn').hidden = true;
+            if (job) f.job.value = job;
+            f.scrollIntoView({ block: 'center' });
+            f.who.focus({ preventScroll: true });
+        }
+        function initReviewForm() {
+            const f = document.getElementById('rev-form'), opened = Date.now();
+            const pick = () => drawStarPicker(document.getElementById('rev-form-stars'), revFormStars, n => { revFormStars = n; pick(); });
+            pick();
+            document.getElementById('rev-write-btn').addEventListener('click', () => openReviewForm());
+            document.getElementById('client-review').addEventListener('click', () => {
+                const job = document.getElementById('client-album-title').textContent;
+                switchTab(null, 'home'); setTimeout(() => openReviewForm(job), 80);
+            });
+            f.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const st = document.getElementById('rev-status'), btn = document.getElementById('rev-submit');
+                const fd = Object.fromEntries(new FormData(f).entries());
+                if (!revFormStars || !fd.who.trim() || fd.text.trim().length < 5) { st.className = 'book-status err'; st.textContent = t('rev_required'); return; }
+                btn.disabled = true; st.className = 'book-status'; st.textContent = t('f_sending');
+                try {
+                    const r = await fetch(`${SERVER_URL}/review`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...fd, stars: revFormStars, ts: opened }) });
+                    const out = await r.json().catch(() => ({}));
+                    if (!r.ok) throw new Error(out.error || r.status);
+                    st.className = 'book-status ok'; st.textContent = t('rev_ok'); f.reset(); revFormStars = 0; pick(); playLevelUpSound();
+                } catch (err) { st.className = 'book-status err'; st.textContent = t('f_err') + (err.message ? ` (${err.message})` : ''); }
+                finally { btn.disabled = false; }
+            });
+        }
+        // แอดมิน: รีวิวรออนุมัติ — อนุมัติ = ย้ายเข้ารายการรีวิว (ลบออกจากคิวหลังกด SAVE CONFIG สำเร็จ)
+        const approvedPending = new Set();
+        let pendingLoadedFor = null;
+        async function adminFetch(path, opts = {}) {
+            const u = fbUser(); if (!u) throw new Error('not logged in');
+            return fetch(SERVER_URL + path, { ...opts, headers: { ...(opts.headers || {}), Authorization: `Bearer ${await u.getIdToken()}` } });
+        }
+        async function loadPendingReviews(force) {
+            const box = document.getElementById('rev-pending'); if (!box) return;
+            if (!document.body.classList.contains('edit-mode')) { box.replaceChildren(); pendingLoadedFor = null; return; }
+            if (pendingLoadedFor && !force) return;
+            pendingLoadedFor = Date.now();
+            try {
+                const r = await adminFetch('/reviews/pending'); if (!r.ok) throw new Error(r.status);
+                const list = await r.json();
+                box.replaceChildren();
+                if (!list.length) return;
+                box.appendChild(el('h4', '', `⏳ รีวิวรออนุมัติ (${list.length})`));
+                list.forEach(p => {
+                    const card = el('div', 'rev-pend');
+                    card.append(el('div', '', `${'★'.repeat(p.stars)}${'☆'.repeat(5 - p.stars)}  ${p.who}${p.job ? ' · ' + p.job : ''}`), el('div', '', p.text));
+                    const acts = el('div', 'acts');
+                    const ok = el('button', 'ok', '✓ อนุมัติ'); ok.type = 'button';
+                    const no = el('button', 'no', '✕ ลบ'); no.type = 'button';
+                    ok.addEventListener('click', () => {
+                        if (!revEditList) revEditList = revParse();
+                        revEditList.push({ who: p.who, stars: p.stars, text: p.text, job: p.job || '' });
+                        revWrite(revEditList); renderReviewEditor(); approvedPending.add(p.id);
+                        acts.replaceChildren(el('span', '', '✓ อนุมัติแล้ว — กด SAVE CONFIG เพื่อบันทึก'));
+                    });
+                    no.addEventListener('click', async () => {
+                        if (!confirm('ลบรีวิวนี้ทิ้ง?')) return;
+                        try { const r = await adminFetch('/reviews/pending/' + encodeURIComponent(p.id), { method: 'DELETE' }); if (!r.ok) throw new Error(r.status); card.remove(); }
+                        catch (e) { alert('ลบไม่สำเร็จ: ' + e.message); }
+                    });
+                    acts.append(ok, no); card.appendChild(acts); box.appendChild(card);
+                });
+            } catch (e) { pendingLoadedFor = null; console.error('pending reviews', e); }
+        }
+        async function flushApprovedReviews() {
+            for (const id of [...approvedPending]) {
+                try { const r = await adminFetch('/reviews/pending/' + encodeURIComponent(id), { method: 'DELETE' }); if (r.ok) approvedPending.delete(id); } catch (e) {}
+            }
+            loadPendingReviews(true);
+        }
 
         // ================= 13. ฟอร์มจองคิว =================
         function initBooking() {
@@ -2108,7 +2226,8 @@
         const I18N = {
             th: { pkg_hot: 'แนะนำ', pkg_ask: 'สอบถามราคา', pkg_book: '▶ จองแพ็กเกจนี้', type_other: 'อื่นๆ / สอบถาม',
                   f_required: 'กรุณากรอกชื่อและช่องทางติดต่อ', f_sending: 'กำลังส่ง...', f_ok: '✓ ส่งแล้ว! เดี๋ยวติดต่อกลับเร็วๆ นี้นะครับ', f_err: 'ส่งไม่สำเร็จ',
-                  client_empty: '> ยังไม่มีรูปในอัลบั้มนี้', cat_all: 'ทั้งหมด' },
+                  client_empty: '> ยังไม่มีรูปในอัลบั้มนี้', cat_all: 'ทั้งหมด',
+                  rev_required: 'กรุณาให้ดาว กรอกชื่อ และเขียนรีวิวอย่างน้อย 5 ตัวอักษร', rev_ok: '✓ ขอบคุณครับ! รีวิวจะขึ้นหลังจากตรวจสอบ' },
             en: { nav_home: 'HOME', nav_projects: 'PROJECTS', nav_schedule: 'SCHEDULE', nav_files: 'FILES', nav_about: 'ABOUT', nav_contact: 'CONTACT',
                   book_title: '📅 Book a Shoot / Inquiry', book_note: 'Send your details and I will reply within 24 hours.',
                   f_name: 'Name *', f_contact: 'LINE ID / Phone / Email *', f_type: 'Type of work', f_date: 'Preferred date', f_msg: 'Details', f_msg_ph: 'Location, number of people, preferred style…', f_send: '▶ Send',
@@ -2116,7 +2235,10 @@
                   footer_client: 'CLIENT', line_chat: 'LINE',
                   pkg_hot: 'POPULAR', pkg_ask: 'Ask for price', pkg_book: '▶ Book this', type_other: 'Other / Ask',
                   f_required: 'Please enter your name and contact.', f_sending: 'Sending…', f_ok: '✓ Sent! I will get back to you soon.', f_err: 'Could not send',
-                  client_empty: '> No photos in this album yet.', cat_all: 'ALL' },
+                  client_empty: '> No photos in this album yet.', cat_all: 'ALL',
+                  rev_empty: '> No reviews yet. Be the first!', rev_write: '✍ Write a review', rev_form_title: '⭐ Review my work', rev_form_note: 'Your review will appear after a quick check. Thank you!',
+                  rev_f_name: 'Display name *', rev_f_job: 'Type of shoot', rev_f_job_ph: 'e.g. Graduation, Dec 2026', rev_f_text: 'Review *', rev_f_text_ph: 'What did you like? Anything to tell future clients?', rev_send: '▶ Send review',
+                  rev_required: 'Please pick stars, enter your name and write at least 5 characters.', rev_ok: '✓ Thank you! Your review will appear after a quick check.', client_review: '⭐ Review this shoot' },
         };
         let lang = 'th';
         try { if (localStorage.getItem('peem_lang') === 'en') lang = 'en'; } catch (e) {}
@@ -2284,7 +2406,7 @@
                     try {
                         const btn = document.getElementById('save-btn'); const originalText = btn.innerHTML;
                         btn.innerHTML = "SAVING..."; await loadFirebase(); await firebase.firestore().collection('website').doc('pixel_portfolio').set(newData, { merge: true }); 
-                        btn.innerHTML = "SAVED!"; setTimeout(() => btn.innerHTML = originalText, 2000);
+                        btn.innerHTML = "SAVED!"; flushApprovedReviews(); setTimeout(() => btn.innerHTML = originalText, 2000);
                     } catch (error) { alert("SAVE FAILED: " + error.message); }
                 };
             }
