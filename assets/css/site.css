@@ -62,7 +62,7 @@ button { cursor: pointer; background: none; border: 0; }
 .nav-btn.active { color: var(--ink); }
 .nav-btn.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px; background: var(--accent); }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
-.icon-btn, #sound-toggle { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--hair); border-radius: var(--r); background: var(--surface); font-size: 1rem; }
+.icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--hair); border-radius: var(--r); background: var(--surface); font-size: 1rem; }
 .nav-cta { background: var(--ink); color: var(--paper) !important; padding: 9px 14px; font-weight: 600; }
 .nav-cta:hover { background: var(--accent); }
 .nav-cta.active::after { display: none; }
@@ -562,3 +562,50 @@ body:not(.edit-mode) #admin-panel:hover, body:not(.edit-mode) #admin-panel:focus
 .hero-admin { max-width: 560px; }
 body.hero-busy .live-dot { background: var(--signal); box-shadow: 0 0 0 4px rgba(255,90,31,.2); animation: none; }
 .edit-mode .hero-readout .editable[contenteditable="true"] { min-width: 3ch; display: inline-block; }
+
+/* ---------- business card (flip) ---------- */
+.bcard-wrap { display: grid; gap: 14px; justify-items: center; }
+.bcard { width: 100%; max-width: 520px; aspect-ratio: 1.75; perspective: 1400px; cursor: pointer; outline: none; --rx: 0deg; --ry: 0deg; container-type: inline-size; }
+.bcard-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.2,.75,.25,1); transform: rotateX(var(--rx)) rotateY(var(--ry)); }
+.bcard.flipped .bcard-inner { transform: rotateX(var(--rx)) rotateY(calc(180deg + var(--ry))); }
+.bcard:focus-visible .bcard-inner { outline: 2px solid var(--accent); outline-offset: 6px; }
+.bcard-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 1.5px solid var(--ink); border-radius: 10px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; display: flex; flex-direction: column; padding: clamp(14px, 4.2%, 24px); }
+.bcard-front { background: #141414; color: var(--paper);
+  background-image: radial-gradient(rgba(239,238,233,.09) 1px, transparent 1px); background-size: 16px 16px; }
+.bcard-back { background: var(--surface); transform: rotateY(180deg); flex-direction: row; gap: 4%; align-items: stretch;
+  background-image: radial-gradient(rgba(20,20,20,.06) 1px, transparent 1px); background-size: 16px 16px; }
+.bcard-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.bcard-mark { width: clamp(26px, 8%, 38px); height: auto; }
+.bcard-tag { font-family: var(--mono); font-size: max(.5rem, 1.7cqw); font-weight: 600; letter-spacing: .16em; color: #a9a8a2; }
+.bcard-keys { margin: auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(4px, 1.6%, 9px); width: 58%; }
+.bk { aspect-ratio: 1; display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 5.4cqw; color: var(--ink); background: var(--surface); border: 1.5px solid #000; border-radius: 4px; box-shadow: 2px 2px 0 #4a4a48; }
+.bk-2 { background: var(--accent); color: #fff; } .bk-5 { background: var(--signal); color: #fff; }
+.bcard-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+.bcard-name { font-family: var(--mono); font-weight: 700; font-size: 4.8cqw; line-height: 1.1; }
+.bcard-role { font-family: var(--mono); font-size: max(.55rem, 2cqw); color: #a9a8a2; margin-top: 4px; letter-spacing: .04em; }
+.bcard-hint { font-family: var(--mono); font-size: max(.55rem, 1.8cqw); letter-spacing: .14em; color: var(--signal); animation: blink 1.6s steps(1) infinite; }
+.bcard-list { list-style: none; flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: clamp(4px, 2.2%, 10px); }
+.bcard-list li { display: grid; grid-template-columns: 3.6em 1fr; align-items: baseline; gap: 6px; min-width: 0; }
+.bcard-list .info-label { font-size: max(.5rem, 1.7cqw); }
+.bcard-list .contact-link { font-size: max(.62rem, 2.75cqw); text-decoration-thickness: 1px; display: block; overflow-wrap: anywhere; line-height: 1.3; }
+.bcard-qr { flex: none; width: 31%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding-left: 4%; border-left: 1.5px dashed var(--hair); text-align: center; }
+.bcard-qr-svg { width: 100%; height: auto; background: #fff; padding: 6px; border: 1.5px solid var(--ink); border-radius: 4px; }
+.bcard-qr span { font-family: var(--mono); font-size: max(.5rem, 1.7cqw); font-weight: 700; letter-spacing: .2em; color: var(--signal); }
+.bcard-qr b { font-family: var(--mono); font-size: max(.48rem, 1.7cqw); font-weight: 600; }
+.bcard-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.bcard-close { display: none; }
+.contact-info .info-item { padding-top: 6px; }
+/* โหมดโชว์ให้ลูกค้า: เต็มจอ บัตรใหญ่ */
+.bcard-wrap.presenting { position: fixed; inset: 0; z-index: 3500; background: rgba(14,14,14,.94); align-content: center; padding: 24px; animation: page-in .25s ease both; }
+.bcard-wrap.presenting .bcard { max-width: min(900px, 92vw, calc(82vh * 1.75)); }
+.bcard-wrap.presenting .bcard-actions .btn { background: var(--paper); }
+.bcard-wrap.presenting #bcard-present { display: none; }
+.bcard-wrap.presenting .bcard-close { display: grid; place-items: center; position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; font-size: 1.5rem; background: var(--paper); border: 1.5px solid var(--ink); border-radius: var(--r); }
+.bcard-wrap.presenting .bcard-face { box-shadow: 10px 10px 0 var(--accent); }
+@media (prefers-reduced-motion: reduce) { .bcard-inner { transition: none; } .bcard-hint { animation: none; } }
+/* มือถือแนวตั้ง: หมุนบัตรเป็นแนวนอนให้เต็มจอเหมือนยื่นนามบัตรจริง */
+@media (orientation: portrait) and (max-width: 700px) {
+  .bcard-wrap.presenting { overflow: hidden; }
+  .bcard-wrap.presenting .bcard { position: absolute; top: 46%; left: 50%; width: min(78vh, 158vw); max-width: none; transform: translate(-50%, -50%) rotate(90deg); }
+  .bcard-wrap.presenting .bcard-actions { position: absolute; bottom: 18px; left: 0; right: 0; }
+}

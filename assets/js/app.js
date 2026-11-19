@@ -662,32 +662,13 @@
         window.addEventListener('popstate', () => showTab(location.hash.slice(1)));
         window.addEventListener('hashchange', () => showTab(location.hash.slice(1)));
 
-        // 7. ระบบเสียง (Audio System)
-        let audioCtx = null;
-        let soundMuted = false;
-        soundMuted = true; // ปิดเสียงไว้ก่อน ให้ผู้เข้าชมเลือกเปิดเอง
-        try { soundMuted = localStorage.getItem('peem_muted') !== '0'; } catch (e) {}
-        window.playRetroClick = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
-        window.playLevelUpSound = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
-
-        function playKeystrokeSound() { 
-            if (soundMuted) return;
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
-            osc.type = 'square'; 
-            osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.02); 
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); 
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02); 
-            osc.connect(gain); gain.connect(audioCtx.destination); 
-            osc.start(); osc.stop(audioCtx.currentTime + 0.02); 
-        }
+        // 7. เสียงเอฟเฟกต์: เอาออกแล้ว (เหลือฟังก์ชันว่างไว้ เพราะยังมีจุดเรียกใช้อยู่หลายที่)
+        window.playRetroClick = function() {};
+        window.playLevelUpSound = function() {};
+        try { localStorage.removeItem('peem_muted'); } catch (e) {}
 
         // 8. Event Listeners เบ็ดเตล็ดเมื่อเปิดหน้าเว็บ
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.sound-trigger, .nav-btn, .btn-drive, .btn-social, .logo, .action-btn, .folder-btn').forEach(btn => { btn.addEventListener('mousedown', playRetroClick); });
-            document.querySelectorAll('input').forEach(input => { input.addEventListener('keydown', playKeystrokeSound); });
 
             document.addEventListener('keydown', function(event) { 
                 if (event.key === 'Enter') { 
@@ -834,6 +815,7 @@
             initPhotos();
             loadMemories();
             initBooking();
+            initBusinessCard();
             initReviewForm();
             initCalModal();
             if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -849,10 +831,6 @@
             // มือถือ: เลื่อนปุ่มเมนูที่เลือกให้อยู่ในจอ
             document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => b.scrollIntoView({ block: 'nearest', inline: 'nearest' })));
 
-            const soundBtn = document.getElementById('sound-toggle');
-            const syncSoundBtn = () => { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.setAttribute('aria-pressed', String(soundMuted)); soundBtn.setAttribute('aria-label', soundMuted ? 'เปิดเสียง' : 'ปิดเสียง'); };
-            syncSoundBtn();
-            soundBtn.addEventListener('click', () => { soundMuted = !soundMuted; try { localStorage.setItem('peem_muted', soundMuted ? '1' : '0'); } catch (e) {} syncSoundBtn(); });
 
             // อีเมล/เบอร์โทร กดแล้วเปิดแอปอีเมล/โทรออกได้ (ยกเว้นตอนแอดมินกำลังแก้)
             const contactAction = (el, makeHref) => {
@@ -931,13 +909,12 @@
         const TERM_TABS = { home: 'home', projects: 'projects', schedule: 'schedule', files: 'archive', archive: 'archive', about: 'about', contact: 'contact' };
         function termVisibleProjects() { return projectData.filter(p => { const l = safeUrl(p.url); return l && l !== 'https:///' && p.name !== 'NEW_PROJECT.EXE'; }); }
         const TERM_CMDS = {
-            help: () => (lang === 'en' ? 'Commands' : 'คำสั่ง') + ': help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · sound · date · clear · exit',
+            help: () => (lang === 'en' ? 'Commands' : 'คำสั่ง') + ': help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · date · clear · exit',
             whoami: () => 'PEEM — Computer Engineering student · builds web, games & IoT',
             projects: () => termVisibleProjects().map((p, i) => `[${i + 1}] ${String(p.name).padEnd(22)} ${safeUrl(p.url)}`).join('\n') || 'NO PROJECTS.',
             open: (a) => { const p = termVisibleProjects()[parseInt(a, 10) - 1]; if (!p) return 'usage: open <number>  (ดูเลขจาก "projects")'; window.open(safeUrl(p.url), '_blank', 'noopener'); return 'OPENING ' + p.name + ' ...'; },
             skills: () => skillLines().map(l => { const m = /^(.*?)[\s:]+(\d{1,3})\s*%?$/.exec(l); if (!m) return l; const v = Math.min(100, +m[2]); return `${m[1].trim().padEnd(14)} ${'█'.repeat(Math.round(v / 10))}${'░'.repeat(10 - Math.round(v / 10))} ${v}%`; }).join('\n'),
             goto: (a) => { const t = TERM_TABS[String(a || '').toLowerCase()]; if (!t) return 'usage: goto <home|projects|schedule|files|about|contact>'; if (t === 'projects') goProjects(null); else switchTab(null, t); return 'CD ' + t.toUpperCase(); },
-            sound: () => { document.getElementById('sound-toggle').click(); return soundMuted ? 'SOUND OFF.' : 'SOUND ON.'; },
             date: () => new Date().toString(),
             clear: () => { document.getElementById('term-out').textContent = ''; return null; },
             exit: () => { closeTerm(); return null; },
@@ -1169,6 +1146,7 @@
         function renderLinks() {
             const line = safeUrl(srcText('line-url').trim()), fab = document.getElementById('line-fab');
             fab.hidden = !line || line === 'https:///'; if (!fab.hidden) fab.href = line;
+            const bl = document.getElementById('bcard-line'); if (bl) { bl.hidden = fab.hidden; if (!fab.hidden) document.getElementById('bcard-line-link').href = line; }
             const cv = safeUrl(srcText('resume-url').trim()), rb = document.getElementById('resume-btn');
             rb.hidden = !cv || cv === 'https:///'; if (!rb.hidden) rb.href = cv;
         }
@@ -1384,6 +1362,51 @@
                 try { const r = await adminFetch('/reviews/pending/' + encodeURIComponent(id), { method: 'DELETE' }); if (r.ok) approvedPending.delete(id); } catch (e) {}
             }
             loadPendingReviews(true);
+        }
+
+        // ================= 12c. นามบัตร: พลิก / โชว์เต็มจอ / บันทึกรายชื่อ =================
+        function initBusinessCard() {
+            const wrap = document.getElementById('bcard-wrap'), card = document.getElementById('bcard'); if (!card) return;
+            const flip = () => { const f = card.classList.toggle('flipped'); card.setAttribute('aria-pressed', String(f)); };
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a, .contact-link, [contenteditable="true"]')) return; // กดลิงก์/แก้ข้อความ = ไม่พลิก
+                flip();
+            });
+            card.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === card) { e.preventDefault(); flip(); } });
+            document.getElementById('bcard-flip').addEventListener('click', flip);
+            // เอียงตามเมาส์เล็กน้อย (เฉพาะจอที่มีเมาส์)
+            if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                card.addEventListener('pointermove', (e) => { const r = card.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; card.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg'); card.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg'); });
+                card.addEventListener('pointerleave', () => { card.style.setProperty('--ry', '0deg'); card.style.setProperty('--rx', '0deg'); });
+            }
+            const home = document.createComment('bcard'); wrap.before(home);
+            const present = (on) => {
+                // ย้ายไปไว้ใต้ body ตอนเต็มจอ ไม่ให้ติด stacking context ของหน้า
+                if (on) document.body.appendChild(wrap); else home.after(wrap);
+                wrap.classList.toggle('presenting', on);
+                document.body.style.overflow = on ? 'hidden' : '';
+                if (on) { card.classList.add('flipped'); card.setAttribute('aria-pressed', 'true'); card.focus({ preventScroll: true }); }
+            };
+            document.getElementById('bcard-present').addEventListener('click', () => present(true));
+            document.getElementById('bcard-close').addEventListener('click', () => present(false));
+            wrap.addEventListener('click', (e) => { if (e.target === wrap) present(false); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && wrap.classList.contains('presenting')) present(false); });
+            // บันทึกรายชื่อ (.vcf) จากข้อมูลบนบัตร
+            document.getElementById('bcard-vcard').addEventListener('click', () => {
+                const esc = v => String(v || '').replace(/[\;,]/g, m => '\\' + m).replace(/\n/g, ' ').trim();
+                const name = document.getElementById('card-name').innerText.trim() || 'PEEMCN25';
+                const email = document.getElementById('contact-email').innerText.trim();
+                const tel = document.getElementById('contact-tel').innerText.trim().replace(/[^\d+]/g, '');
+                const line = document.getElementById('bcard-line').hidden ? '' : document.getElementById('bcard-line-link').href;
+                const lines = ['BEGIN:VCARD', 'VERSION:3.0', `FN:${esc(name)}`, 'ORG:PEEMCN25 · 101 STUDIO', `TITLE:${esc('Engineer / Photographer')}`,
+                    email && `EMAIL;TYPE=INTERNET:${esc(email)}`, tel && `TEL;TYPE=CELL:${tel}`, 'URL:https://web.peemcn25.dev/',
+                    'X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/peem_pongpetch', 'X-SOCIALPROFILE;TYPE=facebook:https://www.facebook.com/peem.pongpetch',
+                    line && `X-SOCIALPROFILE;TYPE=line:${line}`, 'END:VCARD'].filter(Boolean).join('\r\n');
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([lines], { type: 'text/vcard;charset=utf-8' }));
+                a.download = 'PEEMCN25.vcf'; document.body.appendChild(a); a.click();
+                setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+            });
         }
 
         // ================= 13. ฟอร์มจองคิว =================
