@@ -524,6 +524,17 @@
         .rev blockquote::before { content: "“"; font-family: 'VT323'; font-size: 2.2rem; line-height: 0; vertical-align: -.45em; color: var(--ibm-accent-blue); margin-right: 2px; }
         .rev .who { font-family: 'VT323'; font-size: 1.25rem; margin-top: auto; }
         .rev .who span { color: #6f6f6f; }
+        #rev-src { display: none !important; }
+        .rev-editor { display: grid; gap: 10px; margin-top: 8px; }
+        .rev-row { background: #fff; border: 1px solid var(--ibm-key-dark); padding: 8px; display: grid; gap: 6px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; }
+        .rev-row .top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .rev-row input, .rev-row textarea { flex: 1; min-width: 120px; font: inherit; padding: 5px 8px; border: 1px solid var(--ibm-text); background: var(--ibm-key-light); }
+        .rev-row textarea { width: 100%; resize: vertical; }
+        .star-pick { display: inline-flex; gap: 2px; }
+        .star-pick button { background: none; border: none; padding: 0 2px; font-size: 1.6rem; line-height: 1; color: #c6c6c6; cursor: pointer; }
+        .star-pick button.on { color: #f1a10b; }
+        .star-pick button:hover, .star-pick button:focus-visible { transform: scale(1.15); }
+        .rev-row .del { background: #da1e28; color: #fff; border: 2px solid var(--ibm-text); font-family: 'VT323'; font-size: 1.1rem; padding: 0 10px; }
 
         /* ================= BOOKING FORM ================= */
         .book-form { width: 100%; max-width: 640px; margin: 22px auto 10px; text-align: left; background: #fff; border: 3px solid var(--ibm-text); box-shadow: 6px 6px 0 var(--ibm-shadow); padding: 20px; display: grid; gap: 12px; }
@@ -664,8 +675,10 @@
                         <!-- รีวิวจากลูกค้า (แอดมินแก้ได้: บรรทัดละรีวิว) -->
                         <div class="timeline-section" id="reviews-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="rev-title" data-field="rev_title">DIRECTORY: \REVIEWS</h2>
-                            <div class="admin-hint list-admin">[!] แอดมิน: บรรทัดละ 1 รีวิว รูปแบบ <b>ชื่อลูกค้า | ดาว 1-5 | ข้อความ | งานที่ถ่าย (ไม่ใส่ก็ได้)</b> · ปล่อยว่าง = ซ่อนส่วนนี้
-                                <div class="editable editable-block list-src" id="rev-src" data-field="reviews_list"></div>
+                            <div class="admin-hint list-admin">[!] แอดมิน: กดดาวเพื่อให้คะแนน · กรอกชื่อ ข้อความ และงานที่ถ่าย · แก้เสร็จกด SAVE CONFIG · ไม่มีรีวิว = ส่วนนี้ซ่อนจากผู้เข้าชม
+                                <div class="editable editable-block" id="rev-src" data-field="reviews_list" hidden></div>
+                                <div class="rev-editor" id="rev-editor"></div>
+                                <button type="button" class="action-btn sound-trigger" id="rev-add" style="margin-top:8px; background:#24a148;">[+] เพิ่มรีวิว</button>
                             </div>
                             <div class="rev-grid" id="rev-grid"></div>
                         </div>
@@ -1684,7 +1697,8 @@
             if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
             initClient();
             document.getElementById('lang-toggle').addEventListener('click', () => { lang = lang === 'en' ? 'th' : 'en'; try { localStorage.setItem('peem_lang', lang); } catch (e) {} applyLang(); });
-            ['pkg-src', 'rev-src', 'devlog-src', 'line-url', 'resume-url'].forEach(id => document.getElementById(id).addEventListener('blur', renderEditableLists));
+            ['pkg-src', 'devlog-src', 'line-url', 'resume-url'].forEach(id => document.getElementById(id).addEventListener('blur', renderEditableLists));
+            document.getElementById('rev-add').addEventListener('click', () => { if (!revEditList) revEditList = revParse(); revEditList.push({ who: '', stars: 5, text: '', job: '' }); renderReviewEditor(); const rows = document.querySelectorAll('.rev-row'); rows[rows.length - 1]?.querySelector('input')?.focus(); });
             applyLang();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
             const navEl = document.querySelector('.navbar');
@@ -1937,6 +1951,44 @@
             setTimeout(() => { document.getElementById('book-form').scrollIntoView({ block: 'start' }); document.querySelector('#book-form [name=name]').focus({ preventScroll: true }); }, 60);
         }
 
+        // ตัวแก้รีวิวสำหรับแอดมิน: กดดาวเลือกคะแนน แล้วเขียนกลับเป็นข้อความใน rev-src (รูปแบบเดิม: ชื่อ | ดาว | ข้อความ | งาน)
+        function revParse() { return srcLines('rev-src').map(l => l.split('|').map(x => x.trim())).map(([who = '', stars = '5', text = '', job = '']) => ({ who, stars: Math.max(1, Math.min(5, parseInt(stars, 10) || 5)), text, job })); }
+        function revWrite(list) {
+            const clean = v => String(v || '').replace(/[|\n\r]+/g, ' / ').trim();
+            const src = document.getElementById('rev-src');
+            src.textContent = '';
+            list.filter(r => r.who || r.text).forEach((r, i) => { if (i) src.appendChild(document.createElement('br')); src.appendChild(document.createTextNode([clean(r.who), r.stars, clean(r.text), clean(r.job)].join(' | '))); });
+            renderReviews();
+        }
+        let revEditList = null; // รายการที่กำลังแก้ (เก็บแถวว่างที่เพิ่งกดเพิ่มไว้ด้วย)
+        function renderReviewEditor() {
+            const box = document.getElementById('rev-editor'); if (!box) return;
+            if (!document.body.classList.contains('edit-mode')) { box.replaceChildren(); return; }
+            if (!revEditList) revEditList = revParse();
+            const list = revEditList;
+            box.replaceChildren();
+            list.forEach((r, i) => {
+                const row = el('div', 'rev-row');
+                const top = el('div', 'top');
+                const who = el('input'); who.placeholder = 'ชื่อลูกค้า'; who.value = r.who; who.maxLength = 60;
+                const job = el('input'); job.placeholder = 'งานที่ถ่าย (ไม่ใส่ก็ได้)'; job.value = r.job; job.maxLength = 60;
+                const stars = el('div', 'star-pick'); stars.setAttribute('role', 'radiogroup'); stars.setAttribute('aria-label', 'คะแนน');
+                for (let n = 1; n <= 5; n++) {
+                    const b = el('button', n <= r.stars ? 'on' : '', '★'); b.type = 'button'; b.title = `${n} ดาว`;
+                    b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(n === r.stars));
+                    b.addEventListener('click', () => { list[i].stars = n; revWrite(list); renderReviewEditor(); });
+                    stars.appendChild(b);
+                }
+                const del = el('button', 'del', 'X'); del.type = 'button'; del.title = 'ลบรีวิวนี้';
+                del.addEventListener('click', () => { if (confirm('ลบรีวิวนี้?')) { list.splice(i, 1); revWrite(list); renderReviewEditor(); } });
+                top.append(who, stars, job, del);
+                const text = el('textarea'); text.rows = 2; text.placeholder = 'ข้อความรีวิว'; text.value = r.text; text.maxLength = 400;
+                who.addEventListener('input', () => { list[i].who = who.value; revWrite(list); });
+                job.addEventListener('input', () => { list[i].job = job.value; revWrite(list); });
+                text.addEventListener('input', () => { list[i].text = text.value; revWrite(list); });
+                row.append(top, text); box.appendChild(row);
+            });
+        }
         function renderReviews() {
             const grid = document.getElementById('rev-grid'); if (!grid) return;
             grid.replaceChildren();
@@ -1974,7 +2026,7 @@
             const cv = safeUrl(srcText('resume-url').trim()), rb = document.getElementById('resume-btn');
             rb.hidden = !cv || cv === 'https:///'; if (!rb.hidden) rb.href = cv;
         }
-        function renderEditableLists() { renderPackages(); renderReviews(); renderDevlog(); renderLinks(); }
+        function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); }
 
         // ================= 13. ฟอร์มจองคิว =================
         function initBooking() {
@@ -2201,6 +2253,7 @@
                 if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                 if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
             } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); }
+            revEditList = null;
             renderCalendar(); renderProjects(); renderSkills(false); renderEditableLists();
         }
 
