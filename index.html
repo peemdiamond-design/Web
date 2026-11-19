@@ -260,15 +260,7 @@
         .gallery-item img { width: 100%; height: auto; display: block; border: 2px solid var(--ibm-text); margin-bottom: 8px; }
         .gallery-item p { font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-text); }
 
-        /* ปุ่มแอดมิน: แสดงเฉพาะตอนล็อกอิน (เปิดล็อกอินจาก footer แทน) */
-        #admin-panel { display: none; }
-        #admin-panel.show { display: flex; }
 
-        /* หน้าแรก: บอกว่าเว็บนี้ของใคร + ปุ่มไปต่อ */
-        .hero-tagline { font-size: 1.25rem; color: var(--ibm-text); margin-top: 4px; text-align: center; }
-        .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
-        .hero-cta .action-btn { font-size: 1.4rem; padding: 8px 18px; }
-        .hero-cta .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
 
         /* ปุ่มปิดเสียง */
         #sound-toggle { background: var(--ibm-key-light); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.1rem; padding: 6px 10px; box-shadow: 2px 4px 0 var(--ibm-shadow); }
@@ -337,11 +329,6 @@
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: clamp(2.2rem, 9vw, 4.5rem); text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
-                            <p class="hero-tagline editable" id="hero-tagline" data-field="hero_tagline">สวัสดี! เราชื่อภีม — นักศึกษาวิศวกรรมคอมพิวเตอร์ ที่ชอบสร้างเว็บ เกม และระบบ IoT</p>
-                            <div class="hero-cta">
-                                <a href="#projects" class="action-btn sound-trigger" onclick="event.preventDefault(); document.getElementById('dynamic-project-container').scrollIntoView({behavior:'smooth', block:'start'});">▶ ดูผลงาน</a>
-                                <a href="#contact" class="action-btn alt sound-trigger">✉ ติดต่อ</a>
-                            </div>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -505,7 +492,6 @@
         <nav>
             <a href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
             <a href="#contact">CONTACT</a>
-            <button type="button" id="footer-root-btn" title="สำหรับผู้ดูแลเว็บ">[ ROOT ]</button>
         </nav>
     </footer>
 
@@ -1159,11 +1145,6 @@
                 ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
             });
 
-            // ล็อกอินแอดมินจาก footer
-            document.getElementById('footer-root-btn').addEventListener('click', () => {
-                document.getElementById('login-modal').style.display = 'flex';
-                document.getElementById('email').focus();
-            });
 
             // เปิดหน้าตาม URL (#about ฯลฯ)
             // รอให้ Firebase ตั้งค่าเสร็จก่อน (ตั้งใน DOMContentLoaded ตัวถัดไป)
@@ -1223,7 +1204,6 @@
             auth.onAuthStateChanged((user) => {
                 if (user) { 
                     // ถ้าล็อกอินสำเร็จ ซ่อนปุ่ม Login โชว์ปุ่ม Logout
-                    document.getElementById('admin-panel').classList.add('show');
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
@@ -1247,8 +1227,7 @@
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
-                    document.getElementById('admin-panel').classList.remove('show');
-                    document.getElementById('login-show-btn').style.display = 'none'; 
+                    document.getElementById('login-show-btn').style.display = 'block'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'none'; 
