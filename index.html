@@ -405,13 +405,7 @@
             .about-cta { justify-content: center; }
         }
 
-        /* ================= CRT THEME ================= */
-        /* ใช้ backdrop-filter บนแผ่นใสที่คลุมทั้งจอ: ไม่ไปยุ่งกับ position: fixed/sticky ของหน้า */
-        html.crt body::after { content: ""; pointer-events: none; position: fixed; inset: 0; z-index: 3500;
-            -webkit-backdrop-filter: grayscale(1) invert(1) sepia(1) hue-rotate(65deg) saturate(3.5) brightness(.95) contrast(1.05);
-            backdrop-filter: grayscale(1) invert(1) sepia(1) hue-rotate(65deg) saturate(3.5) brightness(.95) contrast(1.05);
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px); }
-        #theme-toggle, #term-toggle { font-family: 'VT323'; font-size: 1.2rem; padding: 4px 10px; background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); box-shadow: 2px 3px 0 var(--ibm-shadow); flex: none; }
+        #term-toggle { font-family: 'VT323'; font-size: 1.2rem; padding: 4px 10px; background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); box-shadow: 2px 3px 0 var(--ibm-shadow); flex: none; }
 
         /* ================= TERMINAL ================= */
         #term { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(640px, 94vw); background: #000; color: #33ff66; border: 3px solid #33ff66; box-shadow: 0 0 30px rgba(51,255,102,.35); font-family: 'VT323', monospace; font-size: 1.25rem; z-index: 4000; display: none; text-align: left; }
@@ -443,7 +437,7 @@
         .photo-thumbs button img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .photo-thumbs button.on { opacity: 1; border-color: var(--ibm-accent-blue); box-shadow: 0 0 0 2px var(--ibm-accent-blue); }
         .photo-thumbs button:hover { opacity: 1; }
-        #photo-lightbox { display: none; position: fixed; inset: 0; z-index: 3200; background: rgba(0,0,0,.94); align-items: center; justify-content: center; }
+        #photo-lightbox { display: none; position: fixed; inset: 0; z-index: 3300; background: rgba(0,0,0,.94); align-items: center; justify-content: center; }
         #photo-lightbox.open { display: flex; }
         #photo-lightbox img { max-width: 94vw; max-height: 86vh; object-fit: contain; border: 3px solid #fff; }
         .photo-lb-caption { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; color: #fff; padding: 0 60px; }
@@ -453,6 +447,41 @@
             .photo-thumbs button { width: 64px; height: 44px; }
         }
         @media (prefers-reduced-motion: reduce) { .photo-stage img.fg.on { animation: none; } .photo-stage img { transition: none; } }
+
+        /* ================= MEMORIES: album cards ================= */
+        .mem-admin { display: none; text-align: left; }
+        .edit-mode .mem-admin { display: block; }
+        .mem-admin a { color: var(--ibm-accent-blue); }
+        .mem-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 34px 28px; padding: 14px 10px 10px; }
+        .mem-card { position: relative; isolation: isolate; display: block; width: 100%; text-align: left; background: #fff; border: 3px solid var(--ibm-text); box-shadow: 6px 6px 0 var(--ibm-shadow); padding: 12px 12px 14px; transition: transform .18s ease; font: inherit; color: var(--ibm-text); }
+        .mem-card::before, .mem-card::after { content: ""; position: absolute; inset: -3px; z-index: -1; background: var(--ibm-key-light); border: 3px solid var(--ibm-text); transition: transform .25s ease; }
+        .mem-card::before { transform: rotate(-3deg); }
+        .mem-card::after { transform: rotate(2.2deg); background: var(--ibm-pearl); }
+        .mem-card:hover, .mem-card:focus-visible { transform: translateY(-5px); }
+        .mem-card:hover::before { transform: rotate(-6deg) translateX(-8px); }
+        .mem-card:hover::after { transform: rotate(5deg) translateX(8px); }
+        .mem-cover { position: relative; aspect-ratio: 4 / 3; background: #161616; border: 2px solid var(--ibm-text); overflow: hidden; }
+        .mem-cover img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(.4) contrast(1.05); transition: filter .25s, transform .4s; }
+        .mem-card:hover .mem-cover img { filter: none; transform: scale(1.04); }
+        .mem-stamp { position: absolute; right: 10px; bottom: 8px; font-family: 'VT323', monospace; font-size: 1.35rem; color: #ff9a2e; text-shadow: 0 0 6px rgba(255,120,0,.85); letter-spacing: 1px; }
+        .mem-title { font-family: 'VT323', monospace; font-size: 1.75rem; line-height: 1.05; text-transform: uppercase; margin: 12px 0 4px; color: var(--ibm-text); overflow-wrap: anywhere; }
+        .mem-desc { font-size: .95rem; line-height: 1.5; color: #525252; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 1.5em; }
+        .mem-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--ibm-key-dark); font-family: 'VT323'; font-size: 1.2rem; }
+        .mem-meta .open { color: var(--ibm-accent-blue); }
+        /* album viewer (ใน gallery modal) */
+        .album-head { color: #fff; text-align: left; margin-bottom: 18px; border-bottom: 2px dashed #6f6f6f; padding-bottom: 14px; }
+        .album-head h3 { font-family: 'VT323'; font-size: clamp(2rem, 6vw, 3rem); line-height: 1; text-transform: uppercase; }
+        .album-head .meta { font-family: 'VT323'; font-size: 1.25rem; color: #ff9a2e; margin: 4px 0 8px; }
+        .album-head p { color: #c6c6c6; line-height: 1.6; max-width: 760px; }
+        .album-masonry { columns: 3 240px; column-gap: 12px; }
+        .album-masonry button { display: block; width: 100%; margin: 0 0 12px; padding: 0; border: 3px solid #f4f4f4; background: #262626; break-inside: avoid; cursor: zoom-in; box-shadow: 4px 4px 0 #000; transition: transform .12s; }
+        .album-masonry button:hover { transform: translate(-2px, -2px); }
+        .album-masonry img { display: block; width: 100%; height: auto; }
+        @media screen and (max-width: 768px) {
+            .mem-grid { gap: 30px 18px; padding: 10px 6px; }
+            .album-masonry { columns: 2 140px; column-gap: 8px; }
+            .album-masonry button { margin-bottom: 8px; border-width: 2px; }
+        }
 
         /* ================= VISITOR COUNTER ================= */
         .visit-counter { display: inline-flex; align-items: center; gap: 6px; }
@@ -473,7 +502,6 @@
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">FILES</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">CONTACT</button>
-            <button id="theme-toggle" type="button" aria-pressed="false" title="สลับธีมจอ CRT">◐ CRT</button>
             <button id="sound-toggle" type="button" aria-pressed="true" title="เปิด/ปิดเสียง" aria-label="เปิดเสียง">🔇</button>
         </div>
     </nav>
@@ -534,25 +562,15 @@
                             <div class="photo-thumbs" id="photo-thumbs" aria-label="เลือกภาพ"></div>
                         </div>
 
-                        <!-- โซนความทรงจำ -->
-                        <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
+                        <!-- โซนความทรงจำ: อัลบั้มจาก Google Drive › PORTFOLIO › MEMORIES (1 โฟลเดอร์ย่อย = 1 อัลบั้ม) -->
+                        <div class="timeline-section" id="memories-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="memories-main-title" data-field="memories_main_title">DIRECTORY: \MEMORIES</h2>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content sound-trigger" onclick="openGallery(event, 'first_meet')">
-                                        <img src="images/cover.jpg" id="mem-img-1" alt="First Meet Cover">
-                                        <p class="editable" id="album-name-1" data-field="album_name_1">FIRST MEET CN25.DAT</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
-                                        <img loading="lazy" src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
-                                        <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES.SYS</p>
-                                    </div>
-                                </div>
+                            <p class="editable photo-sub" id="memories-sub" data-field="memories_sub">ช่วงเวลาดีๆ ที่อยากเก็บไว้</p>
+                            <div class="admin-hint mem-admin">
+                                [!] แอดมิน: เพิ่มอัลบั้ม = สร้างโฟลเดอร์ใหม่ใน Drive › PORTFOLIO › MEMORIES แล้วใส่รูป (ขึ้นเว็บภายใน 5 นาที) · ตั้งชื่อรูปขึ้นต้นด้วย <b>cover</b> เพื่อเลือกเป็นภาพปก · "คำอธิบาย" ของโฟลเดอร์ = คำบรรยายอัลบั้ม ·
+                                <a href="https://drive.google.com/drive/folders/1IzZHdCNDOyacPapFMGeWFGSZp1P6Poyq" target="_blank" rel="noopener">เปิดโฟลเดอร์ MEMORIES ↗</a>
                             </div>
+                            <div class="mem-grid" id="mem-grid"><p class="agenda-empty">> LOADING ALBUMS...</p></div>
                         </div>
                     </div>
                 </div>
@@ -679,17 +697,7 @@
     <!-- Gallery Modal -->
     <div class="gallery-modal" id="galleryModal">
         <button type="button" class="gallery-close sound-trigger" onclick="closeGallery()" aria-label="ปิดแกลเลอรี">×</button>
-        <div class="gallery-content">
-            <div id="album-first_meet" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img loading="lazy" src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
-                <div class="gallery-item"><img loading="lazy" src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
-                <div class="gallery-item"><img loading="lazy" src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
-            </div>
-            <div id="album-class_memories" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img loading="lazy" src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
-                <div class="gallery-item"><img loading="lazy" src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
-            </div>
-        </div>
+        <div class="gallery-content" id="album-view"></div>
     </div>
 
     <footer class="site-footer">
@@ -1252,7 +1260,60 @@
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
         // 6. ระบบ Gallery & Tab Navigation
-        window.openGallery = function(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('galleryModal').scrollTop = 0; }
+        // MEMORIES: การ์ดอัลบั้ม (จาก Drive) + หน้าต่างดูอัลบั้ม
+        function memDate(d) { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || '')); return m ? `'${m[1].slice(2)} ${m[2]} ${m[3]}` : ''; }
+        let memAlbums = [];
+        async function loadMemories() {
+            const grid = document.getElementById('mem-grid'); if (!grid) return;
+            try {
+                const r = await fetch(`${SERVER_URL}/memories`); if (!r.ok) throw new Error(r.status);
+                const list = await r.json();
+                memAlbums = Array.isArray(list) ? list.filter(a => a && /^[A-Za-z0-9_-]{10,128}$/.test(a.id)) : [];
+            } catch (e) { memAlbums = []; grid.innerHTML = '<p class="agenda-empty">> ERROR: โหลดอัลบั้มไม่สำเร็จ ลองรีเฟรชอีกครั้ง</p>'; return; }
+            grid.replaceChildren();
+            if (!memAlbums.length) { const p = document.createElement('p'); p.className = 'agenda-empty'; p.textContent = '> NO ALBUMS YET.'; grid.appendChild(p); return; }
+            memAlbums.forEach(al => {
+                const card = document.createElement('button'); card.type = 'button'; card.className = 'mem-card sound-trigger';
+                card.setAttribute('aria-label', `เปิดอัลบั้ม ${al.title}`);
+                card.innerHTML = '<div class="mem-cover"><img alt="" loading="lazy"><span class="mem-stamp"></span></div><h3 class="mem-title"></h3><p class="mem-desc"></p><div class="mem-meta"><span class="count"></span><span class="open">OPEN ▶</span></div>';
+                card.querySelector('img').src = photoUrl(al.cover, 800);
+                card.querySelector('.mem-stamp').textContent = memDate(al.date);
+                card.querySelector('.mem-title').textContent = al.title;
+                card.querySelector('.mem-desc').textContent = al.desc || '';
+                card.querySelector('.count').textContent = `📷 ${al.count} PHOTOS`;
+                card.addEventListener('mousedown', playRetroClick);
+                card.addEventListener('click', () => openAlbum(al));
+                grid.appendChild(card);
+            });
+        }
+        async function openAlbum(al) {
+            const view = document.getElementById('album-view');
+            view.replaceChildren();
+            const head = document.createElement('div'); head.className = 'album-head';
+            head.innerHTML = '<h3></h3><div class="meta"></div><p></p>';
+            head.querySelector('h3').textContent = al.title;
+            head.querySelector('.meta').textContent = `${memDate(al.date)}  ·  ${al.count} PHOTOS`;
+            head.querySelector('p').textContent = al.desc || '';
+            const grid = document.createElement('div'); grid.className = 'album-masonry';
+            grid.innerHTML = '<p class="agenda-empty" style="color:#c6c6c6">> LOADING...</p>';
+            view.append(head, grid);
+            document.getElementById('galleryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('galleryModal').scrollTop = 0;
+            try {
+                const r = await fetch(`${SERVER_URL}/memories/${encodeURIComponent(al.id)}`); if (!r.ok) throw new Error(r.status);
+                const photos = (await r.json()).filter(p => p && /^[A-Za-z0-9_-]{10,128}$/.test(p.id));
+                grid.replaceChildren();
+                photos.forEach((p, i) => {
+                    const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `ภาพที่ ${i + 1}`);
+                    const im = document.createElement('img'); im.loading = 'lazy'; im.alt = p.caption || '';
+                    if (p.w && p.h) { im.width = p.w; im.height = p.h; }
+                    im.src = photoUrl(p.id, 800);
+                    b.appendChild(im); b.addEventListener('click', () => lbOpen(photos, i));
+                    grid.appendChild(b);
+                });
+            } catch (e) { grid.innerHTML = '<p class="agenda-empty" style="color:#ff8389">> ERROR: โหลดรูปไม่สำเร็จ</p>'; }
+        }
         window.closeGallery = function() { document.getElementById('galleryModal').classList.remove('active'); document.body.style.overflow = ''; }
         // เปลี่ยนหน้า + จำไว้ใน URL (#about ฯลฯ) ให้ปุ่ม Back ใช้ได้และส่งลิงก์ตรงหน้าได้
         const TABS = ['home', 'schedule', 'archive', 'about', 'contact'];
@@ -1421,8 +1482,6 @@
             initMatrix();
 
             // ---- UX ----
-            document.getElementById('theme-toggle').addEventListener('click', () => setCrt(!document.documentElement.classList.contains('crt')));
-            document.getElementById('theme-toggle').setAttribute('aria-pressed', String(document.documentElement.classList.contains('crt')));
             document.getElementById('term-open-link').addEventListener('click', openTerm);
             document.addEventListener('keydown', (e) => {
                 const inTerm = document.activeElement && document.activeElement.id === 'term-in';
@@ -1442,6 +1501,7 @@
             renderSkills(false);
             loadVisitCount();
             initPhotos();
+            loadMemories();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
             const navEl = document.querySelector('.navbar');
             const syncNavH = () => document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
@@ -1475,7 +1535,8 @@
             // Esc ปิดหน้าต่างที่เปิดอยู่
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
-                closeGallery(); closePreview(); closeTerm(); photoLightbox(false);
+                if (document.getElementById('photo-lightbox').classList.contains('open')) { photoLightbox(false); return; }
+                closeGallery(); closePreview(); closeTerm();
                 ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
             });
 
@@ -1523,25 +1584,17 @@
             profileAnimated = true; renderSkills(true); animateStats();
         }
 
-        // 9b. ธีม CRT (จำค่าไว้)
-        function setCrt(on) {
-            document.documentElement.classList.toggle('crt', on);
-            const b = document.getElementById('theme-toggle'); if (b) b.setAttribute('aria-pressed', String(on));
-            try { localStorage.setItem('peem_crt', on ? '1' : '0'); } catch (e) {}
-        }
-        try { if (localStorage.getItem('peem_crt') === '1') document.documentElement.classList.add('crt'); } catch (e) {}
-
+        try { localStorage.removeItem('peem_crt'); } catch (e) {}
         // 9c. Terminal (easter egg)
         const TERM_TABS = { home: 'home', projects: 'projects', schedule: 'schedule', files: 'archive', archive: 'archive', about: 'about', contact: 'contact' };
         function termVisibleProjects() { return projectData.filter(p => { const l = safeUrl(p.url); return l && l !== 'https:///' && p.name !== 'NEW_PROJECT.EXE'; }); }
         const TERM_CMDS = {
-            help: () => 'คำสั่ง: help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · theme · sound · date · clear · exit',
+            help: () => 'คำสั่ง: help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · sound · date · clear · exit',
             whoami: () => 'PEEM — Computer Engineering student · builds web, games & IoT',
             projects: () => termVisibleProjects().map((p, i) => `[${i + 1}] ${String(p.name).padEnd(22)} ${safeUrl(p.url)}`).join('\n') || 'NO PROJECTS.',
             open: (a) => { const p = termVisibleProjects()[parseInt(a, 10) - 1]; if (!p) return 'usage: open <number>  (ดูเลขจาก "projects")'; window.open(safeUrl(p.url), '_blank', 'noopener'); return 'OPENING ' + p.name + ' ...'; },
             skills: () => skillLines().map(l => { const m = /^(.*?)[\s:]+(\d{1,3})\s*%?$/.exec(l); if (!m) return l; const v = Math.min(100, +m[2]); return `${m[1].trim().padEnd(14)} ${'█'.repeat(Math.round(v / 10))}${'░'.repeat(10 - Math.round(v / 10))} ${v}%`; }).join('\n'),
             goto: (a) => { const t = TERM_TABS[String(a || '').toLowerCase()]; if (!t) return 'usage: goto <home|projects|schedule|files|about|contact>'; if (t === 'projects') goProjects(null); else switchTab(null, t); return 'CD ' + t.toUpperCase(); },
-            theme: () => { setCrt(!document.documentElement.classList.contains('crt')); return 'THEME SWITCHED.'; },
             sound: () => { document.getElementById('sound-toggle').click(); return soundMuted ? 'SOUND OFF.' : 'SOUND ON.'; },
             date: () => new Date().toString(),
             clear: () => { document.getElementById('term-out').textContent = ''; return null; },
@@ -1583,7 +1636,6 @@
             document.getElementById('photo-count').textContent = `${String(st.i + 1).padStart(2, '0')}/${String(n).padStart(2, '0')}`;
             document.querySelectorAll('#photo-thumbs button').forEach((b, k) => { b.classList.toggle('on', k === st.i); if (k === st.i && user) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
             const nx = new Image(); nx.src = photoUrl(st.list[(st.i + 1) % n].id, 1600); // โหลดภาพถัดไปรอไว้
-            if (document.getElementById('photo-lightbox').classList.contains('open')) photoLightbox(true);
             st.started = performance.now();
         }
         function photoTick() {
@@ -1594,13 +1646,21 @@
             bar.dataset.p = p; bar.style.width = (p * 100) + '%';
             if (p >= 1) { bar.dataset.p = 0; photoShow(st.i + 1); }
         }
+        // ดูภาพเต็มจอ (ใช้ร่วมกันทั้งโชว์ภาพถ่ายและอัลบั้ม MEMORIES)
+        const lbState = { list: [], i: 0 };
+        function lbRender() {
+            const p = lbState.list[lbState.i]; if (!p) return;
+            const img = document.getElementById('photo-lightbox-img');
+            img.src = photoUrl(p.id, 2000); img.alt = p.caption || '';
+            const n = lbState.list.length;
+            document.getElementById('photo-lb-caption').textContent = (p.caption ? p.caption + '  ·  ' : '') + `${lbState.i + 1} / ${n}`;
+            if (n > 1) { const nx = new Image(); nx.src = photoUrl(lbState.list[(lbState.i + 1) % n].id, 2000); }
+        }
+        function lbOpen(list, i) { lbState.list = list; lbState.i = i; lbRender(); document.getElementById('photo-lightbox').classList.add('open'); }
+        function lbStep(d) { const n = lbState.list.length; if (!n) return; lbState.i = (lbState.i + d + n) % n; lbRender(); }
         function photoLightbox(open) {
-            const lb = document.getElementById('photo-lightbox'), p = photoState.list[photoState.i];
-            if (!open || !p) { lb.classList.remove('open'); return; }
-            document.getElementById('photo-lightbox-img').src = photoUrl(p.id, 2000);
-            document.getElementById('photo-lightbox-img').alt = p.caption || '';
-            document.getElementById('photo-lb-caption').textContent = p.caption || '';
-            lb.classList.add('open');
+            if (!open) { document.getElementById('photo-lightbox').classList.remove('open'); return; }
+            if (photoState.list.length) lbOpen(photoState.list, photoState.i);
         }
         async function loadPhotos() {
             const sec = document.getElementById('photo-section');
@@ -1633,14 +1693,18 @@
             show.addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 40) photoShow(photoState.i + (dx < 0 ? 1 : -1), true); });
             new IntersectionObserver(es => es.forEach(en => photoState.visible = en.isIntersecting), { threshold: 0.2 }).observe(show);
             document.getElementById('photo-lb-close').addEventListener('click', () => photoLightbox(false));
-            document.getElementById('photo-lb-prev').addEventListener('click', () => photoShow(photoState.i - 1, true));
-            document.getElementById('photo-lb-next').addEventListener('click', () => photoShow(photoState.i + 1, true));
+            document.getElementById('photo-lb-prev').addEventListener('click', () => lbStep(-1));
+            document.getElementById('photo-lb-next').addEventListener('click', () => lbStep(1));
             document.getElementById('photo-lightbox').addEventListener('click', (e) => { if (e.target.id === 'photo-lightbox') photoLightbox(false); });
             document.addEventListener('keydown', (e) => {
                 if (!document.getElementById('photo-lightbox').classList.contains('open')) return;
-                if (e.key === 'ArrowLeft') photoShow(photoState.i - 1, true);
-                if (e.key === 'ArrowRight') photoShow(photoState.i + 1, true);
+                if (e.key === 'ArrowLeft') lbStep(-1);
+                if (e.key === 'ArrowRight') lbStep(1);
             });
+            // ปัดซ้าย-ขวาในโหมดเต็มจอ
+            let lx = null; const lbEl = document.getElementById('photo-lightbox');
+            lbEl.addEventListener('touchstart', (e) => { lx = e.touches[0].clientX; }, { passive: true });
+            lbEl.addEventListener('touchend', (e) => { if (lx === null) return; const dx = e.changedTouches[0].clientX - lx; lx = null; if (Math.abs(dx) > 40) lbStep(dx < 0 ? 1 : -1); });
             setInterval(photoTick, 100);
             loadPhotos();
         }
