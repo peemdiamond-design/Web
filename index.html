@@ -847,9 +847,9 @@
                             </div>
                             <div class="skill-bars" id="skill-bars" aria-label="ทักษะ"></div>
                             <div class="about-cta">
-                                <button type="button" class="action-btn sound-trigger" onclick="goProjects(event)">▶ ดูผลงาน</button>
+                                <button type="button" class="action-btn sound-trigger" onclick="goProjects(event)" data-i18n="cta_projects">▶ ดูผลงาน</button>
                                 <a class="action-btn alt sound-trigger" href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
-                                <button type="button" class="action-btn alt sound-trigger" onclick="switchTab(event, 'contact')">✉ ติดต่อ</button>
+                                <button type="button" class="action-btn alt sound-trigger" onclick="switchTab(event, 'contact')" data-i18n="cta_contact">✉ ติดต่อ</button>
                                 <a class="action-btn alt sound-trigger" id="resume-btn" href="#" target="_blank" rel="noopener" hidden>⬇ RESUME</a>
                             </div>
                             <div class="admin-hint list-admin">[!] แอดมิน: ลิงก์ไฟล์ Resume (PDF บน Drive ที่แชร์แบบทุกคนที่มีลิงก์) · ปล่อยว่าง = ซ่อนปุ่ม
@@ -881,8 +881,8 @@
                 </div>
                 <div class="window-body" style="background: var(--ibm-pearl);">
                     <h1 class="editable" id="contact-title" data-field="contact_title">NETWORK PING</h1>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">EMAIL // อีเมล:<br> <span class="editable contact-link" id="contact-email" data-field="contact_email" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">TEL // โทรศัพท์:<br> <span class="editable contact-link" id="contact-tel" data-field="contact_tel" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;"><span data-i18n="lbl_email">EMAIL // อีเมล:</span><br> <span class="editable contact-link" id="contact-email" data-field="contact_email" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;"><span data-i18n="lbl_tel">TEL // โทรศัพท์:</span><br> <span class="editable contact-link" id="contact-tel" data-field="contact_tel" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
                     <div class="admin-hint list-admin" style="max-width:640px">[!] แอดมิน: ลิงก์ LINE (เช่น https://line.me/ti/p/~ไอดี หรือลิงก์ LINE OA) → ปุ่ม LINE ลอยมุมจอ · ปล่อยว่าง = ซ่อน
                         <div class="editable" id="line-url" data-field="line_url" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
                                 <input type="url" class="fe-url" data-src="line-url" placeholder="วางลิงก์ LINE เช่น https://line.me/ti/p/~yourid"><span class="fe-url-ok" data-for="line-url"></span>
@@ -1509,7 +1509,7 @@
         }
 
         // มุมมองแบบรายการสำหรับมือถือ: งานของเดือนที่เลือก เรียงตามวัน
-        const TH_DOW = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+        const TH_DOW = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'], EN_DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         function renderAgenda() {
             const box = document.getElementById('calendar-agenda');
             if (!box) return;
@@ -1528,10 +1528,10 @@
                 row.className = 'agenda-item' + (ev.date < todayStr ? ' past' : '') + (ev.completed ? ' done' : '');
                 const date = document.createElement('div'); date.className = 'agenda-date';
                 const day = document.createElement('b'); day.textContent = d.getDate();
-                const dow = document.createElement('span'); dow.textContent = TH_DOW[d.getDay()];
+                const dow = document.createElement('span'); dow.textContent = (lang === 'en' ? EN_DOW : TH_DOW)[d.getDay()];
                 date.append(day, dow);
                 const title = document.createElement('div'); title.className = 'agenda-title';
-                title.textContent = decodeEntities(ev.title) + (ev.date === todayStr ? '  ← วันนี้' : '');
+                title.textContent = decodeEntities(ev.title) + (ev.date === todayStr ? '  ' + t('today') : '');
                 if (document.body.classList.contains('edit-mode')) { title.style.cursor = 'pointer'; title.onclick = () => toggleQuest(i); }
                 row.append(date, title);
                 box.appendChild(row);
@@ -1908,7 +1908,7 @@
         const TERM_TABS = { home: 'home', projects: 'projects', schedule: 'schedule', files: 'archive', archive: 'archive', about: 'about', contact: 'contact' };
         function termVisibleProjects() { return projectData.filter(p => { const l = safeUrl(p.url); return l && l !== 'https:///' && p.name !== 'NEW_PROJECT.EXE'; }); }
         const TERM_CMDS = {
-            help: () => 'คำสั่ง: help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · sound · date · clear · exit',
+            help: () => (lang === 'en' ? 'Commands' : 'คำสั่ง') + ': help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · sound · date · clear · exit',
             whoami: () => 'PEEM — Computer Engineering student · builds web, games & IoT',
             projects: () => termVisibleProjects().map((p, i) => `[${i + 1}] ${String(p.name).padEnd(22)} ${safeUrl(p.url)}`).join('\n') || 'NO PROJECTS.',
             open: (a) => { const p = termVisibleProjects()[parseInt(a, 10) - 1]; if (!p) return 'usage: open <number>  (ดูเลขจาก "projects")'; window.open(safeUrl(p.url), '_blank', 'noopener'); return 'OPENING ' + p.name + ' ...'; },
@@ -2439,7 +2439,7 @@
             th: { pkg_hot: 'แนะนำ', pkg_ask: 'สอบถามราคา', pkg_book: '▶ จองแพ็กเกจนี้', type_other: 'อื่นๆ / สอบถาม',
                   f_required: 'กรุณากรอกชื่อและช่องทางติดต่อ', f_sending: 'กำลังส่ง...', f_ok: '✓ ส่งแล้ว! เดี๋ยวติดต่อกลับเร็วๆ นี้นะครับ', f_err: 'ส่งไม่สำเร็จ',
                   client_empty: '> ยังไม่มีรูปในอัลบั้มนี้', cat_all: 'ทั้งหมด',
-                  rev_required: 'กรุณาให้ดาว กรอกชื่อ และเขียนรีวิวอย่างน้อย 5 ตัวอักษร', rev_ok: '✓ ขอบคุณครับ! รีวิวจะขึ้นหลังจากตรวจสอบ', rev_job_other: '✎ อื่นๆ' },
+                  rev_required: 'กรุณาให้ดาว กรอกชื่อ และเขียนรีวิวอย่างน้อย 5 ตัวอักษร', rev_ok: '✓ ขอบคุณครับ! รีวิวจะขึ้นหลังจากตรวจสอบ', rev_job_other: '✎ อื่นๆ', today: '← วันนี้' },
             en: { nav_home: 'HOME', nav_projects: 'PROJECTS', nav_schedule: 'SCHEDULE', nav_files: 'FILES', nav_about: 'ABOUT', nav_contact: 'CONTACT',
                   book_title: '📅 Book a Shoot / Inquiry', book_note: 'Send your details and I will reply within 24 hours.',
                   f_name: 'Name *', f_contact: 'LINE ID / Phone / Email *', f_type: 'Type of work', f_date: 'Preferred date', f_msg: 'Details', f_msg_ph: 'Location, number of people, preferred style…', f_send: '▶ Send',
@@ -2449,7 +2449,7 @@
                   f_required: 'Please enter your name and contact.', f_sending: 'Sending…', f_ok: '✓ Sent! I will get back to you soon.', f_err: 'Could not send',
                   client_empty: '> No photos in this album yet.', cat_all: 'ALL',
                   rev_empty: '> No reviews yet. Be the first!', rev_write: '✍ Write a review', rev_form_title: '⭐ Review my work', rev_form_note: 'Your review will appear after a quick check. Thank you!',
-                  rev_f_name: 'Display name *', rev_f_job: 'Type of shoot (pick one)', rev_f_job_ph: 'Type it, e.g. Product shoot', rev_job_other: '✎ Other', rev_f_text: 'Review *', rev_f_text_ph: 'What did you like? Anything to tell future clients?', rev_send: '▶ Send review',
+                  rev_f_name: 'Display name *', rev_f_job: 'Type of shoot (pick one)', rev_f_job_ph: 'Type it, e.g. Product shoot', rev_job_other: '✎ Other', today: '← today', cta_projects: '▶ See my work', cta_contact: '✉ Contact', lbl_email: 'EMAIL:', lbl_tel: 'TEL:', rev_f_text: 'Review *', rev_f_text_ph: 'What did you like? Anything to tell future clients?', rev_send: '▶ Send review',
                   rev_required: 'Please pick stars, enter your name and write at least 5 characters.', rev_ok: '✓ Thank you! Your review will appear after a quick check.', client_review: '⭐ Review this shoot' },
         };
         let lang = 'th';
@@ -2460,7 +2460,7 @@
             document.querySelectorAll('[data-i18n]').forEach(n => { if (!n.dataset.th) n.dataset.th = n.textContent; n.textContent = lang === 'en' && I18N.en[n.dataset.i18n] ? I18N.en[n.dataset.i18n] : n.dataset.th; });
             document.querySelectorAll('[data-i18n-ph]').forEach(n => { if (!n.dataset.thPh) n.dataset.thPh = n.placeholder; n.placeholder = lang === 'en' && I18N.en[n.dataset.i18nPh] ? I18N.en[n.dataset.i18nPh] : n.dataset.thPh; });
             const b = document.getElementById('lang-toggle'); b.textContent = lang === 'en' ? 'TH' : 'EN'; b.setAttribute('aria-label', lang === 'en' ? 'เปลี่ยนเป็นภาษาไทย' : 'Switch to English');
-            renderEditableLists(); renderPhotoCats();
+            renderEditableLists(); renderPhotoCats(); if (typeof renderAgenda === 'function') renderAgenda();
         }
 
         // ================= 16. หมวดภาพในส่วนโชว์ภาพ =================
