@@ -30,8 +30,8 @@
             --bg-color: #c6c6c6;        
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn, .folder-item, .file-link, .dos-col-name, .dos-col-date, .dos-col-size, .grid-item { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='24' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h2v2h2v2h2v2h2v2h2v2h2v2h2v2h-6v2h2v2h2v4h-2v2h-2v-2h-2v-4h-2v-2h-2v2h-2v2h-2z' fill='%23161616'/%3E%3Cpath d='M2 4h2v2h2v2h2v2h2v2h2v2h-4v2h2v2h2v2h-2v-2h-2v-4h-2v-2h-2v2h-2z' fill='%23fff'/%3E%3C/svg%3E") 0 0, auto !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn, .folder-item, .file-link, .dos-col-name, .dos-col-date, .dos-col-size, .grid-item { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='22' shape-rendering='crispEdges'%3E%3Cpath d='M6 0h4v8h8v2h2v10h-2v2h-12v-2h-2v-4h-2v-2h-2v-4h4v-4h2z' fill='%23161616'/%3E%3Cpath d='M8 2v8h2v-2h2v2h2v-0h2v2h2v8h-10v-2h-2v-4h-2v-2h2v2h2v-12z' fill='%23fff'/%3E%3C/svg%3E") 6 0, pointer !important; }
 
         html { overscroll-behavior: none; }
         body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; overscroll-behavior: none; position: relative; max-width: 100vw; }
@@ -248,6 +248,61 @@
         /* ================= In-App Preview Modal ================= */
         #preview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
         .preview-container { width: 95%; max-width: 1000px; height: 90vh; background: var(--ibm-pearl); border: 4px solid var(--ibm-text); display: flex; flex-direction: column; box-shadow: 10px 10px 0 #000; }
+
+        /* ================= UX additions ================= */
+        /* แกลเลอรี (เดิมไม่มี CSS ทำให้รูปไปโผล่ท้ายหน้า และมี × ค้าง) */
+        .gallery-modal { display: none; position: fixed; inset: 0; background: rgba(22,22,22,0.92); z-index: 2000; overflow-y: auto; padding: 70px 20px 40px; overscroll-behavior: contain; }
+        .gallery-modal.active { display: block; }
+        .gallery-close { position: fixed; top: 12px; right: 18px; font-family: 'VT323'; font-size: 2.6rem; line-height: 1; color: #fff; background: #da1e28; border: 2px solid #fff; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 3px 3px 0 #000; z-index: 2001; }
+        .gallery-content { max-width: 1000px; margin: 0 auto; }
+        .album-images-container { flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; }
+        .gallery-item { flex: 1 1 300px; max-width: 460px; background: var(--ibm-key-light); border: 3px solid var(--ibm-text); box-shadow: 6px 6px 0 #000; padding: 10px; }
+        .gallery-item img { width: 100%; height: auto; display: block; border: 2px solid var(--ibm-text); margin-bottom: 8px; }
+        .gallery-item p { font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-text); }
+
+        /* ปุ่มแอดมิน: แสดงเฉพาะตอนล็อกอิน (เปิดล็อกอินจาก footer แทน) */
+        #admin-panel { display: none; }
+        #admin-panel.show { display: flex; }
+
+        /* หน้าแรก: บอกว่าเว็บนี้ของใคร + ปุ่มไปต่อ */
+        .hero-tagline { font-size: 1.25rem; color: var(--ibm-text); margin-top: 4px; text-align: center; }
+        .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+        .hero-cta .action-btn { font-size: 1.4rem; padding: 8px 18px; }
+        .hero-cta .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
+
+        /* ปุ่มปิดเสียง */
+        #sound-toggle { background: var(--ibm-key-light); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.1rem; padding: 6px 10px; box-shadow: 2px 4px 0 var(--ibm-shadow); }
+        #sound-toggle[aria-pressed="true"] { background: var(--ibm-key-dark); }
+
+        /* ติดต่อ: กดได้ */
+        .contact-link { cursor: pointer; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; }
+        .edit-mode .contact-link { text-decoration: none; }
+
+        /* ปฏิทินแบบรายการ (มือถือ) */
+        .cal-view-toggle { display: none; margin: 0 0 12px auto; }
+        .agenda { display: none; width: 100%; text-align: left; border: 2px solid var(--ibm-text); background: #fff; }
+        .agenda-item { display: flex; gap: 12px; padding: 10px 12px; border-bottom: 1px dashed var(--ibm-key-dark); align-items: flex-start; }
+        .agenda-item:last-child { border-bottom: none; }
+        .agenda-date { flex: none; width: 64px; text-align: center; background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; line-height: 1; padding: 6px 0; border: 2px solid var(--ibm-text); }
+        .agenda-date b { display: block; font-size: 1.8rem; }
+        .agenda-date span { font-size: 1rem; }
+        .agenda-item.past .agenda-date { background: var(--ibm-key-dark); }
+        .agenda-item.done .agenda-title { text-decoration: line-through; color: #8d8d8d; }
+        .agenda-title { font-size: 1.05rem; line-height: 1.4; word-break: break-word; padding-top: 4px; }
+        .agenda-empty { padding: 16px; font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-shadow); }
+        @media screen and (max-width: 768px) {
+            .cal-view-toggle { display: inline-flex; }
+            #sound-toggle { position: absolute; top: 18px; right: 15px; }
+            .album-images-container { gap: 14px; }
+            body:not(.cal-grid-mode) #schedule .calendar-wrapper { display: none; }
+            body:not(.cal-grid-mode) #schedule .agenda { display: block; }
+        }
+
+        /* Footer */
+        .site-footer { max-width: 1000px; margin: 0 auto 30px; padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; align-items: center; font-family: 'VT323'; font-size: 1.2rem; color: #525252; border-top: 2px dashed var(--ibm-key-dark); }
+        .site-footer a, .site-footer button { color: var(--ibm-text); background: none; border: none; font-family: 'VT323'; font-size: 1.2rem; text-decoration: underline; padding: 0; }
+        .site-footer nav { display: flex; gap: 16px; }
+        :focus-visible { outline: 3px solid var(--ibm-accent-blue); outline-offset: 2px; }
     </style>
 </head>
 <body>
@@ -263,6 +318,7 @@
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">DATABASE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">PROFILE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">NETWORK</button>
+            <button id="sound-toggle" type="button" aria-pressed="false" title="เปิด/ปิดเสียง" aria-label="ปิดเสียง">🔊</button>
         </div>
     </nav>
 
@@ -281,6 +337,11 @@
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
                             <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: clamp(2.2rem, 9vw, 4.5rem); text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
+                            <p class="hero-tagline editable" id="hero-tagline" data-field="hero_tagline">สวัสดี! เราชื่อภีม — นักศึกษาวิศวกรรมคอมพิวเตอร์ ที่ชอบสร้างเว็บ เกม และระบบ IoT</p>
+                            <div class="hero-cta">
+                                <a href="#projects" class="action-btn sound-trigger" onclick="event.preventDefault(); document.getElementById('dynamic-project-container').scrollIntoView({behavior:'smooth', block:'start'});">▶ ดูผลงาน</a>
+                                <a href="#contact" class="action-btn alt sound-trigger">✉ ติดต่อ</a>
+                            </div>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
@@ -333,7 +394,9 @@
                         <h2 id="month-year-label">MONTH YEAR</h2>
                         <button class="sound-trigger" onclick="changeMonth(1)">&#9654;</button>
                     </div>
+                    <button id="cal-view-toggle" class="btn-sync sound-trigger cal-view-toggle" type="button" style="padding:6px 12px;">[ VIEW: GRID ]</button>
                     <div class="calendar-wrapper"><div id="calendar-grid" class="calendar-grid"></div></div>
+                    <div id="calendar-agenda" class="agenda" aria-live="polite"></div>
                 </div>
             </div>
         </main>
@@ -409,8 +472,8 @@
                 </div>
                 <div class="window-body" style="background: var(--ibm-pearl);">
                     <h1 class="editable" id="contact-title" data-field="contact_title">NETWORK PING</h1>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">IP Address / Email: <br><span class="editable" id="contact-email" data-field="contact_email" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">Comlink / Tel: <br><span class="editable" id="contact-tel" data-field="contact_tel" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">EMAIL // อีเมล:<br> <span class="editable contact-link" id="contact-email" data-field="contact_email" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">TEL // โทรศัพท์:<br> <span class="editable contact-link" id="contact-tel" data-field="contact_tel" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
                     <div class="social-container">
                         <a href="https://www.facebook.com/peem.pongpetch" target="_blank" class="btn-social sound-trigger">FACEBOOK</a>
                         <a href="https://www.instagram.com/peem_pongpetch?igsh=MTVjZjVmNzVibXQ0NA==" target="_blank" class="btn-social sound-trigger">INSTAGRAM</a>
@@ -423,7 +486,7 @@
 
     <!-- Gallery Modal -->
     <div class="gallery-modal" id="galleryModal">
-        <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
+        <button type="button" class="gallery-close sound-trigger" onclick="closeGallery()" aria-label="ปิดแกลเลอรี">×</button>
         <div class="gallery-content">
             <div id="album-first_meet" class="album-images-container" style="display: none;">
                 <div class="gallery-item"><img loading="lazy" src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
@@ -436,6 +499,15 @@
             </div>
         </div>
     </div>
+
+    <footer class="site-footer">
+        <span>© 2026 PEEMCN25 · 101 STUDIO</span>
+        <nav>
+            <a href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
+            <a href="#contact">CONTACT</a>
+            <button type="button" id="footer-root-btn" title="สำหรับผู้ดูแลเว็บ">[ ROOT ]</button>
+        </nav>
+    </footer>
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
@@ -557,6 +629,9 @@
                 return node;
             };
             projectData.forEach((proj, index) => {
+                // ซ่อนโปรเจกต์ที่ยังไม่ได้กรอก (NEW_PROJECT.EXE + ลิงก์ว่าง) จากผู้เข้าชม — แอดมินยังเห็นเพื่อแก้ไข
+                const isPlaceholder = !safeUrl(proj.url) || safeUrl(proj.url) === 'https:///' || proj.name === 'NEW_PROJECT.EXE';
+                if (isPlaceholder && !isEdit) return;
                 const el = document.createElement('div'); el.className = 'project-item';
 
                 const header = document.createElement('div'); header.className = 'project-header';
@@ -854,6 +929,37 @@
                 });
                 cell.appendChild(eventsContainer); cell.onclick = () => { if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr); }; grid.appendChild(cell);
             }
+            renderAgenda();
+        }
+
+        // มุมมองแบบรายการสำหรับมือถือ: งานของเดือนที่เลือก เรียงตามวัน
+        const TH_DOW = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+        function renderAgenda() {
+            const box = document.getElementById('calendar-agenda');
+            if (!box) return;
+            const prefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-`;
+            const todayStr = new Date().toLocaleDateString('en-CA');
+            const items = scheduleData.map((ev, i) => ({ ev, i })).filter(x => String(x.ev.date).startsWith(prefix))
+                .sort((a, b) => a.ev.date.localeCompare(b.ev.date));
+            box.replaceChildren();
+            if (!items.length) {
+                const empty = document.createElement('div'); empty.className = 'agenda-empty'; empty.textContent = '> NO TASKS THIS MONTH.';
+                box.appendChild(empty); return;
+            }
+            items.forEach(({ ev, i }) => {
+                const d = new Date(ev.date + 'T00:00:00');
+                const row = document.createElement('div');
+                row.className = 'agenda-item' + (ev.date < todayStr ? ' past' : '') + (ev.completed ? ' done' : '');
+                const date = document.createElement('div'); date.className = 'agenda-date';
+                const day = document.createElement('b'); day.textContent = d.getDate();
+                const dow = document.createElement('span'); dow.textContent = TH_DOW[d.getDay()];
+                date.append(day, dow);
+                const title = document.createElement('div'); title.className = 'agenda-title';
+                title.textContent = decodeEntities(ev.title) + (ev.date === todayStr ? '  ← วันนี้' : '');
+                if (document.body.classList.contains('edit-mode')) { title.style.cursor = 'pointer'; title.onclick = () => toggleQuest(i); }
+                row.append(date, title);
+                box.appendChild(row);
+            });
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
@@ -861,16 +967,40 @@
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
         // 6. ระบบ Gallery & Tab Navigation
-        window.openGallery = function(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; }
-        window.closeGallery = function() { document.getElementById('galleryModal').classList.remove('active'); }
-        window.switchTab = function(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
+        window.openGallery = function(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('galleryModal').scrollTop = 0; }
+        window.closeGallery = function() { document.getElementById('galleryModal').classList.remove('active'); document.body.style.overflow = ''; }
+        // เปลี่ยนหน้า + จำไว้ใน URL (#about ฯลฯ) ให้ปุ่ม Back ใช้ได้และส่งลิงก์ตรงหน้าได้
+        const TABS = ['home', 'schedule', 'archive', 'about', 'contact'];
+        function showTab(tabId) {
+            if (!TABS.includes(tabId)) tabId = 'home';
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', (b.getAttribute('onclick') || '').includes(`'${tabId}'`)));
+            document.getElementById(tabId).classList.add('active');
+            window.scrollTo(0, 0);
+            // หน้า DATABASE: เปิดโฟลเดอร์แรกให้อัตโนมัติ แทนหน้าว่าง
+            if (tabId === 'archive' && folderHistory.length === 0) {
+                const first = document.querySelector('.archive-sidebar .folder-btn');
+                if (first) first.click();
+            }
+        }
+        window.switchTab = function(e, tabId) {
+            if (('#' + tabId) !== location.hash) {
+                history.pushState(null, '', tabId === 'home' ? location.pathname + location.search : '#' + tabId);
+            }
+            showTab(tabId);
+        }
+        window.addEventListener('popstate', () => showTab(location.hash.slice(1)));
+        window.addEventListener('hashchange', () => showTab(location.hash.slice(1)));
 
         // 7. ระบบเสียง (Audio System)
         let audioCtx = null;
-        window.playRetroClick = function() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
-        window.playLevelUpSound = function() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
+        let soundMuted = false;
+        try { soundMuted = localStorage.getItem('peem_muted') === '1'; } catch (e) {}
+        window.playRetroClick = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
+        window.playLevelUpSound = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
 
         function playKeystrokeSound() { 
+            if (soundMuted) return;
             if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
             if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
@@ -997,6 +1127,47 @@
             }
             
             initMatrix();
+
+            // ---- UX ----
+            const soundBtn = document.getElementById('sound-toggle');
+            const syncSoundBtn = () => { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.setAttribute('aria-pressed', String(soundMuted)); soundBtn.setAttribute('aria-label', soundMuted ? 'เปิดเสียง' : 'ปิดเสียง'); };
+            syncSoundBtn();
+            soundBtn.addEventListener('click', () => { soundMuted = !soundMuted; try { localStorage.setItem('peem_muted', soundMuted ? '1' : '0'); } catch (e) {} syncSoundBtn(); });
+
+            // อีเมล/เบอร์โทร กดแล้วเปิดแอปอีเมล/โทรออกได้ (ยกเว้นตอนแอดมินกำลังแก้)
+            const contactAction = (el, makeHref) => {
+                const go = () => { if (document.body.classList.contains('edit-mode')) return; const v = el.innerText.trim(); if (v) location.href = makeHref(v); };
+                el.addEventListener('click', go);
+                el.addEventListener('keydown', e => { if (e.key === 'Enter' && !document.body.classList.contains('edit-mode')) go(); });
+            };
+            contactAction(document.getElementById('contact-email'), v => 'mailto:' + encodeURIComponent(v).replace('%40', '@'));
+            contactAction(document.getElementById('contact-tel'), v => 'tel:' + v.replace(/[^\d+]/g, ''));
+
+            // ปฏิทิน: สลับ รายการ/ตาราง บนมือถือ
+            document.getElementById('cal-view-toggle').addEventListener('click', (e) => {
+                const grid = document.body.classList.toggle('cal-grid-mode');
+                e.currentTarget.textContent = grid ? '[ VIEW: LIST ]' : '[ VIEW: GRID ]';
+            });
+
+            // แกลเลอรี: คลิกพื้นหลังเพื่อปิด
+            document.getElementById('galleryModal').addEventListener('click', (e) => { if (e.target.id === 'galleryModal') closeGallery(); });
+
+            // Esc ปิดหน้าต่างที่เปิดอยู่
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                closeGallery(); closePreview();
+                ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+            });
+
+            // ล็อกอินแอดมินจาก footer
+            document.getElementById('footer-root-btn').addEventListener('click', () => {
+                document.getElementById('login-modal').style.display = 'flex';
+                document.getElementById('email').focus();
+            });
+
+            // เปิดหน้าตาม URL (#about ฯลฯ)
+            // รอให้ Firebase ตั้งค่าเสร็จก่อน (ตั้งใน DOMContentLoaded ตัวถัดไป)
+            if (location.hash) setTimeout(() => showTab(location.hash.slice(1)), 0);
         });
 
         // 10. Matrix Background 
@@ -1052,6 +1223,7 @@
             auth.onAuthStateChanged((user) => {
                 if (user) { 
                     // ถ้าล็อกอินสำเร็จ ซ่อนปุ่ม Login โชว์ปุ่ม Logout
+                    document.getElementById('admin-panel').classList.add('show');
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
@@ -1070,12 +1242,13 @@
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     }
-                    renderProjects(); 
+                    renderProjects(); renderAgenda();
 
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
-                    document.getElementById('login-show-btn').style.display = 'block'; 
+                    document.getElementById('admin-panel').classList.remove('show');
+                    document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'none'; 
