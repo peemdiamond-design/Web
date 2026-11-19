@@ -84,7 +84,7 @@
                 const tier = AWARD_TIERS[a.tier] ? a.tier : 'gold';
                 const b = document.createElement('button'); b.type = 'button';
                 b.className = 'medal medal-' + tier;
-                b.textContent = AWARD_TIERS[tier].mark;
+                b.innerHTML = '<i><b></b></i>'; b.querySelector('b').textContent = AWARD_TIERS[tier].mark;
                 b.title = `${a.title || AWARD_TIERS[tier].label}${a.from ? ' · ' + a.from : ''}`;
                 b.setAttribute('aria-label', `รางวัล: ${b.title} (กดเพื่อดูรายละเอียด)`);
                 b.addEventListener('click', (e) => { e.stopPropagation(); openAward(proj, a); });
@@ -96,7 +96,7 @@
         function openAward(proj, a) {
             const tier = AWARD_TIERS[a.tier] ? a.tier : 'gold';
             const m = document.getElementById('award-modal');
-            const medal = m.querySelector('.award-medal'); medal.className = 'award-medal medal medal-' + tier; medal.textContent = AWARD_TIERS[tier].mark;
+            const medal = m.querySelector('.award-medal'); medal.className = 'award-medal medal medal-' + tier; medal.innerHTML = '<i><b></b></i>'; medal.querySelector('b').textContent = AWARD_TIERS[tier].mark;
             m.querySelector('.award-tier').textContent = AWARD_TIERS[tier].label;
             m.querySelector('.award-title').textContent = a.title || AWARD_TIERS[tier].label;
             m.querySelector('.award-project').textContent = proj.name || '';
@@ -839,6 +839,7 @@
             if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
             initClient();
             initUrlInputs();
+            document.getElementById('hero-busy-toggle').addEventListener('change', (e) => { document.getElementById('hero-busy').textContent = e.target.checked ? '1' : ''; renderHeroBusy(); });
             document.getElementById('rev-add').addEventListener('click', () => { if (!revEditList) revEditList = revParse(); revEditList.push({ who: '', stars: 5, text: '', job: '' }); renderReviewEditor(); const rows = document.querySelectorAll('.rev-row'); rows[rows.length - 1]?.querySelector('input')?.focus(); });
             applyLang();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
@@ -1171,7 +1172,12 @@
             const cv = safeUrl(srcText('resume-url').trim()), rb = document.getElementById('resume-btn');
             rb.hidden = !cv || cv === 'https:///'; if (!rb.hidden) rb.href = cv;
         }
-        function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); renderAdminEditors(); }
+        function renderHeroBusy() {
+            const busy = srcText('hero-busy').trim() === '1';
+            document.body.classList.toggle('hero-busy', busy);
+            const cb = document.getElementById('hero-busy-toggle'); if (cb) cb.checked = busy;
+        }
+        function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); renderAdminEditors(); renderHeroBusy(); }
 
         // ================= 12a. ตัวแก้แบบเป็นช่องๆ สำหรับแอดมิน (เขียนกลับเป็นข้อความรูปแบบเดิม → ปุ่ม SAVE CONFIG ใช้ได้เหมือนเดิม) =================
         function writeSrc(id, text) {

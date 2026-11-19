@@ -38,7 +38,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="assets/css/site.css?v=4">
+    <link rel="stylesheet" href="assets/css/site.css?v=5">
 </head>
 <body>
     <a class="skip-link" href="#home">ข้ามไปเนื้อหา</a>
@@ -67,22 +67,26 @@
             <section class="hero">
                 <canvas id="matrixCanvas" class="matrix-bg" aria-hidden="true"></canvas>
                 <div class="hero-inner">
-                    <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>AVAILABLE FOR BOOKING · BANGKOK</p>
-                    <h1 class="hero-title">&gt; ENGINEER /<br>PHOTOGRAPHER<span class="caret" aria-hidden="true">_</span></h1>
-                    <p class="hero-sub">web · games · iot · photography</p>
+                    <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span><span class="editable" id="hero-eyebrow" data-field="hero_eyebrow">AVAILABLE FOR BOOKING · BANGKOK</span></p>
+                    <h1 class="hero-title"><span class="editable editable-block" id="hero-title" data-field="hero_main_title">&gt; ENGINEER /<br>PHOTOGRAPHER</span><span class="caret" aria-hidden="true">_</span></h1>
+                    <p class="editable hero-sub" id="hero-sub" data-field="hero_sub">web · games · iot · photography</p>
                     <p class="editable hero-lead" id="hero-lead" data-field="hero_lead">นักศึกษาวิศวกรรมคอมพิวเตอร์ มธ. ที่สร้างเว็บ เกม และระบบ IoT ที่ใช้งานได้จริง และรับถ่ายภาพที่เล่าเรื่องได้</p>
+                    <div class="admin-hint list-admin hero-admin">[!] แอดมิน: คลิกข้อความในส่วนนี้เพื่อแก้ได้เลย (บรรทัดบน, หัวข้อใหญ่, บรรทัดรอง, คำแนะนำตัว, กล่อง STATUS) · หัวข้อใหญ่กด Enter = ขึ้นบรรทัดใหม่ · ติ๊กเพื่อเลือกสถานะ
+                        <label class="fe-check" style="margin-top:6px;"><input type="checkbox" id="hero-busy-toggle"> ตอนนี้คิวเต็ม (จุดสถานะเป็นสีส้ม)</label>
+                        <span class="editable" id="hero-busy" data-field="hero_busy" hidden></span>
+                    </div>
                     <div class="hero-cta">
                         <button type="button" class="btn btn-primary sound-trigger" onclick="goProjects(event)">VIEW WORK</button>
                         <button type="button" class="btn sound-trigger" onclick="switchTab(event, 'contact')">BOOK A SHOOT</button>
                     </div>
                 </div>
-                <div class="hero-panel" aria-hidden="true">
-                    <div class="hero-panel-bar"><span></span><span></span><span></span><b>STATUS.SYS</b></div>
+                <div class="hero-panel">
+                    <div class="hero-panel-bar"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><b class="editable" id="hero-panel-title" data-field="hero_panel_title">STATUS.SYS</b></div>
                     <ul class="hero-readout">
-                        <li><span>MODE</span><b>BUILD + SHOOT</b></li>
-                        <li><span>STACK</span><b>JS · NODE · ESP32</b></li>
-                        <li><span>LENS</span><b>PORTRAIT · EVENT</b></li>
-                        <li><span>BASE</span><b>TU RANGSIT · BKK</b></li>
+                        <li><span class="editable" id="hero-k1" data-field="hero_k1">MODE</span><b class="editable" id="hero-v1" data-field="hero_v1">BUILD + SHOOT</b></li>
+                        <li><span class="editable" id="hero-k2" data-field="hero_k2">STACK</span><b class="editable" id="hero-v2" data-field="hero_v2">JS · NODE · ESP32</b></li>
+                        <li><span class="editable" id="hero-k3" data-field="hero_k3">LENS</span><b class="editable" id="hero-v3" data-field="hero_v3">PORTRAIT · EVENT</b></li>
+                        <li><span class="editable" id="hero-k4" data-field="hero_k4">BASE</span><b class="editable" id="hero-v4" data-field="hero_v4">TU RANGSIT · BKK</b></li>
                     </ul>
                 </div>
             </section>
@@ -551,6 +555,6 @@
         </div>
     </div>
 
-    <script src="assets/js/app.js?v=4" defer></script>
+    <script src="assets/js/app.js?v=5" defer></script>
 </body>
 </html>

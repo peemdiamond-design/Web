@@ -502,27 +502,41 @@ body:not(.edit-mode) #admin-panel:hover, body:not(.edit-mode) #admin-panel:focus
   .reveal { opacity: 1; transform: none; }
 }
 
-/* ---------- awards / medals ---------- */
-.pcard-medals { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; gap: 6px; align-items: center; }
-.medal { position: relative; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
-  font-family: var(--mono); font-weight: 700; font-size: .85rem; color: #fff; border: 1.5px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink), inset 0 0 0 3px rgba(255,255,255,.35); cursor: pointer; transition: transform .15s ease; text-shadow: 0 1px 0 rgba(0,0,0,.35); }
-.medal::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: 1px dashed rgba(255,255,255,.55); pointer-events: none; }
-.medal:hover, .medal:focus-visible { transform: translateY(-2px) rotate(-8deg); }
-.medal-gold { background: radial-gradient(circle at 35% 30%, #ffe58a, #e3b21f 55%, #b8860b); }
-.medal-silver { background: radial-gradient(circle at 35% 30%, #ffffff, #c4cbd3 55%, #8d96a0); color: #222; text-shadow: none; }
-.medal-bronze { background: radial-gradient(circle at 35% 30%, #f5c49a, #c27a45 55%, #8a4b22); }
-.medal-honor { background: radial-gradient(circle at 35% 30%, #9ec2ff, #0f62fe 60%, #0a3fa8); }
-.medal-finalist { background: radial-gradient(circle at 35% 30%, #ffffff, #e9e7df 60%, #bdbab0); color: var(--ink); text-shadow: none; }
-.medal-more { font-family: var(--mono); font-size: .7rem; font-weight: 700; background: var(--surface); border: 1.5px solid var(--ink); border-radius: 999px; padding: 2px 7px; }
+/* ---------- awards / medals (pixel enamel badges) ---------- */
+.pcard-medals { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; gap: 6px; align-items: flex-start; }
+.medal {
+  --m: #f2c94c; --m-ink: var(--ink); --rib-a: var(--accent); --rib-b: var(--signal);
+  position: relative; width: 36px; height: 46px; padding: 0; cursor: pointer; background: none; border: 0;
+  display: block; filter: drop-shadow(2px 2px 0 var(--ink)); transition: transform .15s ease;
+}
+/* ribbon tails */
+.medal::before { content: ""; position: absolute; left: 50%; top: 0; width: 22px; height: 16px; transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--rib-a) 0 50%, var(--rib-b) 50% 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%); }
+/* octagon disc: ink outline + enamel fill */
+.medal > i { position: absolute; left: 0; bottom: 0; width: 36px; height: 36px; display: grid; place-items: center; font-style: normal;
+  background: var(--ink); clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.medal > i::before { content: ""; position: absolute; inset: 2px; background: var(--m);
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.medal > i::after { content: ""; position: absolute; inset: 6px; border: 1.5px solid rgba(20,20,20,.35);
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%); }
+.medal > i > b { position: relative; z-index: 1; font-family: var(--mono); font-weight: 700; font-size: .82rem; color: var(--m-ink); }
+.medal:hover, .medal:focus-visible { transform: translateY(-3px); }
+.medal:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.medal-gold   { --m: #f2c94c; }
+.medal-silver { --m: #dfe2e6; }
+.medal-bronze { --m: #d9905a; }
+.medal-honor  { --m: var(--accent); --m-ink: #fff; --rib-a: var(--ink); --rib-b: var(--accent); }
+.medal-finalist { --m: var(--surface); --rib-a: var(--hair); --rib-b: var(--muted); }
+.medal-more { font-family: var(--mono); font-size: .68rem; font-weight: 700; background: var(--surface); border: 1.5px solid var(--ink); border-radius: var(--r); padding: 2px 6px; margin-top: 14px; box-shadow: 2px 2px 0 var(--ink); }
 
 #award-modal { display: none; position: fixed; inset: 0; z-index: 3100; background: rgba(14,14,14,.82); align-items: center; justify-content: center; padding: 20px; }
 #award-modal.open { display: flex; animation: page-in .25s ease both; }
-.award-card { position: relative; width: min(440px, 100%); text-align: center; background: var(--surface); border: 1.5px solid var(--ink); box-shadow: 8px 8px 0 var(--signal); padding: 56px 26px 26px; }
-.award-ribbon { position: absolute; top: -1.5px; left: 50%; transform: translateX(-50%); width: 64px; height: 44px; background: linear-gradient(90deg, var(--accent) 0 50%, var(--signal) 50% 100%); border: 1.5px solid var(--ink); border-top: 0; }
-.award-medal { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 64px; height: 64px; font-size: 1.5rem; cursor: default; }
-.award-medal:hover { transform: translateX(-50%); }
-.award-tier { margin-top: 36px; font-family: var(--mono); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.award-card { position: relative; width: min(440px, 100%); text-align: center; background: var(--surface); border: 1.5px solid var(--ink); box-shadow: 8px 8px 0 var(--signal); padding: 64px 26px 26px; margin-top: 40px; }
+.award-ribbon { display: none; }
+.award-medal { position: absolute; top: -26px; left: 50%; transform: translateX(-50%) scale(1.9); transform-origin: top center; cursor: default; }
+.award-medal:hover { transform: translateX(-50%) scale(1.9); }
+.award-tier { margin-top: 14px; font-family: var(--mono); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
 .award-title { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; line-height: 1.25; margin: 6px 0 4px; }
 .award-project { font-family: var(--mono); font-size: .78rem; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
 .award-facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; text-align: left; margin: 18px 0 0; padding-top: 14px; border-top: 1px dashed var(--hair); }
@@ -540,3 +554,9 @@ body:not(.edit-mode) #admin-panel:hover, body:not(.edit-mode) #admin-panel:focus
 .award-row select, .award-row input, .award-row textarea { width: 100%; padding: 6px 8px; border: 1px solid var(--ink); border-radius: var(--r); background: var(--surface-2); font-family: var(--sans); font-size: .85rem; }
 .award-row .del { flex: none; font-family: var(--mono); font-size: .75rem; padding: 0 10px; border: 1px solid var(--ink); border-radius: var(--r); background: var(--danger); color: #fff; }
 .award-add { background: var(--ok) !important; justify-self: start; padding: 7px 12px !important; font-size: .72rem !important; }
+
+/* hero: editable + busy state */
+.hero-title .editable-block { display: inline; }
+.hero-admin { max-width: 560px; }
+body.hero-busy .live-dot { background: var(--signal); box-shadow: 0 0 0 4px rgba(255,90,31,.2); animation: none; }
+.edit-mode .hero-readout .editable[contenteditable="true"] { min-width: 3ch; display: inline-block; }
