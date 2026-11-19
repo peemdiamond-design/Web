@@ -528,6 +528,13 @@
         .rev-write-btn { margin: 16px auto 0; font-size: 1.3rem; padding: 6px 18px; }
         .rev-form[hidden], .rev-empty[hidden], .rev-write-btn[hidden] { display: none; }
         .rev-stars-big button { font-size: 2.4rem; }
+        .rev-job { display: grid; gap: 6px; }
+        .rev-job-label { font-family: 'VT323'; font-size: 1.2rem; }
+        .rev-job-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .rev-job-tags button { font-family: 'Chakra Petch', sans-serif; font-size: .95rem; padding: 5px 12px; border: 2px solid var(--ibm-text); background: var(--ibm-key-light); color: var(--ibm-text); box-shadow: 2px 2px 0 var(--ibm-shadow); }
+        .rev-job-tags button.on { background: var(--ibm-accent-blue); color: #fff; box-shadow: none; transform: translate(2px, 2px); }
+        #rev-job-other[hidden] { display: none; }
+        #rev-job-other { font-family: 'Chakra Petch', sans-serif; font-size: 1rem; padding: 8px 10px; border: 2px solid var(--ibm-text); background: var(--ibm-key-light); }
         .rev-pending { display: grid; gap: 8px; margin-top: 12px; }
         .rev-pending h4 { font-family: 'VT323'; font-size: 1.3rem; color: #da1e28; }
         .rev-pend { background: #fff8e1; border: 1px dashed #f1a10b; padding: 8px; display: grid; gap: 4px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; color: var(--ibm-text); }
@@ -697,9 +704,12 @@
                                 <h2 data-i18n="rev_form_title">⭐ รีวิวงานถ่ายภาพ</h2>
                                 <p class="book-note" data-i18n="rev_form_note">รีวิวจะขึ้นบนเว็บหลังจากตรวจสอบแล้ว ขอบคุณที่ช่วยแนะนำครับ</p>
                                 <div class="rev-stars-big star-pick" id="rev-form-stars" role="radiogroup" aria-label="ให้คะแนน"></div>
-                                <div class="book-row">
-                                    <label><span data-i18n="rev_f_name">ชื่อที่จะแสดง *</span><input name="who" maxlength="60" required autocomplete="nickname"></label>
-                                    <label><span data-i18n="rev_f_job">งานที่ถ่าย</span><input name="job" maxlength="60" data-i18n-ph="rev_f_job_ph" placeholder="เช่น รับปริญญา ธ.ค. 2026"></label>
+                                <label><span data-i18n="rev_f_name">ชื่อที่จะแสดง *</span><input name="who" maxlength="60" required autocomplete="nickname"></label>
+                                <div class="rev-job">
+                                    <span class="rev-job-label" data-i18n="rev_f_job">งานที่ถ่าย (เลือก 1 อย่าง)</span>
+                                    <div class="rev-job-tags" id="rev-job-tags" role="radiogroup" aria-label="งานที่ถ่าย"></div>
+                                    <input id="rev-job-other" maxlength="60" data-i18n-ph="rev_f_job_ph" placeholder="พิมพ์ประเภทงาน เช่น ถ่ายสินค้า" hidden>
+                                    <input type="hidden" name="job">
                                 </div>
                                 <label><span data-i18n="rev_f_text">รีวิว *</span><textarea name="text" rows="4" maxlength="400" required data-i18n-ph="rev_f_text_ph" placeholder="ประทับใจตรงไหน อยากบอกอะไรคนที่กำลังจะจอง"></textarea></label>
                                 <input name="hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -1972,6 +1982,7 @@
             });
             [t('type_other')].forEach(o => sel.appendChild(new Option(o, o)));
             if (keep && [...sel.options].some(o => o.value === keep)) sel.value = keep;
+            renderRevJobTags();
         }
         function bookPackage(name) {
             switchTab(null, 'contact');
@@ -2069,10 +2080,33 @@
                 box.appendChild(b);
             }
         }
+        // งานที่ถ่าย: แท็กจากชื่อแพ็กเกจ + "อื่นๆ" (พิมพ์เอง) · เลือกได้ 1 อย่าง
+        let revJob = '', revJobOther = false;
+        function revJobOptions() {
+            const pk = srcLines('pkg-src').map(l => l.split('|')[0].replace(/^★\s*/, '').trim()).filter(Boolean);
+            return [...new Set(pk)].slice(0, 10);
+        }
+        function renderRevJobTags() {
+            const box = document.getElementById('rev-job-tags'); if (!box) return;
+            const opts = revJobOptions();
+            if (revJob && !revJobOther && !opts.includes(revJob)) revJobOther = true;
+            box.replaceChildren();
+            const make = (label, active, onClick) => { const b = el('button', active ? 'on' : '', label); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(active)); b.addEventListener('click', onClick); box.appendChild(b); };
+            opts.forEach(o => make(o, !revJobOther && revJob === o, () => { revJobOther = false; revJob = revJob === o ? '' : o; syncRevJob(); }));
+            make(t('rev_job_other'), revJobOther, () => { revJobOther = !revJobOther; if (!revJobOther) revJob = ''; syncRevJob(); if (revJobOther) document.getElementById('rev-job-other').focus(); });
+            const other = document.getElementById('rev-job-other');
+            other.hidden = !revJobOther; if (revJobOther && document.activeElement !== other) other.value = revJob;
+        }
+        function syncRevJob() {
+            const other = document.getElementById('rev-job-other');
+            if (revJobOther) revJob = other.value.trim();
+            document.querySelector('#rev-form [name=job]').value = revJob;
+            renderRevJobTags();
+        }
         function openReviewForm(job) {
             const f = document.getElementById('rev-form');
             f.hidden = false; document.getElementById('rev-write-btn').hidden = true;
-            if (job) f.job.value = job;
+            if (job) { revJob = job; revJobOther = !revJobOptions().includes(job); syncRevJob(); }
             f.scrollIntoView({ block: 'center' });
             f.who.focus({ preventScroll: true });
         }
@@ -2080,6 +2114,8 @@
             const f = document.getElementById('rev-form'), opened = Date.now();
             const pick = () => drawStarPicker(document.getElementById('rev-form-stars'), revFormStars, n => { revFormStars = n; pick(); });
             pick();
+            document.getElementById('rev-job-other').addEventListener('input', (e) => { revJob = e.target.value.trim(); document.querySelector('#rev-form [name=job]').value = revJob; });
+            syncRevJob();
             document.getElementById('rev-write-btn').addEventListener('click', () => openReviewForm());
             document.getElementById('client-review').addEventListener('click', () => {
                 const job = document.getElementById('client-album-title').textContent;
@@ -2095,7 +2131,7 @@
                     const r = await fetch(`${SERVER_URL}/review`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...fd, stars: revFormStars, ts: opened }) });
                     const out = await r.json().catch(() => ({}));
                     if (!r.ok) throw new Error(out.error || r.status);
-                    st.className = 'book-status ok'; st.textContent = t('rev_ok'); f.reset(); revFormStars = 0; pick(); playLevelUpSound();
+                    st.className = 'book-status ok'; st.textContent = t('rev_ok'); f.reset(); revFormStars = 0; pick(); revJob = ''; revJobOther = false; document.getElementById('rev-job-other').value = ''; syncRevJob(); playLevelUpSound();
                 } catch (err) { st.className = 'book-status err'; st.textContent = t('f_err') + (err.message ? ` (${err.message})` : ''); }
                 finally { btn.disabled = false; }
             });
@@ -2227,7 +2263,7 @@
             th: { pkg_hot: 'แนะนำ', pkg_ask: 'สอบถามราคา', pkg_book: '▶ จองแพ็กเกจนี้', type_other: 'อื่นๆ / สอบถาม',
                   f_required: 'กรุณากรอกชื่อและช่องทางติดต่อ', f_sending: 'กำลังส่ง...', f_ok: '✓ ส่งแล้ว! เดี๋ยวติดต่อกลับเร็วๆ นี้นะครับ', f_err: 'ส่งไม่สำเร็จ',
                   client_empty: '> ยังไม่มีรูปในอัลบั้มนี้', cat_all: 'ทั้งหมด',
-                  rev_required: 'กรุณาให้ดาว กรอกชื่อ และเขียนรีวิวอย่างน้อย 5 ตัวอักษร', rev_ok: '✓ ขอบคุณครับ! รีวิวจะขึ้นหลังจากตรวจสอบ' },
+                  rev_required: 'กรุณาให้ดาว กรอกชื่อ และเขียนรีวิวอย่างน้อย 5 ตัวอักษร', rev_ok: '✓ ขอบคุณครับ! รีวิวจะขึ้นหลังจากตรวจสอบ', rev_job_other: '✎ อื่นๆ' },
             en: { nav_home: 'HOME', nav_projects: 'PROJECTS', nav_schedule: 'SCHEDULE', nav_files: 'FILES', nav_about: 'ABOUT', nav_contact: 'CONTACT',
                   book_title: '📅 Book a Shoot / Inquiry', book_note: 'Send your details and I will reply within 24 hours.',
                   f_name: 'Name *', f_contact: 'LINE ID / Phone / Email *', f_type: 'Type of work', f_date: 'Preferred date', f_msg: 'Details', f_msg_ph: 'Location, number of people, preferred style…', f_send: '▶ Send',
@@ -2237,7 +2273,7 @@
                   f_required: 'Please enter your name and contact.', f_sending: 'Sending…', f_ok: '✓ Sent! I will get back to you soon.', f_err: 'Could not send',
                   client_empty: '> No photos in this album yet.', cat_all: 'ALL',
                   rev_empty: '> No reviews yet. Be the first!', rev_write: '✍ Write a review', rev_form_title: '⭐ Review my work', rev_form_note: 'Your review will appear after a quick check. Thank you!',
-                  rev_f_name: 'Display name *', rev_f_job: 'Type of shoot', rev_f_job_ph: 'e.g. Graduation, Dec 2026', rev_f_text: 'Review *', rev_f_text_ph: 'What did you like? Anything to tell future clients?', rev_send: '▶ Send review',
+                  rev_f_name: 'Display name *', rev_f_job: 'Type of shoot (pick one)', rev_f_job_ph: 'Type it, e.g. Product shoot', rev_job_other: '✎ Other', rev_f_text: 'Review *', rev_f_text_ph: 'What did you like? Anything to tell future clients?', rev_send: '▶ Send review',
                   rev_required: 'Please pick stars, enter your name and write at least 5 characters.', rev_ok: '✓ Thank you! Your review will appear after a quick check.', client_review: '⭐ Review this shoot' },
         };
         let lang = 'th';
