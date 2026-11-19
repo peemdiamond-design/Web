@@ -411,7 +411,6 @@
         .about-cta a.action-btn { font-size: 1.3rem !important; display: inline-flex; align-items: center; text-decoration: none; }
         .skill-row .pct { text-align: right; }
         .skills-src { display: none; font-family: 'VT323'; font-size: 1.2rem; background: #edf5ff; border: 1px dashed var(--ibm-accent-blue); padding: 8px; margin-bottom: 12px; white-space: pre-wrap; }
-        .edit-mode .skills-src { display: block; }
         .about-cta { display: flex; gap: 10px; flex-wrap: wrap; }
         .about-cta .action-btn { font-size: 1.3rem; padding: 6px 16px; }
         .about-cta .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
@@ -524,7 +523,29 @@
         .rev blockquote::before { content: "“"; font-family: 'VT323'; font-size: 2.2rem; line-height: 0; vertical-align: -.45em; color: var(--ibm-accent-blue); margin-right: 2px; }
         .rev .who { font-family: 'VT323'; font-size: 1.25rem; margin-top: auto; }
         .rev .who span { color: #6f6f6f; }
-        #rev-src { display: none !important; }
+        #rev-src, #pkg-src, #skills-src, #devlog-src, #line-url, #resume-url, #photo-folder-id { display: none !important; }
+        /* ตัวแก้แบบเป็นช่องๆ (แอดมิน) */
+        .fe-list { display: grid; gap: 10px; margin-top: 8px; }
+        .fe-row { background: #fff; border: 1px solid var(--ibm-key-dark); padding: 8px; display: grid; gap: 6px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; color: var(--ibm-text); }
+        .fe-line { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .fe-row input:not([type=checkbox]):not([type=range]), .fe-row textarea, .fe-row select, .fe-url { flex: 1; min-width: 110px; font: inherit; font-family: 'Chakra Petch', sans-serif; padding: 5px 8px; border: 1px solid var(--ibm-text); background: var(--ibm-key-light); color: var(--ibm-text); }
+        .fe-row textarea { width: 100%; resize: vertical; }
+        .fe-row label.fe-check { display: inline-flex; align-items: center; gap: 4px; font-family: 'VT323'; font-size: 1.15rem; white-space: nowrap; }
+        .fe-row input[type=range] { flex: 1; min-width: 120px; accent-color: var(--ibm-accent-blue); }
+        .fe-row .fe-val { font-family: 'VT323'; font-size: 1.3rem; width: 44px; text-align: right; }
+        .fe-btns { display: inline-flex; gap: 4px; margin-left: auto; }
+        .fe-btns button { font-family: 'VT323'; font-size: 1.1rem; padding: 0 8px; border: 2px solid var(--ibm-text); background: var(--ibm-key-light); color: var(--ibm-text); }
+        .fe-btns .del { background: #da1e28; color: #fff; }
+        .fe-hint { font-size: .8rem; color: #6f6f6f; }
+        .fe-add { margin-top: 8px; background: #24a148 !important; }
+        .fe-url { display: block; width: 100%; margin-top: 6px; }
+        .fe-url-ok { font-family: 'VT323'; font-size: 1.1rem; }
+        .fe-url-ok.ok { color: #24a148; } .fe-url-ok.bad { color: #da1e28; }
+        .cal-quick { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 6px 0 4px; }
+        .cal-quick button { font-family: 'Chakra Petch', sans-serif; font-size: .95rem; padding: 4px 10px; border: 2px solid var(--ibm-text); background: var(--ibm-key-light); color: var(--ibm-text); }
+        .cal-quick button.on { background: var(--ibm-accent-blue); color: #fff; }
+        .login-box .cal-quick button { width: auto; margin: 0; padding: 4px 10px; font-family: 'Chakra Petch', sans-serif; font-size: .95rem; font-weight: 600; box-shadow: 2px 2px 0 var(--ibm-shadow); background: var(--ibm-key-light); color: var(--ibm-text); }
+        .login-box .cal-quick button.on { background: var(--ibm-accent-blue); color: #fff; box-shadow: none; }
         .rev-write-btn { margin: 16px auto 0; font-size: 1.3rem; padding: 6px 18px; }
         .rev-form[hidden], .rev-empty[hidden], .rev-write-btn[hidden] { display: none; }
         .rev-stars-big button { font-size: 2.4rem; }
@@ -662,6 +683,7 @@
                             <div class="admin-hint photo-admin">
                                 [!] แอดมิน: วางลิงก์โฟลเดอร์ Google Drive ที่นี่ แล้วกด SAVE CONFIG (แชร์โฟลเดอร์ให้ firebase-adminsdk-fbsvc@website101-1f97f.iam.gserviceaccount.com แบบ Viewer ก่อน) · คำบรรยายใต้ภาพ = ช่อง "คำอธิบาย" ของไฟล์ใน Drive
                                 <div class="editable" id="photo-folder-id" data-field="photo_folder_id" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
+                                <input type="url" class="fe-url" data-src="photo-folder-id" placeholder="วางลิงก์โฟลเดอร์ Google Drive เช่น https://drive.google.com/drive/folders/..."><span class="fe-url-ok" data-for="photo-folder-id"></span>
                             </div>
                             <div class="proj-filters" id="photo-cats" role="group" aria-label="หมวดภาพ" style="display:none"></div>
                             <div class="photo-show" id="photo-show" tabindex="0" aria-roledescription="carousel" aria-label="ภาพถ่าย">
@@ -682,8 +704,10 @@
                         <div class="timeline-section" id="packages-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="pkg-title" data-field="pkg_title">DIRECTORY: \PACKAGES</h2>
                             <p class="editable photo-sub" id="pkg-sub" data-field="pkg_sub">แพ็กเกจถ่ายภาพ · ราคาเริ่มต้น สอบถามรายละเอียดเพิ่มได้</p>
-                            <div class="admin-hint list-admin">[!] แอดมิน: บรรทัดละ 1 แพ็กเกจ รูปแบบ <b>ชื่อ | ราคา | รายละเอียด; รายละเอียด; ...</b> (ใส่ ★ หน้าชื่อ = แพ็กเกจแนะนำ)
+                            <div class="admin-hint list-admin">[!] แอดมิน: แก้แพ็กเกจในช่องด้านล่าง · ติ๊ก ★ แนะนำ เพื่อเน้นแพ็กเกจ · ลูกศร ▲▼ เปลี่ยนลำดับ · แก้เสร็จกด SAVE CONFIG
                                 <div class="editable editable-block list-src" id="pkg-src" data-field="packages_list">★ รับปริญญา | เริ่มต้น ฿2,500 | ถ่าย 2 ชั่วโมง; 150+ ภาพแต่งสี; ส่งงานภายใน 7 วัน<br>Portrait / โปรไฟล์ | เริ่มต้น ฿1,500 | ถ่าย 1 ชั่วโมง; 1 ชุด 1 โลเคชัน; 30+ ภาพแต่งสี<br>อีเวนต์ / งานกิจกรรม | เริ่มต้น ฿3,500 | ถ่ายครึ่งวัน (4 ชม.); 200+ ภาพ; ส่งภาพไฮไลต์ใน 24 ชม.</div>
+                                <div class="fe-list" id="pkg-editor"></div>
+                                <button type="button" class="action-btn sound-trigger fe-add" id="pkg-add">[+] เพิ่มแพ็กเกจ</button>
                             </div>
                             <div class="pkg-grid" id="pkg-grid"></div>
                         </div>
@@ -817,6 +841,10 @@
                                 <div class="about-stat"><b class="editable stat-num" id="stat3-num" data-field="stat3_num">1</b><span class="editable" id="stat3-label" data-field="stat3_label">เว็บหน่วยงานราชการ</span></div>
                             </div>
                             <div class="editable editable-block skills-src" id="skills-src" data-field="skills_list">HTML / CSS 90<br>JavaScript 80<br>Firebase 75<br>Node.js 70<br>ESP32 / IoT 65<br>Linux Server 70</div>
+                            <div class="admin-hint list-admin">[!] แอดมิน: ทักษะ · เลื่อนแถบเพื่อตั้งเปอร์เซ็นต์
+                                <div class="fe-list" id="skills-editor"></div>
+                                <button type="button" class="action-btn sound-trigger fe-add" id="skills-add">[+] เพิ่มทักษะ</button>
+                            </div>
                             <div class="skill-bars" id="skill-bars" aria-label="ทักษะ"></div>
                             <div class="about-cta">
                                 <button type="button" class="action-btn sound-trigger" onclick="goProjects(event)">▶ ดูผลงาน</button>
@@ -826,14 +854,17 @@
                             </div>
                             <div class="admin-hint list-admin">[!] แอดมิน: ลิงก์ไฟล์ Resume (PDF บน Drive ที่แชร์แบบทุกคนที่มีลิงก์) · ปล่อยว่าง = ซ่อนปุ่ม
                                 <div class="editable" id="resume-url" data-field="resume_url" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
+                                <input type="url" class="fe-url" data-src="resume-url" placeholder="วางลิงก์ไฟล์ Resume (PDF) เช่น https://drive.google.com/file/d/..."><span class="fe-url-ok" data-for="resume-url"></span>
                             </div>
                         </div>
                     </div>
                     <!-- DEVLOG: บันทึกเบื้องหลังโปรเจกต์ (แอดมินแก้ได้) -->
                     <div class="devlog" id="devlog-section">
                         <h2 class="editable timeline-title-main" id="devlog-title" data-field="devlog_title">DEVLOG</h2>
-                        <div class="admin-hint list-admin" style="text-align:left">[!] แอดมิน: แต่ละโพสต์คั่นด้วยบรรทัด <b>---</b> · บรรทัดแรกของโพสต์ = <b>YYYY-MM-DD | หัวข้อ</b> · บรรทัดถัดไป = เนื้อหา · ปล่อยว่าง = ซ่อน
+                        <div class="admin-hint list-admin" style="text-align:left">[!] แอดมิน: เพิ่ม/แก้โพสต์ในช่องด้านล่าง · ไม่มีโพสต์ = ส่วนนี้ซ่อน
                             <div class="editable editable-block list-src" id="devlog-src" data-field="devlog_list">2026-11-19 | ยกเครื่องเว็บ PEEMCN25<br>เพิ่มการ์ดโปรเจกต์ โชว์ภาพถ่ายจาก Google Drive อัลบั้มความทรงจำ ระบบจองคิว และแกลเลอรีส่วนตัวสำหรับลูกค้า พร้อมปิดช่องโหว่ฝั่ง server</div>
+                            <div class="fe-list" id="devlog-editor"></div>
+                            <button type="button" class="action-btn sound-trigger fe-add" id="devlog-add">[+] เพิ่มโพสต์</button>
                         </div>
                         <div class="devlog-list" id="devlog-list"></div>
                     </div>
@@ -854,6 +885,7 @@
                     <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">TEL // โทรศัพท์:<br> <span class="editable contact-link" id="contact-tel" data-field="contact_tel" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
                     <div class="admin-hint list-admin" style="max-width:640px">[!] แอดมิน: ลิงก์ LINE (เช่น https://line.me/ti/p/~ไอดี หรือลิงก์ LINE OA) → ปุ่ม LINE ลอยมุมจอ · ปล่อยว่าง = ซ่อน
                         <div class="editable" id="line-url" data-field="line_url" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
+                                <input type="url" class="fe-url" data-src="line-url" placeholder="วางลิงก์ LINE เช่น https://line.me/ti/p/~yourid"><span class="fe-url-ok" data-for="line-url"></span>
                     </div>
 
                     <form class="book-form" id="book-form" novalidate>
@@ -933,6 +965,21 @@
             <a href="#contact">CONTACT</a>
         </nav>
     </footer>
+
+    <!-- เพิ่มงานในปฏิทิน (แอดมิน) -->
+    <div id="cal-modal" style="display:none; position:fixed; inset:0; background:rgba(22,22,22,.9); z-index:999; justify-content:center; align-items:center;">
+        <form class="login-box" id="cal-form" style="max-width:440px;">
+            <h2 style="font-family:'VT323'; font-size:2rem; margin-bottom:4px;">[ ADD TASK ]</h2>
+            <p id="cal-date-label" style="font-family:'VT323'; font-size:1.3rem; color:var(--ibm-accent-blue);"></p>
+            <div class="cal-quick" id="cal-quick"></div>
+            <input id="cal-title" maxlength="160" placeholder="รายละเอียด เช่น สอบ CN201 / ส่งรายงาน" autocomplete="off" required>
+            <div style="display:flex; gap:8px; align-items:center; justify-content:center; font-family:'VT323'; font-size:1.2rem;">
+                <span>เวลา (ไม่ใส่ก็ได้)</span><input id="cal-time1" type="time" style="width:auto; margin:0;"><span>–</span><input id="cal-time2" type="time" style="width:auto; margin:0;">
+            </div>
+            <button type="submit" class="sound-trigger">SAVE TASK</button>
+            <button type="button" id="cal-cancel" class="sound-trigger" style="background: var(--ibm-pearl); color: var(--ibm-text); margin-top: 10px;">CANCEL</button>
+        </form>
+    </div>
 
     <!-- ปุ่ม LINE ลอย (แสดงเมื่อแอดมินใส่ลิงก์) -->
     <a id="line-fab" href="#" target="_blank" rel="noopener" hidden aria-label="แชท LINE">
@@ -1133,9 +1180,16 @@
                     admin.appendChild(row);
                 };
                 field('URL:', proj.url, v => { projectData[index].url = v; });
-                field('CAT (web/game/iot):', meta.cat, v => { projectData[index].cat = v.toLowerCase(); });
-                field('TAGS (a, b, c):', meta.tags.join(', '), v => { projectData[index].tags = v; });
-                field('CODE URL:', proj.code || '', v => { projectData[index].code = v; });
+                if (isEdit) {
+                    const row = document.createElement('div');
+                    const l = document.createElement('span'); l.className = 'url-label'; l.textContent = 'หมวด: ';
+                    const sel = document.createElement('select');
+                    [['web', 'WEB · เว็บไซต์'], ['game', 'GAME · เกม'], ['iot', 'IOT · ฮาร์ดแวร์']].forEach(([v, t_]) => sel.appendChild(new Option(t_, v)));
+                    sel.value = meta.cat; sel.addEventListener('change', () => { projectData[index].cat = sel.value; });
+                    row.append(l, sel); admin.appendChild(row);
+                }
+                field('ป้ายเทคโนโลยี (คั่นด้วย ,):', meta.tags.join(', '), v => { projectData[index].tags = v; });
+                field('ลิงก์โค้ด GitHub (ไม่ใส่ก็ได้):', proj.code || '', v => { projectData[index].code = v; });
                 body.appendChild(admin);
 
                 const actions = document.createElement('div'); actions.className = 'pcard-actions';
@@ -1485,7 +1539,34 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.slice(0, 200); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
+        const CAL_TYPES = [['📝', 'สอบ'], ['📌', 'ส่งงาน'], ['👥', 'นัดหมาย'], ['🎉', 'กิจกรรม'], ['⏰', 'เตือน']];
+        let calDate = null, calType = '';
+        window.promptAddEvent = function(dateStr) {
+            calDate = dateStr; calType = '';
+            const d = new Date(dateStr + 'T00:00:00');
+            document.getElementById('cal-date-label').textContent = `DATE: ${d.toLocaleDateString('th-TH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+            document.getElementById('cal-title').value = ''; document.getElementById('cal-time1').value = ''; document.getElementById('cal-time2').value = '';
+            drawCalTypes();
+            document.getElementById('cal-modal').style.display = 'flex';
+            document.getElementById('cal-title').focus();
+        }
+        function drawCalTypes() {
+            const box = document.getElementById('cal-quick'); box.replaceChildren();
+            CAL_TYPES.forEach(([emo, name]) => { const b = el('button', calType === emo ? 'on' : '', `${emo} ${name}`); b.type = 'button'; b.addEventListener('click', () => { calType = calType === emo ? '' : emo; drawCalTypes(); document.getElementById('cal-title').focus(); }); box.appendChild(b); });
+        }
+        function initCalModal() {
+            const close = () => { document.getElementById('cal-modal').style.display = 'none'; };
+            document.getElementById('cal-cancel').addEventListener('click', close);
+            document.getElementById('cal-modal').addEventListener('click', (e) => { if (e.target.id === 'cal-modal') close(); });
+            document.getElementById('cal-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const text = document.getElementById('cal-title').value.trim(); if (!text || !calDate) return;
+                const t1 = document.getElementById('cal-time1').value, t2 = document.getElementById('cal-time2').value;
+                const title = `${calType ? calType + ' ' : ''}${text}${t1 ? ' · ' + t1 + (t2 ? '-' + t2 : '') : ''}`.slice(0, 200);
+                scheduleData.push({ date: calDate, title, completed: false }); renderCalendar(); sendLineNotify(calDate, title);
+                close(); document.getElementById('save-btn').click();
+            });
+        }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
         // 6. ระบบ Gallery & Tab Navigation
@@ -1726,17 +1807,17 @@
                 const out = fn ? fn(args.join(' ')) : `'${raw}' is not recognized. type "help"`;
                 if (out) termSay(out);
             });
-            document.getElementById('skills-src').addEventListener('blur', () => renderSkills(false));
             renderSkills(false);
             loadVisitCount();
             initPhotos();
             loadMemories();
             initBooking();
             initReviewForm();
+            initCalModal();
             if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('/sw.js').catch(() => {});
             initClient();
             document.getElementById('lang-toggle').addEventListener('click', () => { lang = lang === 'en' ? 'th' : 'en'; try { localStorage.setItem('peem_lang', lang); } catch (e) {} applyLang(); });
-            ['pkg-src', 'devlog-src', 'line-url', 'resume-url'].forEach(id => document.getElementById(id).addEventListener('blur', renderEditableLists));
+            initUrlInputs();
             document.getElementById('rev-add').addEventListener('click', () => { if (!revEditList) revEditList = revParse(); revEditList.push({ who: '', stars: 5, text: '', job: '' }); renderReviewEditor(); const rows = document.querySelectorAll('.rev-row'); rows[rows.length - 1]?.querySelector('input')?.focus(); });
             applyLang();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
@@ -1773,6 +1854,7 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
                 if (document.getElementById('photo-lightbox').classList.contains('open')) { photoLightbox(false); return; }
+                document.getElementById('cal-modal').style.display = 'none';
                 closeGallery(); closePreview(); closeTerm();
                 ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
             });
@@ -2067,7 +2149,101 @@
             const cv = safeUrl(srcText('resume-url').trim()), rb = document.getElementById('resume-btn');
             rb.hidden = !cv || cv === 'https:///'; if (!rb.hidden) rb.href = cv;
         }
-        function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); }
+        function renderEditableLists() { renderPackages(); renderReviews(); renderReviewEditor(); renderDevlog(); renderLinks(); renderAdminEditors(); }
+
+        // ================= 12a. ตัวแก้แบบเป็นช่องๆ สำหรับแอดมิน (เขียนกลับเป็นข้อความรูปแบบเดิม → ปุ่ม SAVE CONFIG ใช้ได้เหมือนเดิม) =================
+        function writeSrc(id, text) {
+            const src = document.getElementById(id); src.textContent = '';
+            String(text).split('\n').forEach((line, i) => { if (i) src.appendChild(document.createElement('br')); src.appendChild(document.createTextNode(line)); });
+        }
+        const feClean = v => String(v ?? '').replace(/[|\r]+/g, '/').trim();
+        // cfg: { box, items(), blank(), fields:[{key,type,label,ph,options,max,wide}], serialize(list), after() }
+        function makeListEditor(cfg) {
+            let state = null;
+            const commit = () => { writeSrc(cfg.src, cfg.serialize(state)); if (cfg.after) cfg.after(); };
+            function render() {
+                const box = document.getElementById(cfg.box); if (!box) return;
+                if (!document.body.classList.contains('edit-mode')) { box.replaceChildren(); state = null; return; }
+                if (!state) state = cfg.items();
+                box.replaceChildren();
+                state.forEach((item, i) => {
+                    const row = el('div', 'fe-row'); let line = el('div', 'fe-line'); row.appendChild(line);
+                    cfg.fields.forEach(f => {
+                        let input;
+                        if (f.type === 'textarea') { input = el('textarea'); input.rows = f.rows || 3; input.value = item[f.key] || ''; }
+                        else if (f.type === 'select') { input = el('select'); f.options.forEach(([v, l]) => input.appendChild(new Option(l, v))); input.value = item[f.key]; }
+                        else if (f.type === 'check') { const lab = el('label', 'fe-check'); input = el('input'); input.type = 'checkbox'; input.checked = !!item[f.key]; lab.append(input, document.createTextNode(f.label)); line.appendChild(lab); }
+                        else if (f.type === 'range') { input = el('input'); input.type = 'range'; input.min = 0; input.max = 100; input.step = 5; input.value = item[f.key]; }
+                        else { input = el('input'); input.type = f.type || 'text'; input.value = item[f.key] || ''; }
+                        if (f.ph) input.placeholder = f.ph;
+                        if (f.max) input.maxLength = f.max;
+                        if (f.title) input.title = f.title;
+                        const update = () => { item[f.key] = f.type === 'check' ? input.checked : f.type === 'range' ? +input.value : input.value; if (val) val.textContent = input.value + '%'; commit(); };
+                        input.addEventListener(f.type === 'check' || f.type === 'select' ? 'change' : 'input', update);
+                        let val = null;
+                        if (f.type !== 'check') {
+                            if (f.wide) { line = el('div', 'fe-line'); row.appendChild(line); }
+                            line.appendChild(input);
+                            if (f.type === 'range') { val = el('span', 'fe-val', input.value + '%'); line.appendChild(val); }
+                        }
+                        if (f.hint) row.appendChild(el('div', 'fe-hint', f.hint));
+                    });
+                    const btns = el('span', 'fe-btns');
+                    const mk = (txt, cls, title, fn) => { const b = el('button', cls, txt); b.type = 'button'; b.title = title; b.addEventListener('click', fn); btns.appendChild(b); };
+                    mk('▲', '', 'เลื่อนขึ้น', () => { if (i > 0) { [state[i - 1], state[i]] = [state[i], state[i - 1]]; commit(); render(); } });
+                    mk('▼', '', 'เลื่อนลง', () => { if (i < state.length - 1) { [state[i + 1], state[i]] = [state[i], state[i + 1]]; commit(); render(); } });
+                    mk('X', 'del', 'ลบ', () => { if (confirm('ลบรายการนี้?')) { state.splice(i, 1); commit(); render(); } });
+                    row.firstChild.appendChild(btns);
+                    box.appendChild(row);
+                });
+            }
+            const add = document.getElementById(cfg.add);
+            if (add) add.addEventListener('click', () => { if (!state) state = cfg.items(); state.push(cfg.blank()); commit(); render(); const rows = document.getElementById(cfg.box).children; rows[rows.length - 1]?.querySelector('input:not([type=checkbox]), textarea')?.focus(); });
+            return { render, reset: () => { state = null; render(); } };
+        }
+
+        const pkgEditor = makeListEditor({
+            box: 'pkg-editor', add: 'pkg-add', src: 'pkg-src',
+            items: () => srcLines('pkg-src').map(l => l.split('|').map(x => x.trim())).filter(p => p[0]).map(([n, price = '', det = '']) => ({ hot: /^★/.test(n), name: n.replace(/^★\s*/, ''), price, details: det.split(';').map(x => x.trim()).filter(Boolean).join('\n') })),
+            blank: () => ({ hot: false, name: '', price: '', details: '' }),
+            fields: [
+                { key: 'name', ph: 'ชื่อแพ็กเกจ เช่น รับปริญญา', max: 60 },
+                { key: 'price', ph: 'ราคา เช่น เริ่มต้น ฿2,500', max: 40 },
+                { key: 'hot', type: 'check', label: '★ แนะนำ' },
+                { key: 'details', type: 'textarea', wide: true, rows: 3, ph: 'รายละเอียด บรรทัดละ 1 ข้อ\nเช่น ถ่าย 2 ชั่วโมง\n150+ ภาพ', hint: 'รายละเอียด: กด Enter ขึ้นบรรทัดใหม่ = ข้อใหม่' },
+            ],
+            serialize: list => list.filter(p => p.name.trim()).map(p => `${p.hot ? '★ ' : ''}${feClean(p.name)} | ${feClean(p.price)} | ${String(p.details || '').split('\n').map(feClean).filter(Boolean).join('; ').replace(/;\s*;/g, ';')}`).join('\n'),
+            after: () => { renderPackages(); },
+        });
+        const skillsEditor = makeListEditor({
+            box: 'skills-editor', add: 'skills-add', src: 'skills-src',
+            items: () => skillLines().map(l => { const m = /^(.*?)[\s:]+(\d{1,3})\s*%?$/.exec(l); return { name: m ? m[1].trim() : l, value: m ? Math.min(100, +m[2]) : 50 }; }),
+            blank: () => ({ name: '', value: 50 }),
+            fields: [ { key: 'name', ph: 'ชื่อทักษะ เช่น Python', max: 30 }, { key: 'value', type: 'range' } ],
+            serialize: list => list.filter(x => x.name.trim()).map(x => `${feClean(x.name).replace(/\s+\d+$/, '')} ${x.value}`).join('\n'),
+            after: () => renderSkills(false),
+        });
+        const devlogEditor = makeListEditor({
+            box: 'devlog-editor', add: 'devlog-add', src: 'devlog-src',
+            items: () => srcText('devlog-src').split(/\n\s*-{3,}\s*\n/).map(x => x.trim()).filter(Boolean).map(p => { const [head, ...body] = p.split('\n'); const m = /^(\d{4}-\d{2}-\d{2})\s*\|\s*(.*)$/.exec(head.trim()); return { date: m ? m[1] : '', title: m ? m[2] : head, body: body.join('\n').trim() }; }),
+            blank: () => ({ date: new Date().toLocaleDateString('en-CA'), title: '', body: '' }),
+            fields: [ { key: 'date', type: 'date', title: 'วันที่' }, { key: 'title', ph: 'หัวข้อโพสต์', max: 100 }, { key: 'body', type: 'textarea', wide: true, rows: 4, ph: 'เนื้อหา' } ],
+            serialize: list => list.filter(p => p.title.trim() || p.body.trim()).map(p => `${p.date || new Date().toLocaleDateString('en-CA')} | ${feClean(p.title)}\n${String(p.body || '').replace(/^\s*-{3,}\s*$/gm, '— — —').trim()}`).join('\n---\n'),
+            after: () => renderDevlog(),
+        });
+        // ช่องลิงก์: input ที่ผูกกับช่องข้อมูลเดิม
+        function syncUrlInputs(fromSrc) {
+            document.querySelectorAll('.fe-url').forEach(inp => {
+                const id = inp.dataset.src, mark = document.querySelector(`.fe-url-ok[data-for="${id}"]`);
+                if (fromSrc && document.activeElement !== inp) inp.value = srcText(id).trim();
+                const v = inp.value.trim(), ok = !v || (safeUrl(v) && safeUrl(v) !== 'https:///');
+                mark.className = 'fe-url-ok ' + (v ? (ok ? 'ok' : 'bad') : ''); mark.textContent = v ? (ok ? '✓ ลิงก์ใช้ได้' : '✕ ลิงก์ไม่ถูกต้อง') : '';
+            });
+        }
+        function initUrlInputs() {
+            document.querySelectorAll('.fe-url').forEach(inp => inp.addEventListener('input', () => { writeSrc(inp.dataset.src, inp.value.trim()); syncUrlInputs(false); renderLinks(); }));
+        }
+        function renderAdminEditors() { pkgEditor.render(); skillsEditor.render(); devlogEditor.render(); syncUrlInputs(true); }
 
         // ================= 12b. รีวิวจากลูกค้า: ฟอร์มส่ง + คิวรออนุมัติของแอดมิน =================
         let revFormStars = 0;
@@ -2411,7 +2587,7 @@
                 if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                 if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
             } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); }
-            revEditList = null;
+            revEditList = null; pkgEditor.reset(); skillsEditor.reset(); devlogEditor.reset();
             renderCalendar(); renderProjects(); renderSkills(false); renderEditableLists();
         }
 
