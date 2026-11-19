@@ -66,6 +66,75 @@
             return { cat, tags };
         }
         function thumbUrl(url) { return 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=640&h=400'; }
+        // ---------- รางวัลของโปรเจกต์ (เก็บใน project_list: awards[]) ----------
+        const AWARD_TIERS = {
+            gold:   { label: 'ชนะเลิศ',        mark: '1' },
+            silver: { label: 'รองชนะเลิศ อันดับ 1', mark: '2' },
+            bronze: { label: 'รองชนะเลิศ อันดับ 2', mark: '3' },
+            honor:  { label: 'รางวัลพิเศษ / ชมเชย', mark: '★' },
+            finalist: { label: 'ผ่านเข้ารอบ / Finalist', mark: 'F' },
+        };
+        function projectAwards(proj) {
+            return Array.isArray(proj.awards) ? proj.awards.filter(a => a && (a.title || a.from)).slice(0, 12) : [];
+        }
+        function renderMedals(proj, awards) {
+            if (!awards.length) return null;
+            const row = document.createElement('div'); row.className = 'pcard-medals';
+            awards.slice(0, 5).forEach(a => {
+                const tier = AWARD_TIERS[a.tier] ? a.tier : 'gold';
+                const b = document.createElement('button'); b.type = 'button';
+                b.className = 'medal medal-' + tier;
+                b.textContent = AWARD_TIERS[tier].mark;
+                b.title = `${a.title || AWARD_TIERS[tier].label}${a.from ? ' · ' + a.from : ''}`;
+                b.setAttribute('aria-label', `รางวัล: ${b.title} (กดเพื่อดูรายละเอียด)`);
+                b.addEventListener('click', (e) => { e.stopPropagation(); openAward(proj, a); });
+                row.appendChild(b);
+            });
+            if (awards.length > 5) { const more = document.createElement('span'); more.className = 'medal-more'; more.textContent = `+${awards.length - 5}`; row.appendChild(more); }
+            return row;
+        }
+        function openAward(proj, a) {
+            const tier = AWARD_TIERS[a.tier] ? a.tier : 'gold';
+            const m = document.getElementById('award-modal');
+            const medal = m.querySelector('.award-medal'); medal.className = 'award-medal medal medal-' + tier; medal.textContent = AWARD_TIERS[tier].mark;
+            m.querySelector('.award-tier').textContent = AWARD_TIERS[tier].label;
+            m.querySelector('.award-title').textContent = a.title || AWARD_TIERS[tier].label;
+            m.querySelector('.award-project').textContent = proj.name || '';
+            const rows = m.querySelector('.award-facts'); rows.replaceChildren();
+            [['ได้รับจาก', a.from], ['วันที่', a.date ? new Date(a.date + 'T00:00:00').toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }) : '']].forEach(([k, v]) => {
+                if (!v) return; const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = v; rows.append(dt, dd);
+            });
+            m.querySelector('.award-detail').textContent = a.detail || '';
+            const link = m.querySelector('.award-link'), u = safeUrl(a.url);
+            link.hidden = !u || u === 'https:///'; if (!link.hidden) link.href = u;
+            m.classList.add('open'); m.querySelector('.award-close').focus();
+            playLevelUpSound();
+        }
+        function closeAward() { document.getElementById('award-modal').classList.remove('open'); }
+        // แอดมิน: แก้รางวัลของโปรเจกต์ index (กดลงใน projectData ทันที แล้วกด SAVE CONFIG)
+        function renderAwardEditor(index) {
+            const wrap = document.createElement('div'); wrap.className = 'award-editor';
+            const head = document.createElement('div'); head.className = 'url-label'; head.textContent = '🏅 รางวัล:'; wrap.appendChild(head);
+            const list = projectData[index].awards = Array.isArray(projectData[index].awards) ? projectData[index].awards : [];
+            const rerender = () => renderProjects();
+            list.forEach((a, i) => {
+                const row = document.createElement('div'); row.className = 'award-row';
+                const sel = document.createElement('select');
+                Object.entries(AWARD_TIERS).forEach(([k, v]) => sel.appendChild(new Option(`${v.mark} ${v.label}`, k)));
+                sel.value = AWARD_TIERS[a.tier] ? a.tier : 'gold';
+                sel.addEventListener('change', () => { a.tier = sel.value; rerender(); });
+                const mk = (ph, key, type = 'text', max = 120) => { const inp = document.createElement(type === 'textarea' ? 'textarea' : 'input'); if (type !== 'textarea') inp.type = type; else inp.rows = 2; inp.placeholder = ph; inp.value = a[key] || ''; inp.maxLength = max; inp.addEventListener('input', () => { a[key] = inp.value; }); inp.addEventListener('change', rerender); return inp; };
+                const del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = 'X'; del.title = 'ลบรางวัลนี้';
+                del.addEventListener('click', () => { if (confirm('ลบรางวัลนี้?')) { list.splice(i, 1); rerender(); } });
+                const line1 = document.createElement('div'); line1.className = 'award-line'; line1.append(sel, del);
+                row.append(line1, mk('ชื่อรางวัล เช่น ชนะเลิศ Hackathon 2026', 'title'), mk('ได้รับจาก เช่น งาน/ผู้จัด/มหาวิทยาลัย', 'from'), mk('', 'date', 'date'), mk('รายละเอียด (ไม่ใส่ก็ได้)', 'detail', 'textarea', 400), mk('ลิงก์ข่าว/เกียรติบัตร (ไม่ใส่ก็ได้)', 'url', 'url', 300));
+                wrap.appendChild(row);
+            });
+            const add = document.createElement('button'); add.type = 'button'; add.className = 'action-btn award-add'; add.textContent = '[+] เพิ่มรางวัล';
+            add.addEventListener('click', () => { list.push({ tier: 'gold', title: '', from: '', date: '', detail: '', url: '' }); rerender(); });
+            wrap.appendChild(add);
+            return wrap;
+        }
         function renderProjects() {
             const container = document.getElementById('dynamic-project-container');
             if(!container) return;
@@ -86,11 +155,13 @@
                 const isPlaceholder = !link || link === 'https:///' || proj.name === 'NEW_PROJECT.EXE';
                 if (isPlaceholder && !isEdit) return;
                 const meta = projectMeta(proj);
-                if (!isEdit && projectFilter !== 'all' && meta.cat !== projectFilter) return;
+                const awards = projectAwards(proj);
+                if (!isEdit && projectFilter !== 'all' && (projectFilter === 'award' ? !awards.length : meta.cat !== projectFilter)) return;
                 shown++;
 
                 const card = document.createElement('article'); card.className = 'pcard';
                 const thumb = document.createElement('div'); thumb.className = 'pcard-thumb';
+                const medalRow = renderMedals(proj, awards);
                 thumb.textContent = meta.cat === 'game' ? '▶' : meta.cat === 'iot' ? '⚙' : '⌘';
                 if (!isPlaceholder) {
                     const badge = document.createElement('span'); badge.className = 'pcard-badge'; badge.textContent = '● LIVE';
@@ -126,6 +197,7 @@
                 }
                 field('ป้ายเทคโนโลยี (คั่นด้วย ,):', meta.tags.join(', '), v => { projectData[index].tags = v; });
                 field('ลิงก์โค้ด GitHub (ไม่ใส่ก็ได้):', proj.code || '', v => { projectData[index].code = v; });
+                if (isEdit) admin.appendChild(renderAwardEditor(index));
                 body.appendChild(admin);
 
                 const actions = document.createElement('div'); actions.className = 'pcard-actions';
@@ -153,6 +225,7 @@
                 }
                 body.appendChild(actions);
                 card.append(thumb, body);
+                if (medalRow) thumb.appendChild(medalRow);
                 container.appendChild(card);
             });
             if (!shown) {
@@ -732,6 +805,7 @@
             initMatrix();
 
             // ---- UX ----
+            document.getElementById('award-modal').addEventListener('click', (e) => { if (e.target.id === 'award-modal' || e.target.closest('.award-close')) closeAward(); });
             const topbar = document.getElementById('topbar');
             const onScroll = () => topbar.classList.toggle('scrolled', window.scrollY > 8);
             window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -800,6 +874,7 @@
             // Esc ปิดหน้าต่างที่เปิดอยู่
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
+                if (document.getElementById('award-modal').classList.contains('open')) { closeAward(); return; }
                 if (document.getElementById('photo-lightbox').classList.contains('open')) { photoLightbox(false); return; }
                 document.getElementById('cal-modal').style.display = 'none';
                 closeGallery(); closePreview(); closeTerm();

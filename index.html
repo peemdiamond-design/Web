@@ -38,7 +38,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="assets/css/site.css?v=3">
+    <link rel="stylesheet" href="assets/css/site.css?v=4">
 </head>
 <body>
     <a class="skip-link" href="#home">ข้ามไปเนื้อหา</a>
@@ -104,6 +104,7 @@
                     <button type="button" class="proj-chip" data-f="web">WEB</button>
                     <button type="button" class="proj-chip" data-f="game">GAME</button>
                     <button type="button" class="proj-chip" data-f="iot">IOT</button>
+                    <button type="button" class="proj-chip" data-f="award">🏆 AWARDS</button>
                 </div>
                 <div id="dynamic-project-container" class="project-list-container cards"></div>
             </section>
@@ -463,6 +464,21 @@
         <span data-i18n="line_chat">LINE</span>
     </a>
 
+    <!-- รายละเอียดรางวัล -->
+    <div id="award-modal" role="dialog" aria-modal="true" aria-labelledby="award-title">
+        <div class="award-card">
+            <button type="button" class="award-close" aria-label="ปิด">×</button>
+            <div class="award-ribbon" aria-hidden="true"></div>
+            <div class="award-medal medal" aria-hidden="true"></div>
+            <p class="award-tier"></p>
+            <h3 class="award-title" id="award-title"></h3>
+            <p class="award-project"></p>
+            <dl class="award-facts"></dl>
+            <p class="award-detail"></p>
+            <a class="btn award-link" href="#" target="_blank" rel="noopener" hidden>ดูข่าว / เกียรติบัตร ↗</a>
+        </div>
+    </div>
+
     <!-- Photo lightbox -->
     <div id="photo-lightbox" role="dialog" aria-label="ดูภาพเต็มจอ">
         <img id="photo-lightbox-img" alt="">
@@ -535,6 +551,6 @@
         </div>
     </div>
 
-    <script src="assets/js/app.js?v=3" defer></script>
+    <script src="assets/js/app.js?v=4" defer></script>
 </body>
 </html>
