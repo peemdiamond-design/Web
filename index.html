@@ -420,6 +420,40 @@
         #term .term-line { display: flex; gap: 8px; padding: 0 14px 10px; }
         #term input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: inherit; font: inherit; caret-color: #33ff66; }
 
+        /* ================= PHOTO SHOWCASE ================= */
+        .photo-sub { color: #525252; margin: -6px 0 16px; }
+        .photo-admin { display: none; text-align: left; }
+        .edit-mode .photo-admin { display: block; }
+        .photo-show { position: relative; width: 100%; aspect-ratio: 3 / 2; max-height: 72vh; background: #161616; border: 4px solid var(--ibm-text); box-shadow: 6px 6px 0 var(--ibm-shadow); overflow: hidden; outline: none; }
+        .photo-stage { position: absolute; inset: 0; cursor: zoom-in; }
+        .photo-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .9s ease; }
+        .photo-stage img.bg { object-fit: cover; filter: blur(24px) brightness(.45); transform: scale(1.15); }
+        .photo-stage img.on { opacity: 1; }
+        .photo-stage img.fg.on { animation: kenburns 7s ease-out forwards; }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.04); } }
+        .photo-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 44px; height: 44px; font-family: 'VT323'; font-size: 1.6rem; background: rgba(244,244,244,.9); color: var(--ibm-text); border: 2px solid var(--ibm-text); box-shadow: 2px 2px 0 #000; }
+        .photo-nav.prev { left: 10px; } .photo-nav.next { right: 10px; }
+        .photo-bar { position: absolute; left: 0; right: 0; bottom: 4px; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: linear-gradient(transparent, rgba(0,0,0,.7)); color: #fff; font-family: 'VT323'; font-size: 1.25rem; text-align: left; }
+        .photo-caption { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Chakra Petch', sans-serif; font-size: 1rem; }
+        .photo-play { background: none; border: 1px solid #fff; color: #fff; font-family: 'VT323'; font-size: 1.1rem; padding: 0 8px; }
+        .photo-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.15); z-index: 2; }
+        .photo-progress span { display: block; height: 100%; width: 0; background: var(--ibm-accent-blue); }
+        .photo-thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 12px 2px 6px; scrollbar-width: thin; }
+        .photo-thumbs button { flex: none; width: 84px; height: 56px; padding: 0; border: 2px solid var(--ibm-key-dark); background: #161616; opacity: .6; transition: opacity .15s; }
+        .photo-thumbs button img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .photo-thumbs button.on { opacity: 1; border-color: var(--ibm-accent-blue); box-shadow: 0 0 0 2px var(--ibm-accent-blue); }
+        .photo-thumbs button:hover { opacity: 1; }
+        #photo-lightbox { display: none; position: fixed; inset: 0; z-index: 3200; background: rgba(0,0,0,.94); align-items: center; justify-content: center; }
+        #photo-lightbox.open { display: flex; }
+        #photo-lightbox img { max-width: 94vw; max-height: 86vh; object-fit: contain; border: 3px solid #fff; }
+        .photo-lb-caption { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; color: #fff; padding: 0 60px; }
+        @media screen and (max-width: 768px) {
+            .photo-show { aspect-ratio: 4 / 3; }
+            .photo-nav { width: 36px; height: 36px; font-size: 1.3rem; }
+            .photo-thumbs button { width: 64px; height: 44px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .photo-stage img.fg.on { animation: none; } .photo-stage img { transition: none; } }
+
         /* ================= VISITOR COUNTER ================= */
         .visit-counter { display: inline-flex; align-items: center; gap: 6px; }
         .visit-counter b { background: #000; color: #33ff66; padding: 0 8px; letter-spacing: 3px; border: 2px solid var(--ibm-text); font-weight: normal; }
@@ -476,6 +510,28 @@
                                 <button type="button" class="proj-chip" data-f="iot">IOT</button>
                             </div>
                             <div id="dynamic-project-container" class="project-list-container cards"></div>
+                        </div>
+
+                        <!-- โซนโชว์ภาพถ่าย (ดึงจาก Google Drive ผ่าน retro-api) -->
+                        <div class="timeline-section" id="photo-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px; display: none;">
+                            <h2 class="editable timeline-title-main" id="photo-sec-title" data-field="photo_sec_title">DIRECTORY: \PHOTOGRAPHY</h2>
+                            <p class="editable photo-sub" id="photo-sec-sub" data-field="photo_sec_sub">ตัวอย่างผลงานภาพถ่าย</p>
+                            <div class="admin-hint photo-admin">
+                                [!] แอดมิน: วางลิงก์โฟลเดอร์ Google Drive ที่นี่ แล้วกด SAVE CONFIG (แชร์โฟลเดอร์ให้ firebase-adminsdk-fbsvc@website101-1f97f.iam.gserviceaccount.com แบบ Viewer ก่อน) · คำบรรยายใต้ภาพ = ช่อง "คำอธิบาย" ของไฟล์ใน Drive
+                                <div class="editable" id="photo-folder-id" data-field="photo_folder_id" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
+                            </div>
+                            <div class="photo-show" id="photo-show" tabindex="0" aria-roledescription="carousel" aria-label="ภาพถ่าย">
+                                <div class="photo-stage" id="photo-stage"></div>
+                                <button type="button" class="photo-nav prev" id="photo-prev" aria-label="ภาพก่อนหน้า">◀</button>
+                                <button type="button" class="photo-nav next" id="photo-next" aria-label="ภาพถัดไป">▶</button>
+                                <div class="photo-bar">
+                                    <span class="photo-caption" id="photo-caption"></span>
+                                    <span class="photo-count" id="photo-count"></span>
+                                    <button type="button" class="photo-play" id="photo-play" aria-label="หยุด/เล่นสไลด์">❚❚</button>
+                                </div>
+                                <div class="photo-progress"><span id="photo-progress"></span></div>
+                            </div>
+                            <div class="photo-thumbs" id="photo-thumbs" aria-label="เลือกภาพ"></div>
                         </div>
 
                         <!-- โซนความทรงจำ -->
@@ -645,6 +701,15 @@
             <a href="#contact">CONTACT</a>
         </nav>
     </footer>
+
+    <!-- Photo lightbox -->
+    <div id="photo-lightbox" role="dialog" aria-label="ดูภาพเต็มจอ">
+        <img id="photo-lightbox-img" alt="">
+        <button type="button" class="photo-nav prev" id="photo-lb-prev" aria-label="ภาพก่อนหน้า">◀</button>
+        <button type="button" class="photo-nav next" id="photo-lb-next" aria-label="ภาพถัดไป">▶</button>
+        <button type="button" class="gallery-close" id="photo-lb-close" aria-label="ปิด">×</button>
+        <div class="photo-lb-caption" id="photo-lb-caption"></div>
+    </div>
 
     <!-- Terminal (easter egg: กด ` เพื่อเปิด) -->
     <div id="term" role="dialog" aria-label="Terminal">
@@ -1376,6 +1441,7 @@
             document.getElementById('skills-src').addEventListener('blur', () => renderSkills(false));
             renderSkills(false);
             loadVisitCount();
+            initPhotos();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
             const navEl = document.querySelector('.navbar');
             const syncNavH = () => document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
@@ -1409,7 +1475,7 @@
             // Esc ปิดหน้าต่างที่เปิดอยู่
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
-                closeGallery(); closePreview(); closeTerm();
+                closeGallery(); closePreview(); closeTerm(); photoLightbox(false);
                 ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
             });
 
@@ -1499,6 +1565,86 @@
             } catch (e) { el.parentElement.style.display = 'none'; }
         }
 
+        // 9e. โชว์ภาพถ่าย: สไลด์อัตโนมัติจากโฟลเดอร์ Google Drive
+        const PHOTO_INTERVAL = 5000;
+        const photoState = { list: [], i: 0, timer: null, started: 0, paused: false, hover: false, visible: true };
+        const photoUrl = (id, w) => `${SERVER_URL}/photo/${encodeURIComponent(id)}?w=${w}`;
+        function photoShow(i, user) {
+            const st = photoState, n = st.list.length; if (!n) return;
+            st.i = (i + n) % n;
+            const p = st.list[st.i];
+            const stage = document.getElementById('photo-stage');
+            const bg = document.createElement('img'); bg.className = 'bg'; bg.alt = ''; bg.src = photoUrl(p.id, 400);
+            const fg = document.createElement('img'); fg.className = 'fg'; fg.alt = p.caption || `ภาพที่ ${st.i + 1}`; fg.src = photoUrl(p.id, 1600);
+            const reveal = () => { [bg, fg].forEach(x => x.classList.add('on')); [...stage.children].forEach(old => { if (old !== bg && old !== fg) { old.classList.remove('on'); setTimeout(() => old.remove(), 1000); } }); };
+            stage.append(bg, fg);
+            if (fg.complete) requestAnimationFrame(reveal); else { fg.onload = reveal; fg.onerror = reveal; }
+            document.getElementById('photo-caption').textContent = p.caption || '';
+            document.getElementById('photo-count').textContent = `${String(st.i + 1).padStart(2, '0')}/${String(n).padStart(2, '0')}`;
+            document.querySelectorAll('#photo-thumbs button').forEach((b, k) => { b.classList.toggle('on', k === st.i); if (k === st.i && user) b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); });
+            const nx = new Image(); nx.src = photoUrl(st.list[(st.i + 1) % n].id, 1600); // โหลดภาพถัดไปรอไว้
+            if (document.getElementById('photo-lightbox').classList.contains('open')) photoLightbox(true);
+            st.started = performance.now();
+        }
+        function photoTick() {
+            const st = photoState, bar = document.getElementById('photo-progress');
+            const running = !st.paused && !st.hover && st.visible && !document.hidden && st.list.length > 1 && !document.getElementById('photo-lightbox').classList.contains('open');
+            if (!running) { st.started = performance.now() - (parseFloat(bar.dataset.p || 0) * PHOTO_INTERVAL); return; }
+            const p = Math.min(1, (performance.now() - st.started) / PHOTO_INTERVAL);
+            bar.dataset.p = p; bar.style.width = (p * 100) + '%';
+            if (p >= 1) { bar.dataset.p = 0; photoShow(st.i + 1); }
+        }
+        function photoLightbox(open) {
+            const lb = document.getElementById('photo-lightbox'), p = photoState.list[photoState.i];
+            if (!open || !p) { lb.classList.remove('open'); return; }
+            document.getElementById('photo-lightbox-img').src = photoUrl(p.id, 2000);
+            document.getElementById('photo-lightbox-img').alt = p.caption || '';
+            document.getElementById('photo-lb-caption').textContent = p.caption || '';
+            lb.classList.add('open');
+        }
+        async function loadPhotos() {
+            const sec = document.getElementById('photo-section');
+            try {
+                const r = await fetch(`${SERVER_URL}/photos`); if (!r.ok) throw new Error(r.status);
+                const list = await r.json();
+                photoState.list = Array.isArray(list) ? list.filter(p => p && /^[A-Za-z0-9_-]{10,128}$/.test(p.id)) : [];
+            } catch (e) { photoState.list = []; }
+            const thumbs = document.getElementById('photo-thumbs'); thumbs.replaceChildren();
+            photoState.list.forEach((p, k) => {
+                const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `ภาพที่ ${k + 1}`);
+                const im = document.createElement('img'); im.loading = 'lazy'; im.alt = ''; im.src = photoUrl(p.id, 200);
+                b.appendChild(im); b.addEventListener('click', () => { photoShow(k, true); }); thumbs.appendChild(b);
+            });
+            document.getElementById('photo-show').style.display = photoState.list.length ? '' : 'none';
+            sec.style.display = (photoState.list.length || document.body.classList.contains('edit-mode')) ? '' : 'none';
+            if (photoState.list.length) photoShow(0);
+        }
+        function initPhotos() {
+            const show = document.getElementById('photo-show'); if (!show) return;
+            document.getElementById('photo-prev').addEventListener('click', () => photoShow(photoState.i - 1, true));
+            document.getElementById('photo-next').addEventListener('click', () => photoShow(photoState.i + 1, true));
+            document.getElementById('photo-play').addEventListener('click', (e) => { photoState.paused = !photoState.paused; e.currentTarget.textContent = photoState.paused ? '▶' : '❚❚'; });
+            document.getElementById('photo-stage').addEventListener('click', () => photoLightbox(true));
+            show.addEventListener('mouseenter', () => photoState.hover = true);
+            show.addEventListener('mouseleave', () => photoState.hover = false);
+            show.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') photoShow(photoState.i - 1, true); if (e.key === 'ArrowRight') photoShow(photoState.i + 1, true); });
+            let sx = null; // ปัดซ้าย-ขวาบนมือถือ
+            show.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+            show.addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 40) photoShow(photoState.i + (dx < 0 ? 1 : -1), true); });
+            new IntersectionObserver(es => es.forEach(en => photoState.visible = en.isIntersecting), { threshold: 0.2 }).observe(show);
+            document.getElementById('photo-lb-close').addEventListener('click', () => photoLightbox(false));
+            document.getElementById('photo-lb-prev').addEventListener('click', () => photoShow(photoState.i - 1, true));
+            document.getElementById('photo-lb-next').addEventListener('click', () => photoShow(photoState.i + 1, true));
+            document.getElementById('photo-lightbox').addEventListener('click', (e) => { if (e.target.id === 'photo-lightbox') photoLightbox(false); });
+            document.addEventListener('keydown', (e) => {
+                if (!document.getElementById('photo-lightbox').classList.contains('open')) return;
+                if (e.key === 'ArrowLeft') photoShow(photoState.i - 1, true);
+                if (e.key === 'ArrowRight') photoShow(photoState.i + 1, true);
+            });
+            setInterval(photoTick, 100);
+            loadPhotos();
+        }
+
         // 10. Matrix Background 
         let mCanvas, mCtx, mWidth, mHeight, columns, drops = []; 
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</>{}[]~#'.split(''); const fontSize = 14;
@@ -1557,6 +1703,7 @@
                     // แต่ถ้าเป็น "แอดมิน" (peemdiamond@gmail.com) ถึงจะให้สิทธิ์แก้เว็บ และโชว์ปุ่มเพิ่มผู้ใช้
                     if (user.email === 'peemdiamond@gmail.com') {
                         document.body.classList.add('edit-mode'); 
+                        document.getElementById('photo-section').style.display = '';
                         document.getElementById('save-btn').style.display = 'block'; 
                         document.getElementById('add-user-btn').style.display = 'block'; 
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'block');
@@ -1570,6 +1717,7 @@
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     }
                     renderProjects(); renderAgenda();
+                    if (!document.body.classList.contains('edit-mode') && !photoState.list.length) document.getElementById('photo-section').style.display = 'none';
 
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
