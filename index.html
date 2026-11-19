@@ -284,7 +284,8 @@
         .agenda-empty { padding: 16px; font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-shadow); }
         @media screen and (max-width: 768px) {
             .cal-view-toggle { display: inline-flex; }
-            #sound-toggle { position: absolute; top: 18px; right: 15px; }
+            #sound-toggle { position: absolute; top: 10px; right: 8px; font-size: 0.95rem; padding: 4px 7px; }
+            .logo { font-size: 2.3rem; }
             .album-images-container { gap: 14px; }
             body:not(.cal-grid-mode) #schedule .calendar-wrapper { display: none; }
             body:not(.cal-grid-mode) #schedule .agenda { display: block; }
@@ -295,6 +296,18 @@
         .site-footer a, .site-footer button { color: var(--ibm-text); background: none; border: none; font-family: 'VT323'; font-size: 1.2rem; text-decoration: underline; padding: 0; }
         .site-footer nav { display: flex; gap: 16px; }
         :focus-visible { outline: 3px solid var(--ibm-accent-blue); outline-offset: 2px; }
+
+        /* ================= PROFILE ================= */
+        #about-details { font-family: 'Chakra Petch', sans-serif; font-size: 1.1rem; color: #262626; line-height: 1.85; white-space: normal; padding: 4px 0 0; overflow-wrap: break-word; text-wrap: pretty; }
+        #about-details b { color: var(--ibm-accent-blue); }
+        .edit-mode #about-details { white-space: pre-wrap; padding: 10px; }
+        @media screen and (max-width: 768px) {
+            .about-layout { flex-direction: column; align-items: center !important; gap: 16px !important; padding: 16px !important; }
+            .about-image-wrapper { flex: none !important; width: min(220px, 70%); }
+            .about-text-content { width: 100%; padding: 0 !important; }
+            .about-text-content h2 { font-size: 2rem !important; text-align: center; }
+            #about-details { font-size: 1.05rem; }
+        }
     </style>
 </head>
 <body>
@@ -443,7 +456,7 @@
                         <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img loading="lazy" src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
                         <div class="about-text-content" style="flex: 1; padding: 10px;">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
-                            <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
+                            <div class="editable editable-block" id="about-details" data-field="about_details">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</div>
                         </div>
                     </div>
                 </div>
@@ -568,10 +581,17 @@
         }
         // ข้อความที่แก้ได้จากหน้าเว็บ: เก็บไว้เป็นข้อความล้วน อนุญาตแค่การขึ้นบรรทัดใหม่ (<br>)
         function sanitizeRich(html) {
+            // ขึ้นบรรทัด: <br> = บรรทัดใหม่, ท้าย <p>/<div> = ย่อหน้าใหม่ · เก็บตัวหนา <b>/<strong> ไว้
+            const marked = String(html ?? '')
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<\/(p|div)>/gi, '\n\n')
+                .replace(/<(b|strong)(\s[^>]*)?>/gi, '\u0001').replace(/<\/(b|strong)>/gi, '\u0002');
             // DOMParser ไม่รันสคริปต์/ไม่โหลดรูป (ต่างจาก innerHTML ที่ทำให้ <img onerror> ทำงาน)
-            const marked = String(html ?? '').replace(/<br\s*\/?>|<(div|p)(\s[^>]*)?>/gi, '\n');
-            const text = new DOMParser().parseFromString(marked, 'text/html').body.textContent || '';
-            return escapeHtml(text.replace(/^\n+/, '')).replace(/\n/g, '<br>');
+            let text = new DOMParser().parseFromString(marked, 'text/html').body.textContent || '';
+            text = text.replace(/[ \t ]+/g, ' ')          // ช่องว่างซ้อน/&nbsp; ยาวๆ ที่ติดมาจากการก๊อปวาง → ช่องเดียว
+                .split('\n').map(line => line.trim()).join('\n')
+                .replace(/\n{3,}/g, '\n\n').trim();
+            return escapeHtml(text).replace(/\u0001/g, '<b>').replace(/\u0002/g, '</b>').replace(/\n/g, '<br>');
         }
         // อนุญาตเฉพาะลิงก์ http/https เท่านั้น (กัน javascript: ฯลฯ)
         function safeUrl(url) {
