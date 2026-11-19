@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEEMCN25 | IBM Retro Edition</title>
+    <meta name="description" content="PEEMCN25 — พอร์ตโฟลิโอ ผลงาน ตารางงาน และคลังไฟล์ของภีม นักศึกษาวิศวกรรมคอมพิวเตอร์">
+    <meta property="og:title" content="PEEMCN25 | IBM Retro Edition">
+    <meta property="og:description" content="พอร์ตโฟลิโอ ผลงาน และคลังไฟล์ของภีม นักศึกษาวิศวกรรมคอมพิวเตอร์">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://web.peemcn25.dev/">
+    <meta property="og:image" content="https://web.peemcn25.dev/images/cover.jpg">
+    <meta name="theme-color" content="#e0e0e0">
+    <link rel="icon" type="image/png" href="images/Code_Generated_Image.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     
@@ -144,8 +152,8 @@
         .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #da1e28; color: #fff; border: 1px solid var(--ibm-text); font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; box-shadow: 1px 1px 0 #000; }
         .edit-mode .delete-event-btn { display: block; }
 
-        #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
-        .edit-mode #admin-hint { display: block; }
+        .admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
+        .edit-mode .admin-hint { display: block; }
 
         @media screen and (max-width: 768px) { 
             .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
@@ -220,6 +228,7 @@
             /* --- เพิ่ม CSS แก้ไขตาราง Archive ให้แสดงชื่อไฟล์ในมือถือ --- */
             .dos-col-size { display: none !important; } /* ซ่อนขนาดไฟล์บนมือถือ */
             .dos-col-date { width: 75px !important; font-size: 0.9rem !important; white-space: normal !important; text-align: right !important; line-height: 1.1; flex: none; }
+            .timeline-title-main { font-size: 2rem; overflow-wrap: anywhere; }
             .dos-col-name { flex: 1 !important; min-width: 0 !important; }
             .file-info { min-width: 0 !important; }
             .file-link { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block; width: 100%; }
@@ -270,14 +279,14 @@
                         
                         <div class="hero-section" style="min-height: 250px;">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4.5rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: clamp(2.2rem, 9vw, 4.5rem); text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
-                            <div id="admin-hint" class="edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
+                            <div class="admin-hint edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
                                 [!] แอดมิน: แก้ข้อความได้โดยตรงในกล่อง | กด "ADD NEW PROJECT" ด้านล่างเพื่อเพิ่มกล่องใหม่ได้
                             </div>
                             <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
@@ -298,7 +307,7 @@
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
-                                        <img src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
+                                        <img loading="lazy" src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
                                         <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES.SYS</p>
                                     </div>
                                 </div>
@@ -318,7 +327,7 @@
                 </div>
                 <div class="window-body">
                     <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">TASK SCHEDULER</h1>
-                    <div id="admin-hint" class="edit-hint-cal">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
+                    <div class="admin-hint edit-hint-cal">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
                     <div class="calendar-header">
                         <button class="sound-trigger" onclick="changeMonth(-1)">&#9664;</button>
                         <h2 id="month-year-label">MONTH YEAR</h2>
@@ -381,7 +390,7 @@
                 </div>
                 <div class="window-body">
                     <div class="about-layout" style="display: flex; gap: 40px; align-items: flex-start; margin: 20px 0; text-align: left; width: 100%; background: #fff; border: 2px solid var(--ibm-text); padding: 20px; box-shadow: 5px 5px 0px var(--ibm-shadow);">
-                        <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
+                        <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img loading="lazy" src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
                         <div class="about-text-content" style="flex: 1; padding: 10px;">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
                             <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
@@ -417,13 +426,13 @@
         <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
         <div class="gallery-content">
             <div id="album-first_meet" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
-                <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
-                <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
             </div>
             <div id="album-class_memories" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
-                <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
             </div>
         </div>
     </div>
@@ -494,17 +503,28 @@
            PEEMCN25 - App Logic (ALL-IN-ONE)
            ========================================= */
 
-        // 1. ระบบรายงาน Bug อัตโนมัติ
-        window.onerror = function(message, source, lineno, colno, error) {
-            if (source && source.includes('chrome-extension')) return false;
-            const bugData = { message: message, source: source, lineno: lineno, colno: colno };
-            fetch('https://jogging-flagstick-wrongly.ngrok-free.dev/report-bug', {
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
-                body: JSON.stringify(bugData)
-            }).catch(err => console.log('ไม่สามารถส่งรายงานบั๊กได้', err));
-            return false; 
-        };
+        // 1. ตัวช่วยความปลอดภัย (กัน XSS)
+        //    (ลบระบบรายงานบั๊กที่ส่งไป ngrok ออกแล้ว — ปลายทางปิดไปแล้ว ทุก error จะยิงคำขอที่ล้มเหลว)
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+        // ข้อความที่แก้ได้จากหน้าเว็บ: เก็บไว้เป็นข้อความล้วน อนุญาตแค่การขึ้นบรรทัดใหม่ (<br>)
+        function sanitizeRich(html) {
+            // DOMParser ไม่รันสคริปต์/ไม่โหลดรูป (ต่างจาก innerHTML ที่ทำให้ <img onerror> ทำงาน)
+            const marked = String(html ?? '').replace(/<br\s*\/?>|<(div|p)(\s[^>]*)?>/gi, '\n');
+            const text = new DOMParser().parseFromString(marked, 'text/html').body.textContent || '';
+            return escapeHtml(text.replace(/^\n+/, '')).replace(/\n/g, '<br>');
+        }
+        // อนุญาตเฉพาะลิงก์ http/https เท่านั้น (กัน javascript: ฯลฯ)
+        function safeUrl(url) {
+            let link = String(url || '').trim();
+            if (!link) return '';
+            if (!/^[a-z][a-z0-9+.-]*:/i.test(link)) link = 'https://' + link;
+            try { const u = new URL(link); return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : ''; } catch (e) { return ''; }
+        }
+        function decodeEntities(text) {
+            const tmp = document.createElement('textarea'); tmp.innerHTML = String(text ?? ''); return tmp.value;
+        }
 
         // 2. ตัวแปรตั้งต้นและ API
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
@@ -528,23 +548,52 @@
             if(!container) return;
             container.innerHTML = '';
             const isEdit = document.body.classList.contains('edit-mode');
+            // สร้างด้วย DOM API + textContent: ชื่อ/คำอธิบาย/URL จาก Firestore จะไม่ถูกตีความเป็น HTML
+            const makeEditable = (tag, className, text, onSave) => {
+                const node = document.createElement(tag);
+                node.className = className + (isEdit ? ' editable' : '');
+                node.textContent = text ?? '';
+                if (isEdit) { node.contentEditable = 'true'; node.addEventListener('blur', () => onSave(node.innerText.trim())); }
+                return node;
+            };
             projectData.forEach((proj, index) => {
                 const el = document.createElement('div'); el.className = 'project-item';
-                let deleteBtnHTML = isEdit ? `<button class="action-btn sound-trigger" style="background:#da1e28; margin-left:5px; padding:4px 10px;" onclick="deleteProject(${index})">X</button>` : '';
-                el.innerHTML = `
-                    <div class="project-header">
-                        <h3 class="project-title ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].name = this.innerText">${proj.name}</h3>
-                        <div><button class="action-btn sound-trigger" onclick="openTargetLinkStr('${proj.url}')">${proj.icon || '🔗 OPEN WEB'}</button>${deleteBtnHTML}</div>
-                    </div>
-                    <p class="project-desc ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].desc = this.innerText">${proj.desc}</p>
-                    <div class="admin-url-box"><span class="url-label">TARGET URL: </span><span class="proj-url-edit ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].url = this.innerText">${proj.url}</span></div>
-                `;
+
+                const header = document.createElement('div'); header.className = 'project-header';
+                header.appendChild(makeEditable('h3', 'project-title', proj.name, v => { projectData[index].name = v; }));
+                const btnWrap = document.createElement('div');
+                const openBtn = document.createElement('button');
+                openBtn.className = 'action-btn sound-trigger';
+                openBtn.textContent = proj.icon || '🔗 OPEN WEB';
+                openBtn.addEventListener('mousedown', playRetroClick);
+                openBtn.addEventListener('click', () => openTargetLinkStr(projectData[index].url));
+                btnWrap.appendChild(openBtn);
+                if (isEdit) {
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'action-btn sound-trigger';
+                    delBtn.style.cssText = 'background:#da1e28; margin-left:5px; padding:4px 10px;';
+                    delBtn.textContent = 'X';
+                    delBtn.addEventListener('click', () => deleteProject(index));
+                    btnWrap.appendChild(delBtn);
+                }
+                header.appendChild(btnWrap);
+
+                const desc = makeEditable('p', 'project-desc', proj.desc, v => { projectData[index].desc = v; });
+                const urlBox = document.createElement('div'); urlBox.className = 'admin-url-box';
+                const urlLabel = document.createElement('span'); urlLabel.className = 'url-label'; urlLabel.textContent = 'TARGET URL: ';
+                urlBox.append(urlLabel, makeEditable('span', 'proj-url-edit', proj.url, v => { projectData[index].url = v; }));
+
+                el.append(header, desc, urlBox);
                 container.appendChild(el);
             });
         }
         window.addNewProject = function() { projectData.push({ name: "NEW_PROJECT.EXE", desc: "> คำอธิบาย...", url: "https://", icon: "🔗 OPEN WEB" }); renderProjects(); document.getElementById('save-btn').click(); }
         window.deleteProject = function(index) { if(confirm("DELETE THIS PROJECT? (Y/N)")) { projectData.splice(index, 1); renderProjects(); document.getElementById('save-btn').click(); } }
-        window.openTargetLinkStr = function(url) { if (document.body.classList.contains('edit-mode')) return; if (url && url.trim() !== '') { let link = url.trim(); if (!link.startsWith('http')) { link = 'https://' + link; } window.open(link, '_blank'); } }
+        window.openTargetLinkStr = function(url) {
+            if (document.body.classList.contains('edit-mode')) return;
+            const link = safeUrl(url);
+            if (link && link !== 'https:///') window.open(link, '_blank', 'noopener');
+        }
 
         // 4. ระบบแฟ้มข้อมูล ARCHIVE (Google Drive)
         let allFiles = []; 
@@ -553,6 +602,8 @@
         let currentSort = { column: 'date', direction: 'desc' }; 
         let currentViewMode = 'list'; 
         let targetSecretBtn = null;
+        let inSecretArea = false; // อยู่ในโฟลเดอร์ลับ (รวมโฟลเดอร์ย่อย) หรือไม่
+        const SECRET_FOLDER_ID = '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8';
 
         // ระบบแจ้งเตือนเข้า LINE บอท
         function sendLineNotify(dateStr, title) { 
@@ -566,10 +617,9 @@
         // โฟลเดอร์ลับ + แจ้งเตือน
         window.loadSecretFolder = function(btnElement) {
             const currentUser = firebase.auth().currentUser;
-            const hasSecretAccess = sessionStorage.getItem('secret_unlocked') === 'true';
             
-            if (currentUser || hasSecretAccess) {
-                loadDriveFolder(btnElement, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+            if (currentUser) {
+                loadDriveFolder(btnElement, 'TOP_SECRET', SECRET_FOLDER_ID);
                 
                 // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้เตือนว่าแอบเข้าโฟลเดอร์ลับ
                 if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
@@ -590,7 +640,8 @@
         window.loadDriveFolder = function(btnElement, folderName, baseFolderId) {
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
-            document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${baseFolderId}`;
+            inSecretArea = baseFolderId === SECRET_FOLDER_ID;
+            document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${encodeURIComponent(baseFolderId)}`;
             document.getElementById('archive-ext-link').style.display = 'flex';
             folderHistory = [{ id: baseFolderId, name: folderName }];
             currentFolderId = baseFolderId;
@@ -611,7 +662,7 @@
         // ระบบดูไฟล์ + แจ้งเตือน
         window.openPreview = function(fileId, fileName) {
             document.getElementById('preview-title').innerText = `VIEWING: ${fileName}`;
-            document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${fileId}/preview`;
+            document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview`;
             document.getElementById('preview-modal').style.display = 'flex';
 
             const currentUser = firebase.auth().currentUser;
@@ -636,13 +687,14 @@
                     const token = await currentUser.getIdToken(); 
                     headers['Authorization'] = `Bearer ${token}`;
                 }
-                const fetchUrl = `${SERVER_URL}/list-files?folderId=${folderId}`;
+                const fetchUrl = `${SERVER_URL}/list-files?folderId=${encodeURIComponent(folderId)}`;
                 const response = await fetch(fetchUrl, { headers: headers });
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
-                allFiles = await response.json(); 
+                const data = await response.json();
+                allFiles = Array.isArray(data) ? data.filter(f => f && typeof f.name === 'string') : []; 
                 filterFiles(); 
             } catch (error) { 
-                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem; padding:10px;">> ERROR: CONNECTION LOST<br>> DETAILS: ${error.message}</span>`; 
+                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem; padding:10px;">> ERROR: CONNECTION LOST<br>> DETAILS: ${escapeHtml(error.message)}</span>`; 
             }
         }
 
@@ -682,6 +734,18 @@
             filterFiles();
         }
 
+        // แทน onclick="...('ชื่อไฟล์')" ด้วย data-attribute + ตัวดักคลิกตัวเดียว (ชื่อไฟล์แปลกๆ จะรันโค้ดไม่ได้)
+        function fileClickAttrs(file, isFolder) {
+            return `data-action="${isFolder ? 'folder' : 'file'}" data-id="${escapeHtml(file.id)}" data-name="${escapeHtml(file.name)}"`;
+        }
+        document.addEventListener('click', (e) => {
+            const item = e.target.closest('#file-list [data-action]');
+            if (!item) return;
+            playRetroClick();
+            if (item.dataset.action === 'folder') enterFolder(item.dataset.id, item.dataset.name);
+            else openPreview(item.dataset.id, item.dataset.name);
+        });
+
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             let htmlStr = ''; 
@@ -702,21 +766,22 @@
                 </div>`;
 
                 sortedFiles.forEach(file => {
-                    const safeName = file.name.replace(/'/g, "\\'");
                     const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
                     const dateStr = formatDOSDate(file.createdTime);
                     const sizeStr = formatDOSSize(file.size);
+                    const safeName = escapeHtml(file.name);
+                    const thumb = safeUrl(file.thumbnailLink);
 
-                    let clickAction = isFolder ? `onclick="enterFolder('${file.id}', '${safeName}')"` : `onclick="openPreview('${file.id}', '${safeName}')"`;
+                    let clickAction = fileClickAttrs(file, isFolder);
                     let iconHtml = isFolder ? `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff; flex:none;">📁</div>` : 
-                                   (file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb" style="flex:none;">` : `<div class="file-icon" style="flex:none;">📄</div>`);
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" style="flex:none;" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="flex:none;">📄</div>`);
                     
                     htmlStr += `
                     <div class="file-item sound-trigger" ${clickAction} style="cursor: pointer; display: flex; align-items: center;">
                         <div class="file-info">
                             ${iconHtml}
                             <span class="dos-col-name" style="text-overflow: ellipsis;">
-                                <a class="file-link" style="display:inline; text-decoration:none;">${file.name}</a>
+                                <a class="file-link" style="display:inline; text-decoration:none;">${safeName}</a>
                             </span>
                         </div>
                         <span class="dos-col-date" style="color:var(--ibm-shadow); font-family: 'VT323'; font-size: 1.1rem;">${dateStr}</span>
@@ -726,15 +791,16 @@
             } else {
                 htmlStr += `<div class="grid-container">`;
                 sortedFiles.forEach(file => {
-                    const safeName = file.name.replace(/'/g, "\\'");
                     const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
-                    let clickAction = isFolder ? `onclick="enterFolder('${file.id}', '${safeName}')"` : `onclick="openPreview('${file.id}', '${safeName}')"`;
+                    const safeName = escapeHtml(file.name);
+                    const thumb = safeUrl(file.thumbnailLink);
+                    let clickAction = fileClickAttrs(file, isFolder);
                     let iconHtml = isFolder ? `<div class="file-icon" style="color:var(--ibm-accent-blue); background:transparent; border:none;">📁</div>` : 
-                                   (file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">📄</div>`);
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">📄</div>`);
                     htmlStr += `
-                    <div class="grid-item sound-trigger" ${clickAction} title="${file.name}">
+                    <div class="grid-item sound-trigger" ${clickAction} title="${safeName}">
                         ${iconHtml}
-                        <span class="file-link">${file.name}</span>
+                        <span class="file-link">${safeName}</span>
                     </div>`;
                 });
                 htmlStr += `</div>`;
@@ -751,7 +817,7 @@
             let breadcrumbsHtml = `<span style="color: var(--ibm-key-dark); font-family: 'VT323';">C:\\ARCHIVE</span>`;
             folderHistory.forEach((f, index) => {
                 breadcrumbsHtml += `<span style="margin: 0 8px; color: var(--ibm-key-dark);">></span>`;
-                breadcrumbsHtml += `<a class="sound-trigger" style="color: #fff; font-family: 'VT323'; text-decoration: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='var(--ibm-accent-blue)'; this.style.textDecoration='underline';" onmouseout="this.style.color='#fff'; this.style.textDecoration='none';" onclick="jumpToFolder(${index})">${f.name}</a>`;
+                breadcrumbsHtml += `<a class="sound-trigger" style="color: #fff; font-family: 'VT323'; text-decoration: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='var(--ibm-accent-blue)'; this.style.textDecoration='underline';" onmouseout="this.style.color='#fff'; this.style.textDecoration='none';" onclick="jumpToFolder(${index})">${escapeHtml(f.name)}</a>`;
             });
             pathContainer.innerHTML = breadcrumbsHtml;
         }
@@ -779,7 +845,7 @@
                 dayEvents.forEach(ev => {
                     const globalIndex = scheduleData.indexOf(ev); const evEl = document.createElement('div');
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
-                    const textSpan = document.createElement('span'); textSpan.innerHTML = `> ${ev.title}`;
+                    const textSpan = document.createElement('span'); textSpan.textContent = `> ${decodeEntities(ev.title)}`;
                     textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
                     const delBtn = document.createElement('button'); delBtn.className = 'delete-event-btn sound-trigger'; delBtn.textContent = 'x';
@@ -791,7 +857,7 @@
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
+        window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.slice(0, 200); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
         // 6. ระบบ Gallery & Tab Navigation
@@ -832,7 +898,7 @@
                 } 
             });
             document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
-                el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
+                el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.textContent = cleanText; }); 
             });
 
             // Enter สำหรับ Login แอดมิน
@@ -921,7 +987,7 @@
                             sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
                         }
                         
-                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', SECRET_FOLDER_ID);
                         
                     } catch (error) {
                         alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
@@ -946,6 +1012,8 @@
         }
         function drawMatrix() { 
             if(!mCtx) return;
+            // ไม่วาดตอนสลับไปแท็บอื่น หรือไม่ได้อยู่หน้า HOME (ประหยัดแบต/CPU บนมือถือ)
+            if (document.hidden || !document.getElementById('home').classList.contains('active')) return;
             mCtx.fillStyle = 'rgba(244, 244, 244, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); 
             mCtx.fillStyle = '#a8a8a8'; mCtx.font = fontSize + 'px "VT323", monospace'; 
             for(let i = 0; i < drops.length; i++) { 
@@ -972,7 +1040,7 @@
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
-                        document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
+                        document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = sanitizeRich(data[fieldName]); } });
                         if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
                         renderCalendar(); 
@@ -1016,7 +1084,10 @@
                     renderProjects(); 
 
                     // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
-                    if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
+                    if(inSecretArea) {
+                         inSecretArea = false; allFiles = []; currentFolderId = 'root';
+                         closePreview();
+                         document.getElementById('archive-ext-link').style.display = 'none';
                          document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                          folderHistory = [];
                          document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\";
@@ -1035,7 +1106,7 @@
             if(saveBtn) {
                 saveBtn.onclick = async () => {
                     const newData = {}; 
-                    document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
+                    document.querySelectorAll('.editable[data-field]').forEach(el => { newData[el.getAttribute('data-field')] = sanitizeRich(el.innerHTML); });
                     newData['schedule_list'] = JSON.stringify(scheduleData);
                     newData['project_list'] = JSON.stringify(projectData);
                     
