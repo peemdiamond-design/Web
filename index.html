@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PEEMCN25 | IBM Retro Edition</title>
+    <meta name="description" content="PEEMCN25 — พอร์ตโฟลิโอ ผลงาน ตารางงาน และคลังไฟล์ของภีม นักศึกษาวิศวกรรมคอมพิวเตอร์">
+    <meta property="og:title" content="PEEMCN25 | IBM Retro Edition">
+    <meta property="og:description" content="พอร์ตโฟลิโอ ผลงาน และคลังไฟล์ของภีม นักศึกษาวิศวกรรมคอมพิวเตอร์">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://web.peemcn25.dev/">
+    <meta property="og:image" content="https://web.peemcn25.dev/images/cover.jpg">
+    <meta name="theme-color" content="#e0e0e0">
+    <link rel="icon" type="image/png" href="images/Code_Generated_Image.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     
@@ -22,8 +30,8 @@
             --bg-color: #c6c6c6;        
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url('https://cur.cursors-4u.net/system/sys-1/sys46.png'), auto !important; }
-        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn, .folder-item, .file-link, .dos-col-name, .dos-col-date, .dos-col-size, .grid-item { cursor: url('https://cur.cursors-4u.net/system/sys-2/sys201.png'), pointer !important; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Chakra Petch', sans-serif; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='24' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h2v2h2v2h2v2h2v2h2v2h2v2h2v2h-6v2h2v2h2v4h-2v2h-2v-2h-2v-4h-2v-2h-2v2h-2v2h-2z' fill='%23161616'/%3E%3Cpath d='M2 4h2v2h2v2h2v2h2v2h2v2h-4v2h2v2h2v2h-2v-2h-2v-4h-2v-2h-2v2h-2z' fill='%23fff'/%3E%3C/svg%3E") 0 0, auto !important; }
+        button, a, .nav-btn, .sound-trigger, .calendar-day, .calendar-event span, .logo, .action-btn, .folder-item, .file-link, .dos-col-name, .dos-col-date, .dos-col-size, .grid-item { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='22' shape-rendering='crispEdges'%3E%3Cpath d='M6 0h4v8h8v2h2v10h-2v2h-12v-2h-2v-4h-2v-2h-2v-4h4v-4h2z' fill='%23161616'/%3E%3Cpath d='M8 2v8h2v-2h2v2h2v-0h2v2h2v8h-10v-2h-2v-4h-2v-2h2v2h2v-12z' fill='%23fff'/%3E%3C/svg%3E") 6 0, pointer !important; }
 
         html { overscroll-behavior: none; }
         body { background-color: var(--bg-color); color: var(--ibm-text); min-height: 100vh; overflow-x: hidden; overscroll-behavior: none; position: relative; max-width: 100vw; }
@@ -144,8 +152,8 @@
         .delete-event-btn { position: absolute; right: 2px; top: 2px; background: #da1e28; color: #fff; border: 1px solid var(--ibm-text); font-size: 0.8rem; width: 16px; height: 16px; display: none; line-height: 1; text-align: center; padding: 0; font-family: 'VT323'; box-shadow: 1px 1px 0 #000; }
         .edit-mode .delete-event-btn { display: block; }
 
-        #admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
-        .edit-mode #admin-hint { display: block; }
+        .admin-hint { display: none; font-family: 'VT323'; font-size: 1.3rem; color: #0f62fe; margin-bottom: 15px; background: #edf5ff; padding: 5px 10px; border: 1px dashed #0f62fe; width: 100%; text-align: left; }
+        .edit-mode .admin-hint { display: block; }
 
         @media screen and (max-width: 768px) { 
             .navbar { flex-direction: column; padding: 15px; gap: 15px; } 
@@ -220,6 +228,7 @@
             /* --- เพิ่ม CSS แก้ไขตาราง Archive ให้แสดงชื่อไฟล์ในมือถือ --- */
             .dos-col-size { display: none !important; } /* ซ่อนขนาดไฟล์บนมือถือ */
             .dos-col-date { width: 75px !important; font-size: 0.9rem !important; white-space: normal !important; text-align: right !important; line-height: 1.1; flex: none; }
+            .timeline-title-main { font-size: 2rem; overflow-wrap: anywhere; }
             .dos-col-name { flex: 1 !important; min-width: 0 !important; }
             .file-info { min-width: 0 !important; }
             .file-link { white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; display: block; width: 100%; }
@@ -239,6 +248,61 @@
         /* ================= In-App Preview Modal ================= */
         #preview-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
         .preview-container { width: 95%; max-width: 1000px; height: 90vh; background: var(--ibm-pearl); border: 4px solid var(--ibm-text); display: flex; flex-direction: column; box-shadow: 10px 10px 0 #000; }
+
+        /* ================= UX additions ================= */
+        /* แกลเลอรี (เดิมไม่มี CSS ทำให้รูปไปโผล่ท้ายหน้า และมี × ค้าง) */
+        .gallery-modal { display: none; position: fixed; inset: 0; background: rgba(22,22,22,0.92); z-index: 2000; overflow-y: auto; padding: 70px 20px 40px; overscroll-behavior: contain; }
+        .gallery-modal.active { display: block; }
+        .gallery-close { position: fixed; top: 12px; right: 18px; font-family: 'VT323'; font-size: 2.6rem; line-height: 1; color: #fff; background: #da1e28; border: 2px solid #fff; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 3px 3px 0 #000; z-index: 2001; }
+        .gallery-content { max-width: 1000px; margin: 0 auto; }
+        .album-images-container { flex-wrap: wrap; gap: 20px; justify-content: center; align-items: flex-start; }
+        .gallery-item { flex: 1 1 300px; max-width: 460px; background: var(--ibm-key-light); border: 3px solid var(--ibm-text); box-shadow: 6px 6px 0 #000; padding: 10px; }
+        .gallery-item img { width: 100%; height: auto; display: block; border: 2px solid var(--ibm-text); margin-bottom: 8px; }
+        .gallery-item p { font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-text); }
+
+        /* ปุ่มแอดมิน: แสดงเฉพาะตอนล็อกอิน (เปิดล็อกอินจาก footer แทน) */
+        #admin-panel { display: none; }
+        #admin-panel.show { display: flex; }
+
+        /* หน้าแรก: บอกว่าเว็บนี้ของใคร + ปุ่มไปต่อ */
+        .hero-tagline { font-size: 1.25rem; color: var(--ibm-text); margin-top: 4px; text-align: center; }
+        .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+        .hero-cta .action-btn { font-size: 1.4rem; padding: 8px 18px; }
+        .hero-cta .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
+
+        /* ปุ่มปิดเสียง */
+        #sound-toggle { background: var(--ibm-key-light); border: 2px solid var(--ibm-key-dark); border-radius: 4px; font-size: 1.1rem; padding: 6px 10px; box-shadow: 2px 4px 0 var(--ibm-shadow); }
+        #sound-toggle[aria-pressed="true"] { background: var(--ibm-key-dark); }
+
+        /* ติดต่อ: กดได้ */
+        .contact-link { cursor: pointer; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; }
+        .edit-mode .contact-link { text-decoration: none; }
+
+        /* ปฏิทินแบบรายการ (มือถือ) */
+        .cal-view-toggle { display: none; margin: 0 0 12px auto; }
+        .agenda { display: none; width: 100%; text-align: left; border: 2px solid var(--ibm-text); background: #fff; }
+        .agenda-item { display: flex; gap: 12px; padding: 10px 12px; border-bottom: 1px dashed var(--ibm-key-dark); align-items: flex-start; }
+        .agenda-item:last-child { border-bottom: none; }
+        .agenda-date { flex: none; width: 64px; text-align: center; background: var(--ibm-accent-blue); color: #fff; font-family: 'VT323'; line-height: 1; padding: 6px 0; border: 2px solid var(--ibm-text); }
+        .agenda-date b { display: block; font-size: 1.8rem; }
+        .agenda-date span { font-size: 1rem; }
+        .agenda-item.past .agenda-date { background: var(--ibm-key-dark); }
+        .agenda-item.done .agenda-title { text-decoration: line-through; color: #8d8d8d; }
+        .agenda-title { font-size: 1.05rem; line-height: 1.4; word-break: break-word; padding-top: 4px; }
+        .agenda-empty { padding: 16px; font-family: 'VT323'; font-size: 1.3rem; color: var(--ibm-shadow); }
+        @media screen and (max-width: 768px) {
+            .cal-view-toggle { display: inline-flex; }
+            #sound-toggle { position: absolute; top: 18px; right: 15px; }
+            .album-images-container { gap: 14px; }
+            body:not(.cal-grid-mode) #schedule .calendar-wrapper { display: none; }
+            body:not(.cal-grid-mode) #schedule .agenda { display: block; }
+        }
+
+        /* Footer */
+        .site-footer { max-width: 1000px; margin: 0 auto 30px; padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; align-items: center; font-family: 'VT323'; font-size: 1.2rem; color: #525252; border-top: 2px dashed var(--ibm-key-dark); }
+        .site-footer a, .site-footer button { color: var(--ibm-text); background: none; border: none; font-family: 'VT323'; font-size: 1.2rem; text-decoration: underline; padding: 0; }
+        .site-footer nav { display: flex; gap: 16px; }
+        :focus-visible { outline: 3px solid var(--ibm-accent-blue); outline-offset: 2px; }
     </style>
 </head>
 <body>
@@ -254,6 +318,7 @@
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">DATABASE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">PROFILE</button>
             <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">NETWORK</button>
+            <button id="sound-toggle" type="button" aria-pressed="false" title="เปิด/ปิดเสียง" aria-label="ปิดเสียง">🔊</button>
         </div>
     </nav>
 
@@ -270,14 +335,19 @@
                         
                         <div class="hero-section" style="min-height: 250px;">
                             <canvas id="matrixCanvas" class="matrix-bg"></canvas>
-                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: 4.5rem; text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
+                            <h1 class="editable" id="system-terminal-title" data-field="system_terminal_title" style="font-size: clamp(2.2rem, 9vw, 4.5rem); text-shadow: 2px 2px 0px var(--ibm-pearl); border: none; margin-bottom: 10px;">SYSTEM TERMINAL</h1>
                             <p class="subtitle" style="font-family: 'VT323';">> SECURE CONNECTION ESTABLISHED</p>
+                            <p class="hero-tagline editable" id="hero-tagline" data-field="hero_tagline">สวัสดี! เราชื่อภีม — นักศึกษาวิศวกรรมคอมพิวเตอร์ ที่ชอบสร้างเว็บ เกม และระบบ IoT</p>
+                            <div class="hero-cta">
+                                <a href="#projects" class="action-btn sound-trigger" onclick="event.preventDefault(); document.getElementById('dynamic-project-container').scrollIntoView({behavior:'smooth', block:'start'});">▶ ดูผลงาน</a>
+                                <a href="#contact" class="action-btn alt sound-trigger">✉ ติดต่อ</a>
+                            </div>
                         </div>
                         
                         <!-- โซนโชว์โปรเจกต์ -->
                         <div class="timeline-section" style="border-top: 2px dashed var(--ibm-key-dark); padding-top: 30px;">
                             <h2 class="editable timeline-title-main" id="proj-sec-title" data-field="proj_sec_title">DIRECTORY: \PROJECTS</h2>
-                            <div id="admin-hint" class="edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
+                            <div class="admin-hint edit-hint-proj" style="display:none; font-family: 'VT323'; font-size: 1.2rem; color: #0f62fe; background: #edf5ff; padding: 8px; border: 1px dashed #0f62fe; text-align: left; margin-bottom:15px;">
                                 [!] แอดมิน: แก้ข้อความได้โดยตรงในกล่อง | กด "ADD NEW PROJECT" ด้านล่างเพื่อเพิ่มกล่องใหม่ได้
                             </div>
                             <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
@@ -298,7 +368,7 @@
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content sound-trigger" onclick="openGallery(event, 'class_memories')">
-                                        <img src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
+                                        <img loading="lazy" src="images/S__22814752_0.jpg" id="mem-img-2" alt="Class Memories Cover">
                                         <p class="editable" id="album-name-2" data-field="album_name_2">CLASS MEMORIES.SYS</p>
                                     </div>
                                 </div>
@@ -318,13 +388,15 @@
                 </div>
                 <div class="window-body">
                     <h1 class="editable" id="schedule-title" data-field="schedule_title" style="margin-bottom: 20px;">TASK SCHEDULER</h1>
-                    <div id="admin-hint" class="edit-hint-cal">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
+                    <div class="admin-hint edit-hint-cal">[ ROOT_ACCESS_GRANTED ] > CLICK EMPTY BLOCK TO ADD QUEST | CLICK QUEST TEXT TO MARK COMPLETE</div>
                     <div class="calendar-header">
                         <button class="sound-trigger" onclick="changeMonth(-1)">&#9664;</button>
                         <h2 id="month-year-label">MONTH YEAR</h2>
                         <button class="sound-trigger" onclick="changeMonth(1)">&#9654;</button>
                     </div>
+                    <button id="cal-view-toggle" class="btn-sync sound-trigger cal-view-toggle" type="button" style="padding:6px 12px;">[ VIEW: GRID ]</button>
                     <div class="calendar-wrapper"><div id="calendar-grid" class="calendar-grid"></div></div>
+                    <div id="calendar-agenda" class="agenda" aria-live="polite"></div>
                 </div>
             </div>
         </main>
@@ -381,7 +453,7 @@
                 </div>
                 <div class="window-body">
                     <div class="about-layout" style="display: flex; gap: 40px; align-items: flex-start; margin: 20px 0; text-align: left; width: 100%; background: #fff; border: 2px solid var(--ibm-text); padding: 20px; box-shadow: 5px 5px 0px var(--ibm-shadow);">
-                        <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
+                        <div class="about-image-wrapper" style="flex: 0 0 250px; border: 4px solid var(--ibm-text); background-color: var(--ibm-key-light); padding: 8px;"><img loading="lazy" src="images/S__5734407.jpg" id="profile-pic" alt="Profile Picture" style="width: 100%; height: auto; display: block; border: 2px solid var(--ibm-key-dark); filter: contrast(1.1);"></div>
                         <div class="about-text-content" style="flex: 1; padding: 10px;">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
                             <p class="editable editable-block" id="about-details" data-field="about_details" style="font-size: 1.3rem; color: #333; line-height: 1.6; font-family: 'VT323';">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</p>
@@ -400,8 +472,8 @@
                 </div>
                 <div class="window-body" style="background: var(--ibm-pearl);">
                     <h1 class="editable" id="contact-title" data-field="contact_title">NETWORK PING</h1>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">IP Address / Email: <br><span class="editable" id="contact-email" data-field="contact_email" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
-                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">Comlink / Tel: <br><span class="editable" id="contact-tel" data-field="contact_tel" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">EMAIL // อีเมล:<br> <span class="editable contact-link" id="contact-email" data-field="contact_email" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">admin@101studio.com</span></p>
+                    <p class="subtitle" style="font-family: 'VT323'; font-size: 1.6rem; color: #333;">TEL // โทรศัพท์:<br> <span class="editable contact-link" id="contact-tel" data-field="contact_tel" role="link" tabindex="0" style="color: var(--ibm-accent-blue); font-weight: bold;">08X-XXX-XXXX</span></p>
                     <div class="social-container">
                         <a href="https://www.facebook.com/peem.pongpetch" target="_blank" class="btn-social sound-trigger">FACEBOOK</a>
                         <a href="https://www.instagram.com/peem_pongpetch?igsh=MTVjZjVmNzVibXQ0NA==" target="_blank" class="btn-social sound-trigger">INSTAGRAM</a>
@@ -414,19 +486,28 @@
 
     <!-- Gallery Modal -->
     <div class="gallery-modal" id="galleryModal">
-        <span class="gallery-close sound-trigger" onclick="closeGallery()">×</span>
+        <button type="button" class="gallery-close sound-trigger" onclick="closeGallery()" aria-label="ปิดแกลเลอรี">×</button>
         <div class="gallery-content">
             <div id="album-first_meet" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
-                <div class="gallery-item"><img src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
-                <div class="gallery-item"><img src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/activity1.jpg" alt="Activity 1"><p class="editable" id="gal-desc1" data-field="gal_desc1">> LOG 01: สืบสวนหาเบาะแสที่ Evidence Board อย่างตั้งใจ</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/activity2.jpg" alt="Activity 2"><p class="editable" id="gal-desc2" data-field="gal_desc2">> LOG 02: ถ่ายรูปรวมแก๊งค์เป็นที่ระลึกในท่าโพสต์สุดเท่</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/cover.jpg" alt="Activity 3"><p class="editable" id="gal-desc3" data-field="gal_desc3">> LOG 03: ร่วมพูดคุย ระดมความคิดเห็นและวางแผนงานร่วมกัน</p></div>
             </div>
             <div id="album-class_memories" class="album-images-container" style="display: none;">
-                <div class="gallery-item"><img src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
-                <div class="gallery-item"><img src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/S__22814752_0.jpg" alt="Class Photo 1"><p class="editable" id="class-desc1" data-field="class_desc1">> LOG 01: บรรยากาศความสนุกสนานรวมตัวกันในห้องบรรยาย</p></div>
+                <div class="gallery-item"><img loading="lazy" src="images/S__22814753_0.jpg" alt="Class Photo 2"><p class="editable" id="class-desc2" data-field="class_desc2">> LOG 02: ภาพหมู่สุดประทับใจเก็บไว้เป็นความทรงจำดีๆ</p></div>
             </div>
         </div>
     </div>
+
+    <footer class="site-footer">
+        <span>© 2026 PEEMCN25 · 101 STUDIO</span>
+        <nav>
+            <a href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
+            <a href="#contact">CONTACT</a>
+            <button type="button" id="footer-root-btn" title="สำหรับผู้ดูแลเว็บ">[ ROOT ]</button>
+        </nav>
+    </footer>
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
@@ -494,17 +575,28 @@
            PEEMCN25 - App Logic (ALL-IN-ONE)
            ========================================= */
 
-        // 1. ระบบรายงาน Bug อัตโนมัติ
-        window.onerror = function(message, source, lineno, colno, error) {
-            if (source && source.includes('chrome-extension')) return false;
-            const bugData = { message: message, source: source, lineno: lineno, colno: colno };
-            fetch('https://jogging-flagstick-wrongly.ngrok-free.dev/report-bug', {
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
-                body: JSON.stringify(bugData)
-            }).catch(err => console.log('ไม่สามารถส่งรายงานบั๊กได้', err));
-            return false; 
-        };
+        // 1. ตัวช่วยความปลอดภัย (กัน XSS)
+        //    (ลบระบบรายงานบั๊กที่ส่งไป ngrok ออกแล้ว — ปลายทางปิดไปแล้ว ทุก error จะยิงคำขอที่ล้มเหลว)
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+        // ข้อความที่แก้ได้จากหน้าเว็บ: เก็บไว้เป็นข้อความล้วน อนุญาตแค่การขึ้นบรรทัดใหม่ (<br>)
+        function sanitizeRich(html) {
+            // DOMParser ไม่รันสคริปต์/ไม่โหลดรูป (ต่างจาก innerHTML ที่ทำให้ <img onerror> ทำงาน)
+            const marked = String(html ?? '').replace(/<br\s*\/?>|<(div|p)(\s[^>]*)?>/gi, '\n');
+            const text = new DOMParser().parseFromString(marked, 'text/html').body.textContent || '';
+            return escapeHtml(text.replace(/^\n+/, '')).replace(/\n/g, '<br>');
+        }
+        // อนุญาตเฉพาะลิงก์ http/https เท่านั้น (กัน javascript: ฯลฯ)
+        function safeUrl(url) {
+            let link = String(url || '').trim();
+            if (!link) return '';
+            if (!/^[a-z][a-z0-9+.-]*:/i.test(link)) link = 'https://' + link;
+            try { const u = new URL(link); return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : ''; } catch (e) { return ''; }
+        }
+        function decodeEntities(text) {
+            const tmp = document.createElement('textarea'); tmp.innerHTML = String(text ?? ''); return tmp.value;
+        }
 
         // 2. ตัวแปรตั้งต้นและ API
         const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTA1ZaJi3ieoEJt6mQD12Y-Ti5KY-uuyS3SdgmoFGL64jtgZM2xVdyg7GP1pSer46ZCQ/exec";
@@ -528,23 +620,55 @@
             if(!container) return;
             container.innerHTML = '';
             const isEdit = document.body.classList.contains('edit-mode');
+            // สร้างด้วย DOM API + textContent: ชื่อ/คำอธิบาย/URL จาก Firestore จะไม่ถูกตีความเป็น HTML
+            const makeEditable = (tag, className, text, onSave) => {
+                const node = document.createElement(tag);
+                node.className = className + (isEdit ? ' editable' : '');
+                node.textContent = text ?? '';
+                if (isEdit) { node.contentEditable = 'true'; node.addEventListener('blur', () => onSave(node.innerText.trim())); }
+                return node;
+            };
             projectData.forEach((proj, index) => {
+                // ซ่อนโปรเจกต์ที่ยังไม่ได้กรอก (NEW_PROJECT.EXE + ลิงก์ว่าง) จากผู้เข้าชม — แอดมินยังเห็นเพื่อแก้ไข
+                const isPlaceholder = !safeUrl(proj.url) || safeUrl(proj.url) === 'https:///' || proj.name === 'NEW_PROJECT.EXE';
+                if (isPlaceholder && !isEdit) return;
                 const el = document.createElement('div'); el.className = 'project-item';
-                let deleteBtnHTML = isEdit ? `<button class="action-btn sound-trigger" style="background:#da1e28; margin-left:5px; padding:4px 10px;" onclick="deleteProject(${index})">X</button>` : '';
-                el.innerHTML = `
-                    <div class="project-header">
-                        <h3 class="project-title ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].name = this.innerText">${proj.name}</h3>
-                        <div><button class="action-btn sound-trigger" onclick="openTargetLinkStr('${proj.url}')">${proj.icon || '🔗 OPEN WEB'}</button>${deleteBtnHTML}</div>
-                    </div>
-                    <p class="project-desc ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].desc = this.innerText">${proj.desc}</p>
-                    <div class="admin-url-box"><span class="url-label">TARGET URL: </span><span class="proj-url-edit ${isEdit ? 'editable' : ''}" ${isEdit ? 'contenteditable="true"' : ''} onblur="projectData[${index}].url = this.innerText">${proj.url}</span></div>
-                `;
+
+                const header = document.createElement('div'); header.className = 'project-header';
+                header.appendChild(makeEditable('h3', 'project-title', proj.name, v => { projectData[index].name = v; }));
+                const btnWrap = document.createElement('div');
+                const openBtn = document.createElement('button');
+                openBtn.className = 'action-btn sound-trigger';
+                openBtn.textContent = proj.icon || '🔗 OPEN WEB';
+                openBtn.addEventListener('mousedown', playRetroClick);
+                openBtn.addEventListener('click', () => openTargetLinkStr(projectData[index].url));
+                btnWrap.appendChild(openBtn);
+                if (isEdit) {
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'action-btn sound-trigger';
+                    delBtn.style.cssText = 'background:#da1e28; margin-left:5px; padding:4px 10px;';
+                    delBtn.textContent = 'X';
+                    delBtn.addEventListener('click', () => deleteProject(index));
+                    btnWrap.appendChild(delBtn);
+                }
+                header.appendChild(btnWrap);
+
+                const desc = makeEditable('p', 'project-desc', proj.desc, v => { projectData[index].desc = v; });
+                const urlBox = document.createElement('div'); urlBox.className = 'admin-url-box';
+                const urlLabel = document.createElement('span'); urlLabel.className = 'url-label'; urlLabel.textContent = 'TARGET URL: ';
+                urlBox.append(urlLabel, makeEditable('span', 'proj-url-edit', proj.url, v => { projectData[index].url = v; }));
+
+                el.append(header, desc, urlBox);
                 container.appendChild(el);
             });
         }
         window.addNewProject = function() { projectData.push({ name: "NEW_PROJECT.EXE", desc: "> คำอธิบาย...", url: "https://", icon: "🔗 OPEN WEB" }); renderProjects(); document.getElementById('save-btn').click(); }
         window.deleteProject = function(index) { if(confirm("DELETE THIS PROJECT? (Y/N)")) { projectData.splice(index, 1); renderProjects(); document.getElementById('save-btn').click(); } }
-        window.openTargetLinkStr = function(url) { if (document.body.classList.contains('edit-mode')) return; if (url && url.trim() !== '') { let link = url.trim(); if (!link.startsWith('http')) { link = 'https://' + link; } window.open(link, '_blank'); } }
+        window.openTargetLinkStr = function(url) {
+            if (document.body.classList.contains('edit-mode')) return;
+            const link = safeUrl(url);
+            if (link && link !== 'https:///') window.open(link, '_blank', 'noopener');
+        }
 
         // 4. ระบบแฟ้มข้อมูล ARCHIVE (Google Drive)
         let allFiles = []; 
@@ -553,6 +677,8 @@
         let currentSort = { column: 'date', direction: 'desc' }; 
         let currentViewMode = 'list'; 
         let targetSecretBtn = null;
+        let inSecretArea = false; // อยู่ในโฟลเดอร์ลับ (รวมโฟลเดอร์ย่อย) หรือไม่
+        const SECRET_FOLDER_ID = '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8';
 
         // ระบบแจ้งเตือนเข้า LINE บอท
         function sendLineNotify(dateStr, title) { 
@@ -566,10 +692,9 @@
         // โฟลเดอร์ลับ + แจ้งเตือน
         window.loadSecretFolder = function(btnElement) {
             const currentUser = firebase.auth().currentUser;
-            const hasSecretAccess = sessionStorage.getItem('secret_unlocked') === 'true';
             
-            if (currentUser || hasSecretAccess) {
-                loadDriveFolder(btnElement, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+            if (currentUser) {
+                loadDriveFolder(btnElement, 'TOP_SECRET', SECRET_FOLDER_ID);
                 
                 // ถ้ายูสเซอร์ไม่ใช่แอดมิน ให้เตือนว่าแอบเข้าโฟลเดอร์ลับ
                 if (currentUser && currentUser.email !== 'peemdiamond@gmail.com') {
@@ -590,7 +715,8 @@
         window.loadDriveFolder = function(btnElement, folderName, baseFolderId) {
             document.querySelectorAll('.folder-btn').forEach(b => b.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
-            document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${baseFolderId}`;
+            inSecretArea = baseFolderId === SECRET_FOLDER_ID;
+            document.getElementById('archive-ext-link').href = `https://drive.google.com/drive/folders/${encodeURIComponent(baseFolderId)}`;
             document.getElementById('archive-ext-link').style.display = 'flex';
             folderHistory = [{ id: baseFolderId, name: folderName }];
             currentFolderId = baseFolderId;
@@ -611,7 +737,7 @@
         // ระบบดูไฟล์ + แจ้งเตือน
         window.openPreview = function(fileId, fileName) {
             document.getElementById('preview-title').innerText = `VIEWING: ${fileName}`;
-            document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${fileId}/preview`;
+            document.getElementById('preview-frame').src = `https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview`;
             document.getElementById('preview-modal').style.display = 'flex';
 
             const currentUser = firebase.auth().currentUser;
@@ -636,13 +762,14 @@
                     const token = await currentUser.getIdToken(); 
                     headers['Authorization'] = `Bearer ${token}`;
                 }
-                const fetchUrl = `${SERVER_URL}/list-files?folderId=${folderId}`;
+                const fetchUrl = `${SERVER_URL}/list-files?folderId=${encodeURIComponent(folderId)}`;
                 const response = await fetch(fetchUrl, { headers: headers });
                 if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
-                allFiles = await response.json(); 
+                const data = await response.json();
+                allFiles = Array.isArray(data) ? data.filter(f => f && typeof f.name === 'string') : []; 
                 filterFiles(); 
             } catch (error) { 
-                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem; padding:10px;">> ERROR: CONNECTION LOST<br>> DETAILS: ${error.message}</span>`; 
+                fileListDiv.innerHTML = `<span style="color:#da1e28; font-family: 'VT323'; font-size:1.4rem; padding:10px;">> ERROR: CONNECTION LOST<br>> DETAILS: ${escapeHtml(error.message)}</span>`; 
             }
         }
 
@@ -682,6 +809,18 @@
             filterFiles();
         }
 
+        // แทน onclick="...('ชื่อไฟล์')" ด้วย data-attribute + ตัวดักคลิกตัวเดียว (ชื่อไฟล์แปลกๆ จะรันโค้ดไม่ได้)
+        function fileClickAttrs(file, isFolder) {
+            return `data-action="${isFolder ? 'folder' : 'file'}" data-id="${escapeHtml(file.id)}" data-name="${escapeHtml(file.name)}"`;
+        }
+        document.addEventListener('click', (e) => {
+            const item = e.target.closest('#file-list [data-action]');
+            if (!item) return;
+            playRetroClick();
+            if (item.dataset.action === 'folder') enterFolder(item.dataset.id, item.dataset.name);
+            else openPreview(item.dataset.id, item.dataset.name);
+        });
+
         function renderFilesList(filesToDisplay) {
             const fileListDiv = document.getElementById('file-list');
             let htmlStr = ''; 
@@ -702,21 +841,22 @@
                 </div>`;
 
                 sortedFiles.forEach(file => {
-                    const safeName = file.name.replace(/'/g, "\\'");
                     const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
                     const dateStr = formatDOSDate(file.createdTime);
                     const sizeStr = formatDOSSize(file.size);
+                    const safeName = escapeHtml(file.name);
+                    const thumb = safeUrl(file.thumbnailLink);
 
-                    let clickAction = isFolder ? `onclick="enterFolder('${file.id}', '${safeName}')"` : `onclick="openPreview('${file.id}', '${safeName}')"`;
+                    let clickAction = fileClickAttrs(file, isFolder);
                     let iconHtml = isFolder ? `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff; flex:none;">📁</div>` : 
-                                   (file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb" style="flex:none;">` : `<div class="file-icon" style="flex:none;">📄</div>`);
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" style="flex:none;" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="flex:none;">📄</div>`);
                     
                     htmlStr += `
                     <div class="file-item sound-trigger" ${clickAction} style="cursor: pointer; display: flex; align-items: center;">
                         <div class="file-info">
                             ${iconHtml}
                             <span class="dos-col-name" style="text-overflow: ellipsis;">
-                                <a class="file-link" style="display:inline; text-decoration:none;">${file.name}</a>
+                                <a class="file-link" style="display:inline; text-decoration:none;">${safeName}</a>
                             </span>
                         </div>
                         <span class="dos-col-date" style="color:var(--ibm-shadow); font-family: 'VT323'; font-size: 1.1rem;">${dateStr}</span>
@@ -726,15 +866,16 @@
             } else {
                 htmlStr += `<div class="grid-container">`;
                 sortedFiles.forEach(file => {
-                    const safeName = file.name.replace(/'/g, "\\'");
                     const isFolder = file.mimeType === 'application/vnd.google-apps.folder' || file.name.endsWith('[FOLDER]'); 
-                    let clickAction = isFolder ? `onclick="enterFolder('${file.id}', '${safeName}')"` : `onclick="openPreview('${file.id}', '${safeName}')"`;
+                    const safeName = escapeHtml(file.name);
+                    const thumb = safeUrl(file.thumbnailLink);
+                    let clickAction = fileClickAttrs(file, isFolder);
                     let iconHtml = isFolder ? `<div class="file-icon" style="color:var(--ibm-accent-blue); background:transparent; border:none;">📁</div>` : 
-                                   (file.hasThumbnail ? `<img src="${file.thumbnailLink}" class="file-thumb">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">📄</div>`);
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">📄</div>`);
                     htmlStr += `
-                    <div class="grid-item sound-trigger" ${clickAction} title="${file.name}">
+                    <div class="grid-item sound-trigger" ${clickAction} title="${safeName}">
                         ${iconHtml}
-                        <span class="file-link">${file.name}</span>
+                        <span class="file-link">${safeName}</span>
                     </div>`;
                 });
                 htmlStr += `</div>`;
@@ -751,7 +892,7 @@
             let breadcrumbsHtml = `<span style="color: var(--ibm-key-dark); font-family: 'VT323';">C:\\ARCHIVE</span>`;
             folderHistory.forEach((f, index) => {
                 breadcrumbsHtml += `<span style="margin: 0 8px; color: var(--ibm-key-dark);">></span>`;
-                breadcrumbsHtml += `<a class="sound-trigger" style="color: #fff; font-family: 'VT323'; text-decoration: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='var(--ibm-accent-blue)'; this.style.textDecoration='underline';" onmouseout="this.style.color='#fff'; this.style.textDecoration='none';" onclick="jumpToFolder(${index})">${f.name}</a>`;
+                breadcrumbsHtml += `<a class="sound-trigger" style="color: #fff; font-family: 'VT323'; text-decoration: none; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='var(--ibm-accent-blue)'; this.style.textDecoration='underline';" onmouseout="this.style.color='#fff'; this.style.textDecoration='none';" onclick="jumpToFolder(${index})">${escapeHtml(f.name)}</a>`;
             });
             pathContainer.innerHTML = breadcrumbsHtml;
         }
@@ -779,7 +920,7 @@
                 dayEvents.forEach(ev => {
                     const globalIndex = scheduleData.indexOf(ev); const evEl = document.createElement('div');
                     evEl.className = 'calendar-event' + (ev.completed ? ' completed' : '');
-                    const textSpan = document.createElement('span'); textSpan.innerHTML = `> ${ev.title}`;
+                    const textSpan = document.createElement('span'); textSpan.textContent = `> ${decodeEntities(ev.title)}`;
                     textSpan.onclick = (e) => { if(document.body.classList.contains('edit-mode')) { e.stopPropagation(); toggleQuest(globalIndex); } };
                     evEl.appendChild(textSpan);
                     const delBtn = document.createElement('button'); delBtn.className = 'delete-event-btn sound-trigger'; delBtn.textContent = 'x';
@@ -788,23 +929,78 @@
                 });
                 cell.appendChild(eventsContainer); cell.onclick = () => { if(document.body.classList.contains('edit-mode')) promptAddEvent(dateStr); }; grid.appendChild(cell);
             }
+            renderAgenda();
+        }
+
+        // มุมมองแบบรายการสำหรับมือถือ: งานของเดือนที่เลือก เรียงตามวัน
+        const TH_DOW = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+        function renderAgenda() {
+            const box = document.getElementById('calendar-agenda');
+            if (!box) return;
+            const prefix = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-`;
+            const todayStr = new Date().toLocaleDateString('en-CA');
+            const items = scheduleData.map((ev, i) => ({ ev, i })).filter(x => String(x.ev.date).startsWith(prefix))
+                .sort((a, b) => a.ev.date.localeCompare(b.ev.date));
+            box.replaceChildren();
+            if (!items.length) {
+                const empty = document.createElement('div'); empty.className = 'agenda-empty'; empty.textContent = '> NO TASKS THIS MONTH.';
+                box.appendChild(empty); return;
+            }
+            items.forEach(({ ev, i }) => {
+                const d = new Date(ev.date + 'T00:00:00');
+                const row = document.createElement('div');
+                row.className = 'agenda-item' + (ev.date < todayStr ? ' past' : '') + (ev.completed ? ' done' : '');
+                const date = document.createElement('div'); date.className = 'agenda-date';
+                const day = document.createElement('b'); day.textContent = d.getDate();
+                const dow = document.createElement('span'); dow.textContent = TH_DOW[d.getDay()];
+                date.append(day, dow);
+                const title = document.createElement('div'); title.className = 'agenda-title';
+                title.textContent = decodeEntities(ev.title) + (ev.date === todayStr ? '  ← วันนี้' : '');
+                if (document.body.classList.contains('edit-mode')) { title.style.cursor = 'pointer'; title.onclick = () => toggleQuest(i); }
+                row.append(date, title);
+                box.appendChild(row);
+            });
         }
         window.changeMonth = function(dir) { currentMonth += dir; if(currentMonth < 0) { currentMonth = 11; currentYear--; } if(currentMonth > 11) { currentMonth = 0; currentYear++; } renderCalendar(); }
         window.toggleQuest = function(index) { scheduleData[index].completed = !scheduleData[index].completed; if(scheduleData[index].completed) playLevelUpSound(); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } }
-        window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.replace(/</g, "&lt;").replace(/>/g, "&gt;"); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
+        window.promptAddEvent = function(dateStr) { let title = prompt(`[ ADD NEW TASK ] DATE: ${dateStr}\nกรุณาพิมพ์รายละเอียดภารกิจ:`); if(title && title.trim() !== '') { title = title.slice(0, 200); scheduleData.push({ date: dateStr, title: title.trim(), completed: false }); renderCalendar(); sendLineNotify(dateStr, title.trim()); document.getElementById('save-btn').click(); } }
         window.deleteScheduleEvent = function(index) { if(confirm("DELETE THIS TASK? (Y/N)")) { scheduleData.splice(index, 1); renderCalendar(); if(document.body.classList.contains('edit-mode')){ document.getElementById('save-btn').click(); } } }
 
         // 6. ระบบ Gallery & Tab Navigation
-        window.openGallery = function(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; }
-        window.closeGallery = function() { document.getElementById('galleryModal').classList.remove('active'); }
-        window.switchTab = function(e, tabId) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if (e && e.currentTarget) e.currentTarget.classList.add('active'); }
+        window.openGallery = function(event, albumId) { if (event.target.classList.contains('editable')) return; document.getElementById('galleryModal').classList.add('active'); document.querySelectorAll('.gallery-content > div').forEach(el => el.style.display = 'none'); const targetAlbum = document.getElementById('album-' + albumId); if (targetAlbum) targetAlbum.style.display = 'flex'; document.body.style.overflow = 'hidden'; document.getElementById('galleryModal').scrollTop = 0; }
+        window.closeGallery = function() { document.getElementById('galleryModal').classList.remove('active'); document.body.style.overflow = ''; }
+        // เปลี่ยนหน้า + จำไว้ใน URL (#about ฯลฯ) ให้ปุ่ม Back ใช้ได้และส่งลิงก์ตรงหน้าได้
+        const TABS = ['home', 'schedule', 'archive', 'about', 'contact'];
+        function showTab(tabId) {
+            if (!TABS.includes(tabId)) tabId = 'home';
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', (b.getAttribute('onclick') || '').includes(`'${tabId}'`)));
+            document.getElementById(tabId).classList.add('active');
+            window.scrollTo(0, 0);
+            // หน้า DATABASE: เปิดโฟลเดอร์แรกให้อัตโนมัติ แทนหน้าว่าง
+            if (tabId === 'archive' && folderHistory.length === 0) {
+                const first = document.querySelector('.archive-sidebar .folder-btn');
+                if (first) first.click();
+            }
+        }
+        window.switchTab = function(e, tabId) {
+            if (('#' + tabId) !== location.hash) {
+                history.pushState(null, '', tabId === 'home' ? location.pathname + location.search : '#' + tabId);
+            }
+            showTab(tabId);
+        }
+        window.addEventListener('popstate', () => showTab(location.hash.slice(1)));
+        window.addEventListener('hashchange', () => showTab(location.hash.slice(1)));
 
         // 7. ระบบเสียง (Audio System)
         let audioCtx = null;
-        window.playRetroClick = function() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
-        window.playLevelUpSound = function() { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
+        let soundMuted = false;
+        try { soundMuted = localStorage.getItem('peem_muted') === '1'; } catch (e) {}
+        window.playRetroClick = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
+        window.playLevelUpSound = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
 
         function playKeystrokeSound() { 
+            if (soundMuted) return;
             if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } 
             if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); 
@@ -832,7 +1028,7 @@
                 } 
             });
             document.querySelectorAll('.editable:not(.editable-block)').forEach(el => { 
-                el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.innerHTML = cleanText; }); 
+                el.addEventListener('blur', function() { let cleanText = this.innerText.replace(/\s+/g, ' ').trim(); this.textContent = cleanText; }); 
             });
 
             // Enter สำหรับ Login แอดมิน
@@ -921,7 +1117,7 @@
                             sendLineNotify(new Date().toLocaleDateString('en-CA'), `🚨 นักศึกษา ${studentId} ปลดล็อกเข้าดูโฟลเดอร์ TOP SECRET`);
                         }
                         
-                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8');
+                        if(targetSecretBtn) loadDriveFolder(targetSecretBtn, 'TOP_SECRET', SECRET_FOLDER_ID);
                         
                     } catch (error) {
                         alert("ACCESS DENIED: รหัสผ่านไม่ถูกต้อง หรือยังไม่ได้ลงทะเบียน");
@@ -931,6 +1127,47 @@
             }
             
             initMatrix();
+
+            // ---- UX ----
+            const soundBtn = document.getElementById('sound-toggle');
+            const syncSoundBtn = () => { soundBtn.textContent = soundMuted ? '🔇' : '🔊'; soundBtn.setAttribute('aria-pressed', String(soundMuted)); soundBtn.setAttribute('aria-label', soundMuted ? 'เปิดเสียง' : 'ปิดเสียง'); };
+            syncSoundBtn();
+            soundBtn.addEventListener('click', () => { soundMuted = !soundMuted; try { localStorage.setItem('peem_muted', soundMuted ? '1' : '0'); } catch (e) {} syncSoundBtn(); });
+
+            // อีเมล/เบอร์โทร กดแล้วเปิดแอปอีเมล/โทรออกได้ (ยกเว้นตอนแอดมินกำลังแก้)
+            const contactAction = (el, makeHref) => {
+                const go = () => { if (document.body.classList.contains('edit-mode')) return; const v = el.innerText.trim(); if (v) location.href = makeHref(v); };
+                el.addEventListener('click', go);
+                el.addEventListener('keydown', e => { if (e.key === 'Enter' && !document.body.classList.contains('edit-mode')) go(); });
+            };
+            contactAction(document.getElementById('contact-email'), v => 'mailto:' + encodeURIComponent(v).replace('%40', '@'));
+            contactAction(document.getElementById('contact-tel'), v => 'tel:' + v.replace(/[^\d+]/g, ''));
+
+            // ปฏิทิน: สลับ รายการ/ตาราง บนมือถือ
+            document.getElementById('cal-view-toggle').addEventListener('click', (e) => {
+                const grid = document.body.classList.toggle('cal-grid-mode');
+                e.currentTarget.textContent = grid ? '[ VIEW: LIST ]' : '[ VIEW: GRID ]';
+            });
+
+            // แกลเลอรี: คลิกพื้นหลังเพื่อปิด
+            document.getElementById('galleryModal').addEventListener('click', (e) => { if (e.target.id === 'galleryModal') closeGallery(); });
+
+            // Esc ปิดหน้าต่างที่เปิดอยู่
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                closeGallery(); closePreview();
+                ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+            });
+
+            // ล็อกอินแอดมินจาก footer
+            document.getElementById('footer-root-btn').addEventListener('click', () => {
+                document.getElementById('login-modal').style.display = 'flex';
+                document.getElementById('email').focus();
+            });
+
+            // เปิดหน้าตาม URL (#about ฯลฯ)
+            // รอให้ Firebase ตั้งค่าเสร็จก่อน (ตั้งใน DOMContentLoaded ตัวถัดไป)
+            if (location.hash) setTimeout(() => showTab(location.hash.slice(1)), 0);
         });
 
         // 10. Matrix Background 
@@ -946,6 +1183,8 @@
         }
         function drawMatrix() { 
             if(!mCtx) return;
+            // ไม่วาดตอนสลับไปแท็บอื่น หรือไม่ได้อยู่หน้า HOME (ประหยัดแบต/CPU บนมือถือ)
+            if (document.hidden || !document.getElementById('home').classList.contains('active')) return;
             mCtx.fillStyle = 'rgba(244, 244, 244, 0.3)'; mCtx.fillRect(0, 0, mWidth, mHeight); 
             mCtx.fillStyle = '#a8a8a8'; mCtx.font = fontSize + 'px "VT323", monospace'; 
             for(let i = 0; i < drops.length; i++) { 
@@ -972,7 +1211,7 @@
                     const docSnap = await docRef.get();
                     if (docSnap.exists) {
                         const data = docSnap.data();
-                        document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = data[fieldName]; } });
+                        document.querySelectorAll('.editable').forEach(el => { const fieldName = el.getAttribute('data-field'); if (data[fieldName] !== undefined) { el.innerHTML = sanitizeRich(data[fieldName]); } });
                         if (data.schedule_list) { try { scheduleData = JSON.parse(data.schedule_list); } catch(e) { scheduleData = []; } }
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
                         renderCalendar(); 
@@ -984,6 +1223,7 @@
             auth.onAuthStateChanged((user) => {
                 if (user) { 
                     // ถ้าล็อกอินสำเร็จ ซ่อนปุ่ม Login โชว์ปุ่ม Logout
+                    document.getElementById('admin-panel').classList.add('show');
                     document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'block'; 
                     
@@ -1002,12 +1242,13 @@
                         document.querySelectorAll('.edit-hint-proj, .edit-hint-cal, #add-project-btn').forEach(el => el.style.display = 'none');
                         document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', 'false')); 
                     }
-                    renderProjects(); 
+                    renderProjects(); renderAgenda();
 
                 } else { 
                     // ถ้าไม่ได้ล็อกอิน
                     document.body.classList.remove('edit-mode'); 
-                    document.getElementById('login-show-btn').style.display = 'block'; 
+                    document.getElementById('admin-panel').classList.remove('show');
+                    document.getElementById('login-show-btn').style.display = 'none'; 
                     document.getElementById('save-btn').style.display = 'none'; 
                     document.getElementById('add-user-btn').style.display = 'none'; 
                     document.getElementById('logout-btn').style.display = 'none'; 
@@ -1016,7 +1257,10 @@
                     renderProjects(); 
 
                     // เด้งออกจากหน้าโฟลเดอร์ลับ หากกด Logout
-                    if(currentFolderId === '1waXWwHFGtWFfSpz2wnvld6UNq-CqZgV8') {
+                    if(inSecretArea) {
+                         inSecretArea = false; allFiles = []; currentFolderId = 'root';
+                         closePreview();
+                         document.getElementById('archive-ext-link').style.display = 'none';
                          document.getElementById('file-list').innerHTML = '<span style="color:var(--ibm-shadow); font-family: \'VT323\'; font-size:1.4rem; padding:10px;">> ACCESS DENIED.</span>';
                          folderHistory = [];
                          document.getElementById('archive-path').innerText = "C:\\ARCHIVE\\";
@@ -1035,7 +1279,7 @@
             if(saveBtn) {
                 saveBtn.onclick = async () => {
                     const newData = {}; 
-                    document.querySelectorAll('.editable').forEach(el => { newData[el.getAttribute('data-field')] = el.innerHTML; });
+                    document.querySelectorAll('.editable[data-field]').forEach(el => { newData[el.getAttribute('data-field')] = sanitizeRich(el.innerHTML); });
                     newData['schedule_list'] = JSON.stringify(scheduleData);
                     newData['project_list'] = JSON.stringify(projectData);
                     
