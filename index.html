@@ -10,6 +10,10 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://web.peemcn25.dev/">
     <meta property="og:image" content="https://web.peemcn25.dev/images/cover.jpg">
+    <meta property="og:image:alt" content="PEEMCN25 — พอร์ตโฟลิโอของภีม">
+    <meta property="og:locale" content="th_TH">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#e0e0e0">
     <meta name="theme-color" content="#e0e0e0">
     <link rel="icon" type="image/png" href="images/Code_Generated_Image.png">
     
@@ -353,6 +357,72 @@
 
             .site-footer { margin-bottom: 80px; }
         }
+
+        /* ================= PROJECT CARDS v2 ================= */
+        #proj-anchor { scroll-margin-top: calc(var(--nav-h, 80px) + 16px); }
+        .proj-filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 0 0 18px; }
+        .proj-chip { font-family: 'VT323'; font-size: 1.2rem; padding: 3px 14px; border: 2px solid var(--ibm-text); background: var(--ibm-key-light); color: var(--ibm-text); box-shadow: 2px 2px 0 var(--ibm-shadow); }
+        .proj-chip.on { background: var(--ibm-accent-blue); color: #fff; border-color: var(--ibm-text); box-shadow: none; transform: translate(2px, 2px); }
+        .project-list-container.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 18px; padding: 5px; }
+        .pcard { background: #fff; border: 3px solid var(--ibm-text); box-shadow: 5px 5px 0 var(--ibm-shadow); display: flex; flex-direction: column; text-align: left; transition: transform .12s, box-shadow .12s; min-width: 0; }
+        .pcard:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ibm-shadow); }
+        .pcard-thumb { position: relative; aspect-ratio: 16 / 10; background: var(--ibm-key-dark); border-bottom: 3px solid var(--ibm-text); overflow: hidden; display: grid; place-items: center; font-family: 'VT323'; font-size: 3.2rem; color: var(--ibm-text); }
+        .pcard-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .pcard-badge { position: absolute; top: 8px; left: 8px; z-index: 1; font-family: 'VT323'; font-size: 1rem; padding: 0 8px; background: #24a148; color: #fff; border: 2px solid var(--ibm-text); }
+        .pcard-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+        .pcard .project-title { font-size: 1.6rem; line-height: 1.1; word-break: break-word; }
+        .pcard .project-desc { font-size: 1rem; line-height: 1.55; padding: 0; color: #262626; }
+        .pcard-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .pcard-tag { font-family: 'VT323'; font-size: 1rem; padding: 0 7px; border: 1px solid var(--ibm-key-dark); background: var(--ibm-key-light); color: #525252; }
+        .pcard-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; }
+        .pcard-actions .action-btn { flex: 1; justify-content: center; text-align: center; font-size: 1.2rem; padding: 6px 8px; }
+        .pcard-actions .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
+        .pcard-admin { display: none; flex-direction: column; gap: 4px; font-family: 'VT323'; font-size: 1.1rem; background: #edf5ff; border: 1px dashed var(--ibm-accent-blue); padding: 6px 8px; }
+        .edit-mode .pcard-admin { display: flex; }
+        .pcard-admin .url-label { color: var(--ibm-accent-blue); }
+        .pcard-admin [contenteditable="true"] { background: #fff; padding: 0 4px; border: 1px solid var(--ibm-key-dark); word-break: break-all; }
+
+        /* ================= PROFILE: stats, skills, CTA ================= */
+        .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+        .about-stat { background: var(--ibm-key-light); border: 2px solid var(--ibm-text); padding: 10px 6px; text-align: center; }
+        .about-stat b { display: block; font-family: 'VT323'; font-size: 2.5rem; line-height: 1; color: var(--ibm-accent-blue); }
+        .about-stat span { font-size: .85rem; color: #525252; }
+        .skill-bars { display: grid; gap: 6px; font-family: 'VT323'; font-size: 1.3rem; margin-bottom: 18px; }
+        .skill-row { display: grid; grid-template-columns: 140px 1fr 46px; gap: 10px; align-items: center; }
+        .skill-row .bar { height: 16px; border: 2px solid var(--ibm-text); background: repeating-linear-gradient(90deg, var(--ibm-key-light) 0 8px, var(--ibm-pearl) 8px 10px); overflow: hidden; }
+        .skill-row .bar > span { display: block; height: 100%; width: 0; background: repeating-linear-gradient(90deg, var(--ibm-accent-blue) 0 8px, transparent 8px 10px); transition: width .9s steps(20, end); }
+        .about-cta a.action-btn { font-size: 1.3rem !important; display: inline-flex; align-items: center; text-decoration: none; }
+        .skill-row .pct { text-align: right; }
+        .skills-src { display: none; font-family: 'VT323'; font-size: 1.2rem; background: #edf5ff; border: 1px dashed var(--ibm-accent-blue); padding: 8px; margin-bottom: 12px; white-space: pre-wrap; }
+        .edit-mode .skills-src { display: block; }
+        .about-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+        .about-cta .action-btn { font-size: 1.3rem; padding: 6px 16px; }
+        .about-cta .action-btn.alt { background: var(--ibm-key-light); color: var(--ibm-text); }
+        @media screen and (max-width: 768px) {
+            .about-stats { gap: 6px; }
+            .about-stat b { font-size: 2rem; }
+            .skill-row { grid-template-columns: 100px 1fr 40px; font-size: 1.1rem; gap: 6px; }
+            .about-cta { justify-content: center; }
+        }
+
+        /* ================= CRT THEME ================= */
+        /* ใช้ backdrop-filter บนแผ่นใสที่คลุมทั้งจอ: ไม่ไปยุ่งกับ position: fixed/sticky ของหน้า */
+        html.crt body::after { content: ""; pointer-events: none; position: fixed; inset: 0; z-index: 3500;
+            -webkit-backdrop-filter: grayscale(1) invert(1) sepia(1) hue-rotate(65deg) saturate(3.5) brightness(.95) contrast(1.05);
+            backdrop-filter: grayscale(1) invert(1) sepia(1) hue-rotate(65deg) saturate(3.5) brightness(.95) contrast(1.05);
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px); }
+        #theme-toggle, #term-toggle { font-family: 'VT323'; font-size: 1.2rem; padding: 4px 10px; background: var(--ibm-key-light); color: var(--ibm-text); border: 2px solid var(--ibm-key-dark); box-shadow: 2px 3px 0 var(--ibm-shadow); flex: none; }
+
+        /* ================= TERMINAL ================= */
+        #term { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); width: min(640px, 94vw); background: #000; color: #33ff66; border: 3px solid #33ff66; box-shadow: 0 0 30px rgba(51,255,102,.35); font-family: 'VT323', monospace; font-size: 1.25rem; z-index: 4000; display: none; text-align: left; }
+        #term.open { display: block; }
+        #term .term-out { max-height: 260px; overflow-y: auto; padding: 10px 14px; white-space: pre-wrap; word-break: break-word; }
+        #term .term-line { display: flex; gap: 8px; padding: 0 14px 10px; }
+        #term input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: inherit; font: inherit; caret-color: #33ff66; }
+
+        /* ================= VISITOR COUNTER ================= */
+        .visit-counter { display: inline-flex; align-items: center; gap: 6px; }
+        .visit-counter b { background: #000; color: #33ff66; padding: 0 8px; letter-spacing: 3px; border: 2px solid var(--ibm-text); font-weight: normal; }
     </style>
 </head>
 <body>
@@ -363,12 +433,14 @@
             <img src="images/Code_Generated_Image.png" alt="PEEMCN25 Logo">
         </div>
         <div class="nav-links">
-            <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">SYS.HOME</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">CALENDAR</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">DATABASE</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">PROFILE</button>
-            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">NETWORK</button>
-            <button id="sound-toggle" type="button" aria-pressed="false" title="เปิด/ปิดเสียง" aria-label="ปิดเสียง">🔊</button>
+            <button class="nav-btn active sound-trigger" onclick="switchTab(event, 'home')">HOME</button>
+            <button class="nav-btn sound-trigger" onclick="goProjects(event)">PROJECTS</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'schedule')">SCHEDULE</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'archive')">FILES</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'about')">ABOUT</button>
+            <button class="nav-btn sound-trigger" onclick="switchTab(event, 'contact')">CONTACT</button>
+            <button id="theme-toggle" type="button" aria-pressed="false" title="สลับธีมจอ CRT">◐ CRT</button>
+            <button id="sound-toggle" type="button" aria-pressed="true" title="เปิด/ปิดเสียง" aria-label="เปิดเสียง">🔇</button>
         </div>
     </nav>
 
@@ -396,7 +468,14 @@
                                 [!] แอดมิน: แก้ข้อความได้โดยตรงในกล่อง | กด "ADD NEW PROJECT" ด้านล่างเพื่อเพิ่มกล่องใหม่ได้
                             </div>
                             <button id="add-project-btn" class="action-btn sound-trigger" style="display:none; margin: 0 auto 15px auto; background: #24a148;" onclick="addNewProject()">[+] ADD NEW PROJECT</button>
-                            <div id="dynamic-project-container" class="project-list-container"></div>
+                            <div id="proj-anchor"></div>
+                            <div class="proj-filters" id="proj-filters" role="group" aria-label="กรองโปรเจกต์">
+                                <button type="button" class="proj-chip on" data-f="all">ALL</button>
+                                <button type="button" class="proj-chip" data-f="web">WEB</button>
+                                <button type="button" class="proj-chip" data-f="game">GAME</button>
+                                <button type="button" class="proj-chip" data-f="iot">IOT</button>
+                            </div>
+                            <div id="dynamic-project-container" class="project-list-container cards"></div>
                         </div>
 
                         <!-- โซนความทรงจำ -->
@@ -502,6 +581,18 @@
                         <div class="about-text-content" style="flex: 1; padding: 10px;">
                             <h2 style="color: var(--ibm-accent-blue); font-family: 'VT323', monospace; font-size: 2.5rem; margin-bottom: 10px; border-bottom: 2px solid var(--ibm-key-dark);">USER PROFILE</h2>
                             <div class="editable editable-block" id="about-details" data-field="about_details">> STATUS: ONLINE<br>> LOCATION: BANGKOK<br>> SKILLS: HTML, CSS, JS, FIREBASE<br><br>[ กรุณากรอกประวัติเพิ่มเติม... ]</div>
+                            <div class="about-stats">
+                                <div class="about-stat"><b class="editable stat-num" id="stat1-num" data-field="stat1_num">4</b><span class="editable" id="stat1-label" data-field="stat1_label">โปรเจกต์ที่เปิดใช้จริง</span></div>
+                                <div class="about-stat"><b class="editable stat-num" id="stat2-num" data-field="stat2_num">10</b><span class="editable" id="stat2-label" data-field="stat2_label">บริการบนเซิร์ฟเวอร์ตัวเอง</span></div>
+                                <div class="about-stat"><b class="editable stat-num" id="stat3-num" data-field="stat3_num">1</b><span class="editable" id="stat3-label" data-field="stat3_label">เว็บหน่วยงานราชการ</span></div>
+                            </div>
+                            <div class="editable editable-block skills-src" id="skills-src" data-field="skills_list">HTML / CSS 90<br>JavaScript 80<br>Firebase 75<br>Node.js 70<br>ESP32 / IoT 65<br>Linux Server 70</div>
+                            <div class="skill-bars" id="skill-bars" aria-label="ทักษะ"></div>
+                            <div class="about-cta">
+                                <button type="button" class="action-btn sound-trigger" onclick="goProjects(event)">▶ ดูผลงาน</button>
+                                <a class="action-btn alt sound-trigger" href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
+                                <button type="button" class="action-btn alt sound-trigger" onclick="switchTab(event, 'contact')">✉ ติดต่อ</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -547,11 +638,19 @@
 
     <footer class="site-footer">
         <span>© 2026 PEEMCN25 · 101 STUDIO</span>
+        <span class="visit-counter" title="จำนวนผู้เข้าชม">VISITORS <b id="visit-count">------</b></span>
         <nav>
+            <button type="button" id="term-open-link" title="เปิด terminal (กด ` ก็ได้)">&gt;_ TERMINAL</button>
             <a href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB</a>
             <a href="#contact">CONTACT</a>
         </nav>
     </footer>
+
+    <!-- Terminal (easter egg: กด ` เพื่อเปิด) -->
+    <div id="term" role="dialog" aria-label="Terminal">
+        <div class="term-out" id="term-out"></div>
+        <div class="term-line"><span>C:\PEEMCN25&gt;</span><input id="term-in" autocomplete="off" spellcheck="false" aria-label="พิมพ์คำสั่ง"></div>
+    </div>
 
     <!-- Admin Panel (Root) -->
     <div id="admin-panel">
@@ -665,13 +764,30 @@
             { name: "GOV_PORTAL NETWORK", desc: "> ระบบเว็บไซต์หน่วยงาน ออกแบบ UI/UX ให้ใช้งานคล่องตัว", url: "https://example.com/gov", icon: "🔗 OPEN WEB" }
         ];
 
-        // 3. ระบบเรนเดอร์ Projects
+        // 3. ระบบเรนเดอร์ Projects (การ์ด v2: รูปตัวอย่าง + ป้ายเทคโนโลยี + ตัวกรอง)
+        // ค่าเริ่มต้นสำหรับโปรเจกต์เดิมที่ยังไม่มี cat/tags (แอดมินแก้ทับได้ในโหมดแก้ไข)
+        const PROJECT_DEFAULTS = {
+            'codecontra.peemcn25.dev': { cat: 'game', tags: 'JavaScript, Canvas, Game' },
+            'tuya.peemcn25.dev': { cat: 'iot', tags: 'ESP32, MQTT, Node.js, Omise, Firebase' },
+            'www.bppgsd2.com': { cat: 'web', tags: 'Web, UI/UX, Gov' },
+            'cn25.peemcn25.dev': { cat: 'web', tags: 'HTML, CSS, JavaScript' },
+        };
+        const PROJECT_CATS = ['web', 'game', 'iot'];
+        let projectFilter = 'all';
+        function projectMeta(proj) {
+            let host = ''; try { host = new URL(safeUrl(proj.url)).hostname; } catch (e) {}
+            const d = PROJECT_DEFAULTS[host] || {};
+            const cat = PROJECT_CATS.includes(String(proj.cat || '').toLowerCase()) ? String(proj.cat).toLowerCase() : (d.cat || 'web');
+            const tags = String(proj.tags ?? d.tags ?? '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 8);
+            return { cat, tags };
+        }
+        function thumbUrl(url) { return 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=640&h=400'; }
         function renderProjects() {
-            const container = document.getElementById('dynamic-project-container'); 
+            const container = document.getElementById('dynamic-project-container');
             if(!container) return;
-            container.innerHTML = '';
+            container.replaceChildren();
             const isEdit = document.body.classList.contains('edit-mode');
-            // สร้างด้วย DOM API + textContent: ชื่อ/คำอธิบาย/URL จาก Firestore จะไม่ถูกตีความเป็น HTML
+            // สร้างด้วย DOM API + textContent: ข้อมูลจาก Firestore จะไม่ถูกตีความเป็น HTML
             const makeEditable = (tag, className, text, onSave) => {
                 const node = document.createElement(tag);
                 node.className = className + (isEdit ? ' editable' : '');
@@ -679,40 +795,93 @@
                 if (isEdit) { node.contentEditable = 'true'; node.addEventListener('blur', () => onSave(node.innerText.trim())); }
                 return node;
             };
+            let shown = 0;
             projectData.forEach((proj, index) => {
-                // ซ่อนโปรเจกต์ที่ยังไม่ได้กรอก (NEW_PROJECT.EXE + ลิงก์ว่าง) จากผู้เข้าชม — แอดมินยังเห็นเพื่อแก้ไข
-                const isPlaceholder = !safeUrl(proj.url) || safeUrl(proj.url) === 'https:///' || proj.name === 'NEW_PROJECT.EXE';
+                // ซ่อนโปรเจกต์ที่ยังไม่ได้กรอก จากผู้เข้าชม — แอดมินยังเห็นเพื่อแก้ไข
+                const link = safeUrl(proj.url);
+                const isPlaceholder = !link || link === 'https:///' || proj.name === 'NEW_PROJECT.EXE';
                 if (isPlaceholder && !isEdit) return;
-                const el = document.createElement('div'); el.className = 'project-item';
+                const meta = projectMeta(proj);
+                if (!isEdit && projectFilter !== 'all' && meta.cat !== projectFilter) return;
+                shown++;
 
-                const header = document.createElement('div'); header.className = 'project-header';
-                header.appendChild(makeEditable('h3', 'project-title', proj.name, v => { projectData[index].name = v; }));
-                const btnWrap = document.createElement('div');
+                const card = document.createElement('article'); card.className = 'pcard';
+                const thumb = document.createElement('div'); thumb.className = 'pcard-thumb';
+                thumb.textContent = meta.cat === 'game' ? '▶' : meta.cat === 'iot' ? '⚙' : '⌘';
+                if (!isPlaceholder) {
+                    const badge = document.createElement('span'); badge.className = 'pcard-badge'; badge.textContent = '● LIVE';
+                    const img = document.createElement('img'); img.alt = ''; img.loading = 'lazy'; img.referrerPolicy = 'no-referrer';
+                    img.src = thumbUrl(link); img.onerror = () => img.remove();
+                    thumb.append(badge, img);
+                }
+
+                const body = document.createElement('div'); body.className = 'pcard-body';
+                body.appendChild(makeEditable('h3', 'project-title', proj.name, v => { projectData[index].name = v; }));
+                body.appendChild(makeEditable('p', 'project-desc', String(proj.desc || '').replace(/^>\s*/, ''), v => { projectData[index].desc = v; }));
+
+                const tags = document.createElement('div'); tags.className = 'pcard-tags';
+                meta.tags.forEach(t => { const s = document.createElement('span'); s.className = 'pcard-tag'; s.textContent = t; tags.appendChild(s); });
+                body.appendChild(tags);
+
+                // แอดมิน: แก้ URL / หมวด / ป้าย / ลิงก์โค้ด
+                const admin = document.createElement('div'); admin.className = 'pcard-admin';
+                const field = (label, value, onSave) => {
+                    const row = document.createElement('div');
+                    const l = document.createElement('span'); l.className = 'url-label'; l.textContent = label + ' ';
+                    row.append(l, makeEditable('span', 'proj-url-edit', value, onSave));
+                    admin.appendChild(row);
+                };
+                field('URL:', proj.url, v => { projectData[index].url = v; });
+                field('CAT (web/game/iot):', meta.cat, v => { projectData[index].cat = v.toLowerCase(); });
+                field('TAGS (a, b, c):', meta.tags.join(', '), v => { projectData[index].tags = v; });
+                field('CODE URL:', proj.code || '', v => { projectData[index].code = v; });
+                body.appendChild(admin);
+
+                const actions = document.createElement('div'); actions.className = 'pcard-actions';
                 const openBtn = document.createElement('button');
                 openBtn.className = 'action-btn sound-trigger';
-                openBtn.textContent = proj.icon || '🔗 OPEN WEB';
+                openBtn.textContent = (proj.icon || '🔗 OPEN WEB').replace('🔗 ', '↗ ');
                 openBtn.addEventListener('mousedown', playRetroClick);
                 openBtn.addEventListener('click', () => openTargetLinkStr(projectData[index].url));
-                btnWrap.appendChild(openBtn);
+                actions.appendChild(openBtn);
+                const code = safeUrl(proj.code);
+                if (code && code !== 'https:///') {
+                    const codeBtn = document.createElement('button');
+                    codeBtn.className = 'action-btn alt sound-trigger'; codeBtn.textContent = '</> CODE';
+                    codeBtn.addEventListener('mousedown', playRetroClick);
+                    codeBtn.addEventListener('click', () => openTargetLinkStr(projectData[index].code));
+                    actions.appendChild(codeBtn);
+                }
                 if (isEdit) {
                     const delBtn = document.createElement('button');
                     delBtn.className = 'action-btn sound-trigger';
-                    delBtn.style.cssText = 'background:#da1e28; margin-left:5px; padding:4px 10px;';
-                    delBtn.textContent = 'X';
+                    delBtn.style.cssText = 'background:#da1e28; flex:none;';
+                    delBtn.textContent = 'X'; delBtn.title = 'ลบโปรเจกต์';
                     delBtn.addEventListener('click', () => deleteProject(index));
-                    btnWrap.appendChild(delBtn);
+                    actions.appendChild(delBtn);
                 }
-                header.appendChild(btnWrap);
-
-                const desc = makeEditable('p', 'project-desc', proj.desc, v => { projectData[index].desc = v; });
-                const urlBox = document.createElement('div'); urlBox.className = 'admin-url-box';
-                const urlLabel = document.createElement('span'); urlLabel.className = 'url-label'; urlLabel.textContent = 'TARGET URL: ';
-                urlBox.append(urlLabel, makeEditable('span', 'proj-url-edit', proj.url, v => { projectData[index].url = v; }));
-
-                el.append(header, desc, urlBox);
-                container.appendChild(el);
+                body.appendChild(actions);
+                card.append(thumb, body);
+                container.appendChild(card);
             });
+            if (!shown) {
+                const empty = document.createElement('p'); empty.className = 'agenda-empty'; empty.textContent = '> NO PROJECTS IN THIS CATEGORY.';
+                container.appendChild(empty);
+            }
+            document.getElementById('proj-filters').style.display = isEdit ? 'none' : '';
         }
+        document.addEventListener('click', (e) => {
+            const chip = e.target.closest('#proj-filters .proj-chip');
+            if (!chip) return;
+            playRetroClick();
+            projectFilter = chip.dataset.f;
+            document.querySelectorAll('#proj-filters .proj-chip').forEach(c => c.classList.toggle('on', c === chip));
+            renderProjects();
+        });
+        window.goProjects = function(e) {
+            switchTab(e, 'home');
+            setTimeout(() => document.getElementById('proj-anchor').scrollIntoView({ block: 'start' }), 50);
+        };
         window.addNewProject = function() { projectData.push({ name: "NEW_PROJECT.EXE", desc: "> คำอธิบาย...", url: "https://", icon: "🔗 OPEN WEB" }); renderProjects(); document.getElementById('save-btn').click(); }
         window.deleteProject = function(index) { if(confirm("DELETE THIS PROJECT? (Y/N)")) { projectData.splice(index, 1); renderProjects(); document.getElementById('save-btn').click(); } }
         window.openTargetLinkStr = function(url) {
@@ -1027,6 +1196,7 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', (b.getAttribute('onclick') || '').includes(`'${tabId}'`)));
             document.getElementById(tabId).classList.add('active');
+            if (tabId === 'about') onProfileShown();
             window.scrollTo(0, 0);
             // หน้า DATABASE: เปิดโฟลเดอร์แรกให้อัตโนมัติ แทนหน้าว่าง
             if (tabId === 'archive' && folderHistory.length === 0) {
@@ -1046,7 +1216,8 @@
         // 7. ระบบเสียง (Audio System)
         let audioCtx = null;
         let soundMuted = false;
-        try { soundMuted = localStorage.getItem('peem_muted') === '1'; } catch (e) {}
+        soundMuted = true; // ปิดเสียงไว้ก่อน ให้ผู้เข้าชมเลือกเปิดเอง
+        try { soundMuted = localStorage.getItem('peem_muted') !== '0'; } catch (e) {}
         window.playRetroClick = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'square'; osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.05); }
         window.playLevelUpSound = function() { if (soundMuted) return; if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if (audioCtx.state === 'suspended') { audioCtx.resume(); } const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3); }
 
@@ -1185,6 +1356,26 @@
             initMatrix();
 
             // ---- UX ----
+            document.getElementById('theme-toggle').addEventListener('click', () => setCrt(!document.documentElement.classList.contains('crt')));
+            document.getElementById('theme-toggle').setAttribute('aria-pressed', String(document.documentElement.classList.contains('crt')));
+            document.getElementById('term-open-link').addEventListener('click', openTerm);
+            document.addEventListener('keydown', (e) => {
+                const inTerm = document.activeElement && document.activeElement.id === 'term-in';
+                const typing = e.target.closest && e.target.closest('input, textarea, [contenteditable="true"]');
+                if (e.key === '`' && (inTerm || !typing)) { e.preventDefault(); document.getElementById('term').classList.contains('open') ? closeTerm() : openTerm(); }
+            });
+            document.getElementById('term-in').addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter') return;
+                const raw = e.target.value.trim(); e.target.value = ''; if (!raw) return;
+                termSay('C:\\PEEMCN25> ' + raw);
+                const [cmd, ...args] = raw.split(/\s+/);
+                const fn = TERM_CMDS[cmd.toLowerCase()];
+                const out = fn ? fn(args.join(' ')) : `'${raw}' is not recognized. type "help"`;
+                if (out) termSay(out);
+            });
+            document.getElementById('skills-src').addEventListener('blur', () => renderSkills(false));
+            renderSkills(false);
+            loadVisitCount();
             // ความสูงแถบเมนู → ใช้กับ scroll-margin-top ให้หัวข้อไม่โดนบังตอนเปิดลิงก์ #...
             const navEl = document.querySelector('.navbar');
             const syncNavH = () => document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
@@ -1218,7 +1409,7 @@
             // Esc ปิดหน้าต่างที่เปิดอยู่
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
-                closeGallery(); closePreview();
+                closeGallery(); closePreview(); closeTerm();
                 ['login-modal', 'create-user-modal', 'secret-modal'].forEach(id => { document.getElementById(id).style.display = 'none'; });
             });
 
@@ -1227,6 +1418,86 @@
             // รอให้ Firebase ตั้งค่าเสร็จก่อน (ตั้งใน DOMContentLoaded ตัวถัดไป)
             if (location.hash) setTimeout(() => showTab(location.hash.slice(1)), 0);
         });
+
+        // 9. Profile: แถบทักษะ (จากข้อความที่แอดมินแก้ได้) + ตัวเลขนับขึ้น
+        // อ่านบรรทัดทักษะจาก HTML ตรงๆ (innerText ของ element ที่ซ่อนอยู่จะไม่แยกบรรทัดตาม <br>)
+        function skillLines() {
+            const src = document.getElementById('skills-src'); if (!src) return [];
+            const html = src.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<\/(p|div)>/gi, '\n');
+            return (new DOMParser().parseFromString(html, 'text/html').body.textContent || '').split('\n').map(l => l.trim()).filter(Boolean);
+        }
+        function renderSkills(animate) {
+            const src = document.getElementById('skills-src'), box = document.getElementById('skill-bars');
+            if (!src || !box) return;
+            box.replaceChildren();
+            skillLines().slice(0, 12).forEach(line => {
+                const m = /^(.*?)[\s:]+(\d{1,3})\s*%?$/.exec(line);
+                const name = m ? m[1].trim() : line, pct = m ? Math.min(100, +m[2]) : 0;
+                const row = document.createElement('div'); row.className = 'skill-row';
+                const n = document.createElement('span'); n.textContent = name;
+                const bar = document.createElement('span'); bar.className = 'bar';
+                const p = document.createElement('span'); p.className = 'pct'; p.textContent = pct + '%';
+                row.append(n, bar, p); box.appendChild(row);
+                const fill = document.createElement('span'); bar.appendChild(fill);
+                if (!animate) { fill.style.transition = 'none'; fill.style.width = pct + '%'; return; }
+                requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = pct + '%'; }));
+            });
+        }
+        function animateStats() {
+            if (document.body.classList.contains('edit-mode')) return;
+            document.querySelectorAll('.stat-num').forEach(el => {
+                const to = parseInt(el.textContent, 10); if (!(to > 0) || to > 999) return;
+                let n = 0; const step = Math.max(1, Math.ceil(to / 20));
+                const t = setInterval(() => { n = Math.min(to, n + step); el.textContent = n; if (n >= to) clearInterval(t); }, 50);
+            });
+        }
+        let profileAnimated = false;
+        function onProfileShown() {
+            if (profileAnimated) { renderSkills(false); return; }
+            profileAnimated = true; renderSkills(true); animateStats();
+        }
+
+        // 9b. ธีม CRT (จำค่าไว้)
+        function setCrt(on) {
+            document.documentElement.classList.toggle('crt', on);
+            const b = document.getElementById('theme-toggle'); if (b) b.setAttribute('aria-pressed', String(on));
+            try { localStorage.setItem('peem_crt', on ? '1' : '0'); } catch (e) {}
+        }
+        try { if (localStorage.getItem('peem_crt') === '1') document.documentElement.classList.add('crt'); } catch (e) {}
+
+        // 9c. Terminal (easter egg)
+        const TERM_TABS = { home: 'home', projects: 'projects', schedule: 'schedule', files: 'archive', archive: 'archive', about: 'about', contact: 'contact' };
+        function termVisibleProjects() { return projectData.filter(p => { const l = safeUrl(p.url); return l && l !== 'https:///' && p.name !== 'NEW_PROJECT.EXE'; }); }
+        const TERM_CMDS = {
+            help: () => 'คำสั่ง: help · whoami · projects · open <n> · skills · goto <home|projects|schedule|files|about|contact> · theme · sound · date · clear · exit',
+            whoami: () => 'PEEM — Computer Engineering student · builds web, games & IoT',
+            projects: () => termVisibleProjects().map((p, i) => `[${i + 1}] ${String(p.name).padEnd(22)} ${safeUrl(p.url)}`).join('\n') || 'NO PROJECTS.',
+            open: (a) => { const p = termVisibleProjects()[parseInt(a, 10) - 1]; if (!p) return 'usage: open <number>  (ดูเลขจาก "projects")'; window.open(safeUrl(p.url), '_blank', 'noopener'); return 'OPENING ' + p.name + ' ...'; },
+            skills: () => skillLines().map(l => { const m = /^(.*?)[\s:]+(\d{1,3})\s*%?$/.exec(l); if (!m) return l; const v = Math.min(100, +m[2]); return `${m[1].trim().padEnd(14)} ${'█'.repeat(Math.round(v / 10))}${'░'.repeat(10 - Math.round(v / 10))} ${v}%`; }).join('\n'),
+            goto: (a) => { const t = TERM_TABS[String(a || '').toLowerCase()]; if (!t) return 'usage: goto <home|projects|schedule|files|about|contact>'; if (t === 'projects') goProjects(null); else switchTab(null, t); return 'CD ' + t.toUpperCase(); },
+            theme: () => { setCrt(!document.documentElement.classList.contains('crt')); return 'THEME SWITCHED.'; },
+            sound: () => { document.getElementById('sound-toggle').click(); return soundMuted ? 'SOUND OFF.' : 'SOUND ON.'; },
+            date: () => new Date().toString(),
+            clear: () => { document.getElementById('term-out').textContent = ''; return null; },
+            exit: () => { closeTerm(); return null; },
+            sudo: () => 'nice try. 😏 this incident will be reported.',
+        };
+        function termSay(t) { const o = document.getElementById('term-out'); o.textContent += t + '\n'; o.scrollTop = o.scrollHeight; }
+        function openTerm() { const t = document.getElementById('term'); t.classList.add('open'); if (!document.getElementById('term-out').textContent) termSay('PEEMCN25 DOS v2.5 — type "help"'); document.getElementById('term-in').focus(); }
+        function closeTerm() { document.getElementById('term').classList.remove('open'); }
+
+        // 9d. ตัวนับผู้เข้าชม (นับผ่าน backend วันละครั้งต่อเบราว์เซอร์)
+        async function loadVisitCount() {
+            const el = document.getElementById('visit-count'); if (!el) return;
+            let first = false;
+            try { const today = new Date().toLocaleDateString('en-CA'); first = localStorage.getItem('peem_visit') !== today; if (first) localStorage.setItem('peem_visit', today); } catch (e) {}
+            try {
+                const r = await fetch(`${SERVER_URL}/views`, { method: first ? 'POST' : 'GET' });
+                if (!r.ok) throw new Error();
+                const d = await r.json();
+                el.textContent = String(Math.max(0, parseInt(d.count, 10) || 0)).padStart(6, '0');
+            } catch (e) { el.parentElement.style.display = 'none'; }
+        }
 
         // 10. Matrix Background 
         let mCanvas, mCtx, mWidth, mHeight, columns, drops = []; 
@@ -1272,6 +1543,7 @@
                         if (data.project_list) { try { projectData = JSON.parse(data.project_list); } catch(e) {} }
                         renderCalendar(); 
                         renderProjects();
+                        renderSkills(false);
                     } else { renderCalendar(); renderProjects(); }
                 } catch (error) { console.error("โหลดข้อมูลล้มเหลว:", error); renderCalendar(); renderProjects(); }
             }
