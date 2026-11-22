@@ -437,8 +437,8 @@
                     const thumb = safeUrl(file.thumbnailLink);
 
                     let clickAction = fileClickAttrs(file, isFolder);
-                    let iconHtml = isFolder ? `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff; flex:none;">📁</div>` : 
-                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" style="flex:none;" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="flex:none;">📄</div>`);
+                    let iconHtml = isFolder ? `<div class="file-icon" style="background:var(--ibm-key-dark); color:#fff; flex:none;">${svgIcon('folder')}</div>` : 
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" style="flex:none;" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="flex:none;">${svgIcon('file')}</div>`);
                     
                     htmlStr += `
                     <div class="file-item sound-trigger" ${clickAction} style="cursor: pointer; display: flex; align-items: center;">
@@ -459,8 +459,8 @@
                     const safeName = escapeHtml(file.name);
                     const thumb = safeUrl(file.thumbnailLink);
                     let clickAction = fileClickAttrs(file, isFolder);
-                    let iconHtml = isFolder ? `<div class="file-icon" style="color:var(--ibm-accent-blue); background:transparent; border:none;">📁</div>` : 
-                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">📄</div>`);
+                    let iconHtml = isFolder ? `<div class="file-icon" style="color:var(--ibm-accent-blue); background:transparent; border:none;">${svgIcon('folder')}</div>` : 
+                                   (file.hasThumbnail && thumb ? `<img src="${escapeHtml(thumb)}" class="file-thumb" loading="lazy" referrerpolicy="no-referrer" alt="">` : `<div class="file-icon" style="color:var(--ibm-text); background:transparent; border:none;">${svgIcon('file')}</div>`);
                     htmlStr += `
                     <div class="grid-item sound-trigger" ${clickAction} title="${safeName}">
                         ${iconHtml}
@@ -603,7 +603,7 @@
                 card.querySelector('.mem-stamp').textContent = memDate(al.date);
                 card.querySelector('.mem-title').textContent = al.title;
                 card.querySelector('.mem-desc').textContent = al.desc || '';
-                card.querySelector('.count').textContent = `📷 ${al.count} PHOTOS`;
+                card.querySelector('.count').innerHTML = `${svgIcon('camera')} ${Number(al.count) || 0} PHOTOS`;
                 card.addEventListener('mousedown', playRetroClick);
                 card.addEventListener('click', () => openAlbum(al));
                 grid.appendChild(card);
@@ -1007,8 +1007,11 @@
             const show = document.getElementById('photo-show'); if (!show) return;
             document.getElementById('photo-prev').addEventListener('click', () => photoShow(photoState.i - 1, true));
             document.getElementById('photo-next').addEventListener('click', () => photoShow(photoState.i + 1, true));
-            document.getElementById('photo-play').addEventListener('click', (e) => { photoState.paused = !photoState.paused; e.currentTarget.textContent = photoState.paused ? '▶' : '❚❚'; });
+            document.getElementById('photo-play').addEventListener('click', (e) => { photoState.paused = !photoState.paused; e.currentTarget.textContent = photoState.paused ? '▶' : '❚❚'; e.currentTarget.setAttribute('aria-label', photoState.paused ? 'เล่นสไลด์' : 'หยุดสไลด์'); });
             document.getElementById('photo-stage').addEventListener('click', () => photoLightbox(true));
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches) { photoState.paused = true; document.getElementById('photo-play').textContent = '▶'; }
+            show.addEventListener('focusin', () => photoState.hover = true);
+            show.addEventListener('focusout', () => photoState.hover = false);
             show.addEventListener('mouseenter', () => photoState.hover = true);
             show.addEventListener('mouseleave', () => photoState.hover = false);
             show.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') photoShow(photoState.i - 1, true); if (e.key === 'ArrowRight') photoShow(photoState.i + 1, true); });
@@ -1040,6 +1043,7 @@
             return new DOMParser().parseFromString(html, 'text/html').body.textContent || '';
         }
         const srcLines = (id) => srcText(id).split('\n').map(l => l.trim()).filter(Boolean);
+        const svgIcon = (name) => `<svg class="ico" aria-hidden="true"><use href="#i-${name}"/></svg>`;
         const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
         function renderPackages() {
@@ -1453,7 +1457,7 @@
                     const im = el('img'); im.loading = 'lazy'; im.alt = p.caption || ''; if (p.w && p.h) { im.width = p.w; im.height = p.h; }
                     im.src = clientPhotoUrl(p.id, 800); b.appendChild(im);
                     b.addEventListener('click', () => lbOpen(photos, i));
-                    const dl = el('a', 'dl', '⬇'); dl.href = clientDlUrl(p.id); dl.title = 'ดาวน์โหลดไฟล์ต้นฉบับ'; dl.setAttribute('download', '');
+                    const dl = el('a', 'dl'); dl.innerHTML = svgIcon('download'); dl.href = clientDlUrl(p.id); dl.title = 'ดาวน์โหลดไฟล์ต้นฉบับ'; dl.setAttribute('aria-label', 'ดาวน์โหลดไฟล์ต้นฉบับ'); dl.setAttribute('download', '');
                     wrap.append(b, dl); grid.appendChild(wrap);
                 });
             } catch (err) {
@@ -1508,8 +1512,7 @@
         function t(k) { return (I18N[lang] && I18N[lang][k]) || I18N.th[k] || k; }
         function applyLang() {
             document.documentElement.lang = lang;
-            document.querySelectorAll('[data-i18n]').forEach(n => { if (!n.dataset.th) n.dataset.th = n.textContent; n.textContent = lang === 'en' && I18N.en[n.dataset.i18n] ? I18N.en[n.dataset.i18n] : n.dataset.th; });
-            document.querySelectorAll('[data-i18n-ph]').forEach(n => { if (!n.dataset.thPh) n.dataset.thPh = n.placeholder; n.placeholder = lang === 'en' && I18N.en[n.dataset.i18nPh] ? I18N.en[n.dataset.i18nPh] : n.dataset.thPh; });
+            // ภาษาเดียว (ไทย): ไม่เขียนทับข้อความในหน้า — ถ้าเขียนทับ textContent ไอคอน SVG ในปุ่มจะหาย
             renderEditableLists(); renderPhotoCats(); if (typeof renderAgenda === 'function') renderAgenda();
         }
 

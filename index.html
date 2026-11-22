@@ -45,9 +45,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="assets/css/site.css?v=7">
+    <link rel="stylesheet" href="assets/css/site.css?v=8">
 </head>
 <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3"/></symbol>
+        <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+        <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4"/></symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+        <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+        <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+        <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+        <symbol id="i-flip" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.5 4.5L20 16M20 20v-4h-4"/></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+        <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.6 6 .7-4.5 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L3.4 9.8l6-.7z"/></symbol>
+    </svg>
     <a class="skip-link" href="#home">ข้ามไปเนื้อหา</a>
 
     <header class="navbar" id="topbar">
@@ -114,7 +128,7 @@
                     <button type="button" class="proj-chip" data-f="web">WEB</button>
                     <button type="button" class="proj-chip" data-f="game">GAME</button>
                     <button type="button" class="proj-chip" data-f="iot">IOT</button>
-                    <button type="button" class="proj-chip" data-f="award">🏆 AWARDS</button>
+                    <button type="button" class="proj-chip" data-f="award"><svg class="ico" aria-hidden="true"><use href="#i-trophy"/></svg> AWARDS</button>
                 </div>
                 <div id="dynamic-project-container" class="project-list-container cards"></div>
             </section>
@@ -182,9 +196,9 @@
                             </div>
                 <div class="rev-grid" id="rev-grid"></div>
                 <p class="agenda-empty rev-empty" id="rev-empty" hidden>&gt; ยังไม่มีรีวิว มาเป็นคนแรกกัน!</p>
-                <button type="button" class="btn rev-write-btn sound-trigger" id="rev-write-btn">✍ เขียนรีวิว</button>
+                <button type="button" class="btn rev-write-btn sound-trigger" id="rev-write-btn"><svg class="ico" aria-hidden="true"><use href="#i-pencil"/></svg> เขียนรีวิว</button>
                 <form class="book-form rev-form" id="rev-form" hidden novalidate>
-                                <h2 data-i18n="rev_form_title">⭐ รีวิวงานถ่ายภาพ</h2>
+                                <h2 data-i18n="rev_form_title"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg> รีวิวงานถ่ายภาพ</h2>
                                 <p class="book-note" data-i18n="rev_form_note">รีวิวจะขึ้นบนเว็บหลังจากตรวจสอบแล้ว ขอบคุณที่ช่วยแนะนำครับ</p>
                                 <div class="rev-stars-big star-pick" id="rev-form-stars" role="radiogroup" aria-label="ให้คะแนน"></div>
                                 <label><span data-i18n="rev_f_name">ชื่อที่จะแสดง *</span><input name="who" maxlength="60" required autocomplete="nickname"></label>
@@ -225,7 +239,7 @@
                 </div>
                 <div class="cta-actions">
                     <button type="button" class="btn btn-primary sound-trigger" onclick="switchTab(event, 'contact')">BOOK A SHOOT ▶</button>
-                    <button type="button" class="btn btn-ghost sound-trigger" onclick="switchTab(event, 'client')">🔐 CLIENT GALLERY</button>
+                    <button type="button" class="btn btn-ghost sound-trigger" onclick="switchTab(event, 'client')"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> CLIENT GALLERY</button>
                 </div>
             </section>
         </main>
@@ -260,11 +274,11 @@
             <div class="archive-layout">
                         <!-- เมนูด้านซ้าย -->
                         <div class="archive-sidebar">
-                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')">📁 SOURCE CODE</button>
-                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')">📁 EXAM & WORK</button>
-                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')">📁 PORTFOLIO</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'SOURCE_CODE', '17TUnUfOEEOAdxi050iieJe0YMPFbc0G4')"><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg> SOURCE CODE</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'EXAM_AND_WORK', '1tbKBwei8VlpXXYAy6LZ-8xIDMxY_lUe3')"><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg> EXAM &amp; WORK</button>
+                            <button class="folder-btn sound-trigger" onclick="loadDriveFolder(this, 'PORTFOLIO', '1JIzrSaA0m32kf85xLa54qO82fPVQYWPj')"><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg> PORTFOLIO</button>
                             <!-- ปุ่มโฟลเดอร์ลับ -->
-                            <button class="folder-btn sound-trigger" onclick="loadSecretFolder(this)" style="color: #da1e28; border-color: #da1e28;">🔒 TOP SECRET</button>
+                            <button class="folder-btn sound-trigger" onclick="loadSecretFolder(this)" style="color: #da1e28; border-color: #da1e28;"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> TOP SECRET</button>
                         </div>
                         
                         <!-- พื้นที่แสดงไฟล์ด้านขวา -->
@@ -317,8 +331,8 @@
                     <div class="about-cta">
                         <button type="button" class="btn btn-primary sound-trigger" onclick="goProjects(event)">▶ ดูผลงาน</button>
                         <a class="btn sound-trigger" href="https://github.com/peemdiamond-design" target="_blank" rel="noopener">GITHUB ↗</a>
-                        <button type="button" class="btn sound-trigger" onclick="switchTab(event, 'contact')">✉ ติดต่อ</button>
-                        <a class="btn sound-trigger" id="resume-btn" href="#" target="_blank" rel="noopener" hidden>⬇ RESUME</a>
+                        <button type="button" class="btn sound-trigger" onclick="switchTab(event, 'contact')"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg> ติดต่อ</button>
+                        <a class="btn sound-trigger" id="resume-btn" href="#" target="_blank" rel="noopener" hidden><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg> RESUME</a>
                     </div>
                     <div class="admin-hint list-admin">[!] แอดมิน: ลิงก์ไฟล์ Resume (PDF บน Drive ที่แชร์แบบทุกคนที่มีลิงก์) · ปล่อยว่าง = ซ่อนปุ่ม
                                 <div class="editable" id="resume-url" data-field="resume_url" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
@@ -379,9 +393,9 @@
                             </div>
                         </div>
                         <div class="bcard-actions">
-                            <button type="button" class="btn" id="bcard-flip">↻ พลิกบัตร</button>
-                            <button type="button" class="btn btn-primary" id="bcard-present">⛶ โชว์ให้ลูกค้า</button>
-                            <button type="button" class="btn" id="bcard-vcard">⬇ บันทึกรายชื่อ</button>
+                            <button type="button" class="btn" id="bcard-flip"><svg class="ico" aria-hidden="true"><use href="#i-flip"/></svg> พลิกบัตร</button>
+                            <button type="button" class="btn btn-primary" id="bcard-present"><svg class="ico" aria-hidden="true"><use href="#i-expand"/></svg> โชว์ให้ลูกค้า</button>
+                            <button type="button" class="btn" id="bcard-vcard"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg> บันทึกรายชื่อ</button>
                         </div>
                         <button type="button" class="bcard-close" id="bcard-close" aria-label="ปิด">×</button>
                     </div>
@@ -392,14 +406,14 @@
                             <a href="https://www.tiktok.com/@yaknoom101?is_from_webapp=1&amp;sender_device=pc" target="_blank" rel="noopener" class="btn-social">TIKTOK ↗</a>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-ghost client-entry" onclick="switchTab(event, 'client')">🔐 ลูกค้า: เข้าดูรูปงานของคุณ</button>
+                    <button type="button" class="btn btn-ghost client-entry" onclick="switchTab(event, 'client')"><svg class="ico" aria-hidden="true"><use href="#i-lock"/></svg> ลูกค้า: เข้าดูรูปงานของคุณ</button>
                     <div class="admin-hint list-admin" style="max-width:640px">[!] แอดมิน: ลิงก์ LINE (เช่น https://line.me/ti/p/~ไอดี หรือลิงก์ LINE OA) → ปุ่ม LINE ลอยมุมจอ · ปล่อยว่าง = ซ่อน
                         <div class="editable" id="line-url" data-field="line_url" style="background:#fff; border:1px solid var(--ibm-key-dark); padding:2px 6px; margin-top:6px; word-break:break-all;"></div>
                                 <input type="url" class="fe-url" data-src="line-url" placeholder="วางลิงก์ LINE เช่น https://line.me/ti/p/~yourid"><span class="fe-url-ok" data-for="line-url"></span>
                     </div>
                 </aside>
                 <form class="book-form" id="book-form" novalidate>
-                        <h2 data-i18n="book_title">📅 จองคิว / สอบถามงาน</h2>
+                        <h2 data-i18n="book_title"><svg class="ico" aria-hidden="true"><use href="#i-calendar"/></svg> จองคิว / สอบถามงาน</h2>
                         <p class="book-note" data-i18n="book_note">กรอกข้อมูลแล้วกดส่ง ข้อความจะถึงผมทันที ตอบกลับภายใน 24 ชม.</p>
                         <div class="book-row">
                             <label><span data-i18n="f_name">ชื่อ *</span><input name="name" maxlength="80" required autocomplete="name"></label>
@@ -436,11 +450,11 @@
                         <div class="client-head">
                             <div><h2 id="client-album-title"></h2><span id="client-album-meta"></span></div>
                             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                <button type="button" class="action-btn sound-trigger" id="client-review" data-i18n="client_review">⭐ รีวิวงานนี้</button>
+                                <button type="button" class="action-btn sound-trigger" id="client-review" data-i18n="client_review"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg> รีวิวงานนี้</button>
                                 <button type="button" class="action-btn alt sound-trigger" id="client-logout" data-i18n="client_logout">ออกจากอัลบั้ม</button>
                             </div>
                         </div>
-                        <p class="book-note" data-i18n="client_tip">กดรูปเพื่อดูเต็มจอ · ปุ่ม ⬇ เพื่อดาวน์โหลดไฟล์ต้นฉบับ</p>
+                        <p class="book-note" data-i18n="client_tip">กดรูปเพื่อดูเต็มจอ · กดปุ่มดาวน์โหลดที่มุมรูปเพื่อบันทึกไฟล์ต้นฉบับ</p>
                         <div class="album-masonry client-grid" id="client-grid"></div>
                     </div>
             </div>
@@ -529,7 +543,7 @@
         <button type="button" class="photo-nav prev" id="photo-lb-prev" aria-label="ภาพก่อนหน้า">◀</button>
         <button type="button" class="photo-nav next" id="photo-lb-next" aria-label="ภาพถัดไป">▶</button>
         <button type="button" class="gallery-close" id="photo-lb-close" aria-label="ปิด">×</button>
-        <a class="photo-lb-dl" id="photo-lb-dl" href="#" hidden>⬇ DOWNLOAD</a>
+        <a class="photo-lb-dl" id="photo-lb-dl" href="#" hidden><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg> DOWNLOAD</a>
         <div class="photo-lb-caption" id="photo-lb-caption"></div>
     </div>
 
@@ -595,6 +609,6 @@
         </div>
     </div>
 
-    <script src="assets/js/app.js?v=7" defer></script>
+    <script src="assets/js/app.js?v=8" defer></script>
 </body>
 </html>
