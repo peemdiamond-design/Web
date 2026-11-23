@@ -65,6 +65,23 @@
             const tags = String(proj.tags ?? d.tags ?? '').split(',').map(t => t.trim()).filter(Boolean).slice(0, 8);
             return { cat, tags };
         }
+        // รูปปกการ์ด: เลือกจาก Drive (coverId) > ลิงก์รูป (cover) > ถ่ายหน้าจอเว็บอัตโนมัติ (coverV = เลขรุ่นสำหรับบังคับถ่ายใหม่)
+        function coverSrc(proj, link) {
+            if (proj.coverId && /^[A-Za-z0-9_-]{10,128}$/.test(proj.coverId)) return `${SERVER_URL}/photo/${encodeURIComponent(proj.coverId)}?w=800&v=2`;
+            const custom = safeUrl(proj.cover);
+            if (custom && custom !== 'https:///') return custom;
+            const v = parseInt(proj.coverV, 10);
+            let target = link;
+            if (v > 0) { try { const u = new URL(link); u.searchParams.set('_cv', v); target = u.href; } catch (e) {} }
+            return thumbUrl(target);
+        }
+        // บริการถ่ายหน้าจอใช้เวลาราว 10-40 วินาทีตอนถ่ายใหม่ → ลองโหลดรูปซ้ำเป็นระยะ
+        function retryThumb(index) {
+            [7000, 15000, 28000, 45000].forEach((ms, n) => setTimeout(() => {
+                const img = document.querySelector(`.pcard[data-idx="${index}"] .pcard-thumb img`);
+                if (img && img.src.indexOf('mshots') > -1) { try { const u = new URL(img.src); u.searchParams.set('_r', n + 1); img.src = u.href; } catch (e) {} }
+            }, ms));
+        }
         function thumbUrl(url) { return 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=640&h=400'; }
         // ---------- รางวัลของโปรเจกต์ (เก็บใน project_list: awards[]) ----------
         const AWARD_TIERS = {
@@ -111,6 +128,54 @@
             playLevelUpSound();
         }
         function closeAward() { document.getElementById('award-modal').classList.remove('open'); }
+        // แอดมิน: รูปปกการ์ด — ถ่ายหน้าจอใหม่ / เลือกจาก Drive / วางลิงก์รูป
+        const COVERS_DRIVE_URL = 'https://drive.google.com/drive/folders/1xxWe7z53VAF3FqpW-X6F68VkecyJFGEA';
+        function renderCoverEditor(index, link) {
+            const proj = projectData[index];
+            const wrap = document.createElement('div'); wrap.className = 'cover-editor';
+            const head = document.createElement('div'); head.className = 'url-label'; head.textContent = '🖼️ รูปปก:'; wrap.appendChild(head);
+            const mode = proj.coverId ? 'drive' : (safeUrl(proj.cover) && safeUrl(proj.cover) !== 'https:///' ? 'url' : 'auto');
+            const state = document.createElement('div'); state.className = 'cover-state';
+            state.textContent = mode === 'drive' ? '✓ ใช้รูปที่เลือกจาก Drive' : mode === 'url' ? '✓ ใช้รูปจากลิงก์ที่วางไว้' : '✓ ถ่ายหน้าจอเว็บให้อัตโนมัติ' + (parseInt(proj.coverV, 10) > 0 ? ' (ถ่ายใหม่แล้ว)' : '');
+            wrap.appendChild(state);
+            const row = document.createElement('div'); row.className = 'cover-actions';
+            const mk = (txt, fn) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'cover-btn'; b.textContent = txt; b.addEventListener('click', fn); row.appendChild(b); return b; };
+            mk('🔄 ถ่ายหน้าจอใหม่', () => {
+                proj.coverV = Date.now(); delete proj.coverId; delete proj.cover;
+                renderProjects(); retryThumb(index);
+                const st = document.querySelector(`.pcard[data-idx="${index}"] .cover-state`);
+                if (st) st.textContent = '⏳ กำลังถ่ายหน้าจอใหม่ ใช้เวลาราว 30 วินาที — รอให้รูปใหม่ขึ้นก่อน แล้วค่อยกด SAVE CONFIG';
+            });
+            mk('📁 เลือกจาก Drive', () => openCoverPicker(index));
+            if (mode !== 'auto') mk('↩ กลับเป็นอัตโนมัติ', () => { delete proj.coverId; delete proj.cover; renderProjects(); });
+            wrap.appendChild(row);
+            const url = document.createElement('input'); url.type = 'url'; url.className = 'cover-url'; url.maxLength = 400;
+            url.placeholder = 'หรือวางลิงก์รูป (https://…)'; url.value = mode === 'url' ? proj.cover : '';
+            url.addEventListener('change', () => { const v = url.value.trim(); if (v) { proj.cover = v; delete proj.coverId; } else { delete proj.cover; } renderProjects(); });
+            wrap.appendChild(url);
+            return wrap;
+        }
+        let coverPickIndex = -1;
+        async function openCoverPicker(index) {
+            coverPickIndex = index;
+            const m = document.getElementById('cover-picker'), grid = m.querySelector('.cp-grid'), msg = m.querySelector('.cp-msg');
+            m.classList.add('open'); grid.replaceChildren(); msg.textContent = 'กำลังโหลดรูป…';
+            try {
+                const r = await fetch(`${SERVER_URL}/covers`); if (!r.ok) throw new Error(r.status);
+                const list = (await r.json()).filter(c => c && /^[A-Za-z0-9_-]{10,128}$/.test(c.id));
+                msg.textContent = list.length ? 'กดรูปที่ต้องการใช้เป็นปก' : 'ยังไม่มีรูปในโฟลเดอร์ Project Covers — ลากรูปใส่โฟลเดอร์แล้วกดโหลดใหม่';
+                const cur = projectData[index] && projectData[index].coverId;
+                list.forEach(c => {
+                    const b = document.createElement('button'); b.type = 'button'; b.className = 'cp-item' + (c.id === cur ? ' on' : ''); b.title = c.name;
+                    const im = document.createElement('img'); im.loading = 'lazy'; im.alt = c.name; im.src = `${SERVER_URL}/photo/${encodeURIComponent(c.id)}?w=400&v=2`;
+                    const nm = document.createElement('span'); nm.textContent = c.name;
+                    b.append(im, nm);
+                    b.addEventListener('click', () => { const p = projectData[coverPickIndex]; if (!p) return; p.coverId = c.id; delete p.cover; closeCoverPicker(); renderProjects(); });
+                    grid.appendChild(b);
+                });
+            } catch (e) { msg.textContent = 'โหลดรูปไม่สำเร็จ ลองใหม่อีกครั้ง'; }
+        }
+        function closeCoverPicker() { document.getElementById('cover-picker').classList.remove('open'); }
         // แอดมิน: แก้รางวัลของโปรเจกต์ index (กดลงใน projectData ทันที แล้วกด SAVE CONFIG)
         function renderAwardEditor(index) {
             const wrap = document.createElement('div'); wrap.className = 'award-editor';
@@ -159,14 +224,14 @@
                 if (!isEdit && projectFilter !== 'all' && (projectFilter === 'award' ? !awards.length : meta.cat !== projectFilter)) return;
                 shown++;
 
-                const card = document.createElement('article'); card.className = 'pcard';
+                const card = document.createElement('article'); card.className = 'pcard'; card.dataset.idx = index;
                 const thumb = document.createElement('div'); thumb.className = 'pcard-thumb';
                 const medalRow = renderMedals(proj, awards);
                 thumb.textContent = meta.cat === 'game' ? '▶' : meta.cat === 'iot' ? '⚙' : '⌘';
                 if (!isPlaceholder) {
                     const badge = document.createElement('span'); badge.className = 'pcard-badge'; badge.textContent = '● LIVE';
                     const img = document.createElement('img'); img.alt = ''; img.loading = 'lazy'; img.referrerPolicy = 'no-referrer';
-                    img.src = thumbUrl(link); img.onerror = () => img.remove();
+                    img.src = coverSrc(proj, link); img.onerror = () => img.remove();
                     thumb.append(badge, img);
                 }
 
@@ -197,7 +262,7 @@
                 }
                 field('ป้ายเทคโนโลยี (คั่นด้วย ,):', meta.tags.join(', '), v => { projectData[index].tags = v; });
                 field('ลิงก์โค้ด GitHub (ไม่ใส่ก็ได้):', proj.code || '', v => { projectData[index].code = v; });
-                if (isEdit) admin.appendChild(renderAwardEditor(index));
+                if (isEdit) { admin.appendChild(renderCoverEditor(index, link)); admin.appendChild(renderAwardEditor(index)); }
                 body.appendChild(admin);
 
                 const actions = document.createElement('div'); actions.className = 'pcard-actions';
@@ -786,6 +851,9 @@
             initMatrix();
 
             // ---- UX ----
+            const cp = document.getElementById('cover-picker');
+            cp.addEventListener('click', (e) => { if (e.target.id === 'cover-picker' || e.target.closest('.cp-close')) closeCoverPicker(); });
+            cp.querySelector('.cp-reload').addEventListener('click', () => openCoverPicker(coverPickIndex));
             document.getElementById('award-modal').addEventListener('click', (e) => { if (e.target.id === 'award-modal' || e.target.closest('.award-close')) closeAward(); });
             const topbar = document.getElementById('topbar');
             const onScroll = () => topbar.classList.toggle('scrolled', window.scrollY > 8);
@@ -853,6 +921,7 @@
             // Esc ปิดหน้าต่างที่เปิดอยู่
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
+                if (document.getElementById('cover-picker').classList.contains('open')) { closeCoverPicker(); return; }
                 if (document.getElementById('award-modal').classList.contains('open')) { closeAward(); return; }
                 if (document.getElementById('photo-lightbox').classList.contains('open')) { photoLightbox(false); return; }
                 document.getElementById('cal-modal').style.display = 'none';
